@@ -1,0 +1,280 @@
+{
+  "vinylReleases": [
+    {
+      "id": 1,
+      "title": "Kind of Blue",
+      "artist": "Miles Davis",
+      "price": 299.99,
+      "condition": "Near Mint",
+      "genre": "Jazz",
+      "releaseYear": 1959,
+      "format": "LP, Album, Mono",
+      "description": "Original 1959 mono pressing of Miles Davis' seminal album 'Kind of Blue'. This is a rare find in near mint condition. The vinyl shows minimal signs of play and the cover is in excellent condition with only slight wear on the edges. A must-have for any serious jazz collector.",
+      "images": [
+        "/placeholder.svg?height=500&width=500&text=Kind+of+Blue",
+        "/placeholder.svg?height=500&width=500&text=Album+Cover",
+        "/placeholder.svg?height=500&width=500&text=Vinyl+Close-up",
+        "/placeholder.svg?height=500&width=500&text=Back+Cover"
+      ],
+      "seller": {
+        "name": "VinylVault",
+        "avatar": "/placeholder.svg?height=100&width=100&text=VV",
+        "rating": 4.9,
+        "reviews": 382
+      }
+    },
+    {
+      "id": 2,
+      "title": "Abbey Road (1st UK Pressing)",
+      "artist": "The Beatles",
+      "price": 499.99,
+      "condition": "Very Good Plus",
+      "genre": "Rock",
+      "releaseYear": 1969,
+      "format": "LP, Album",
+      "description": "First UK pressing of The Beatles' iconic 'Abbey Road' album. The vinyl is in very good plus condition with minimal surface noise. The cover shows some signs of age but remains intact and presentable.",
+      "images": [
+        "/placeholder.svg?height=500&width=500&text=Abbey+Road",
+        "/placeholder.svg?height=500&width=500&text=Abbey+Road+Cover",
+        "/placeholder.svg?height=500&width=500&text=Vinyl+Detail",
+        "/placeholder.svg?height=500&width=500&text=Label+Close-up"
+      ],
+      "seller": {
+        "name": "ClassicVinylEmporium",
+        "avatar": "/placeholder.svg?height=100&width=100&text=CVE",
+        "rating": 4.8,
+        "reviews": 527
+      }
+    },
+    {
+      "id": 3,
+      "title": "The Dark Side of the Moon (Quad Mix)",
+      "artist": "Pink Floyd",
+      "price": 799.99,
+      "condition": "Excellent",
+      "genre": "Progressive Rock",
+      "releaseYear": 1973,
+      "format": "LP, Album, Quadraphonic",
+      "description": "Rare quadraphonic mix of Pink Floyd's masterpiece 'The Dark Side of the Moon'. This pressing offers a unique listening experience with its four-channel audio. The vinyl and gatefold cover are in excellent condition, making this a prized collector's item.",
+      "images": [
+        "/placeholder.svg?height=500&width=500&text=Dark+Side+Quad",
+        "/placeholder.svg?height=500&width=500&text=Gatefold+Interior",
+        "/placeholder.svg?height=500&width=500&text=Quadraphonic+Label",
+        "/placeholder.svg?height=500&width=500&text=Vinyl+Grooves"
+      ],
+      "seller": {
+        "name": "QuadSoundMaster",
+        "avatar": "/placeholder.svg?height=100&width=100&text=QSM",
+        "rating": 4.9,
+        "reviews": 203
+      }
+    },
+    {
+      "id": 4,
+      "title": "The Rise and Fall of Ziggy Stardust and the Spiders from Mars",
+      "artist": "David Bowie",
+      "price": 249.99,
+      "condition": "Near Mint",
+      "genre": "Glam Rock",
+      "releaseYear": 1972,
+      "format": "LP, Album",
+      "description": "Original UK pressing of David Bowie's legendary concept album. This copy is in exceptional condition, with the vinyl showing minimal play and the cover retaining its vibrant colors. A cornerstone of any serious rock collection.",
+      "images": [
+        "/placeholder.svg?height=500&width=500&text=Ziggy+Stardust",
+        "/placeholder.svg?height=500&width=500&text=Ziggy+Cover+Art",
+        "/placeholder.svg?height=500&width=500&text=Inner+Sleeve",
+        "/placeholder.svg?height=500&width=500&text=Vinyl+Surface"
+      ],
+      "seller": {
+        "name": "StarmanVinyl",
+        "avatar": "/placeholder.svg?height=100&width=100&text=SV",
+        "rating": 4.7,
+        "reviews": 319
+      }
+    },
+    {
+      "id": 5,
+      "title": "Rumours (Original Master Recording)",
+      "artist": "Fleetwood Mac",
+      "price": 179.99,
+      "condition": "Near Mint",
+      "genre": "Rock",
+      "releaseYear": 1977,
+      "format": "LP, Album, Limited Edition",
+      "description": "Mobile Fidelity Sound Lab's Original Master Recording of Fleetwood Mac's 'Rumours'. Known for its superior sound quality, this pressing brings out nuances often missed in standard releases. The vinyl and packaging are in pristine condition.",
+      "images": [
+        "/placeholder.svg?height=500&width=500&text=Rumours+MFSL",
+        "/placeholder.svg?height=500&width=500&text=MFSL+Cover",
+        "/placeholder.svg?height=500&width=500&text=Audiophile+Pressing",
+        "/placeholder.svg?height=500&width=500&text=MFSL+Label"
+      ],
+      "seller": {
+        "name": "AudiophileHaven",
+        "avatar": "/placeholder.svg?height=100&width=100&text=AH",
+        "rating": 4.9,
+        "reviews": 456
+      }
+    },
+    {
+      "id": 6,
+      "title": "The Velvet Underground & Nico (Banana Cover)",
+      "artist": "The Velvet Underground & Nico",
+      "price": 599.99,
+      "condition": "Very Good",
+      "genre": "Experimental Rock",
+      "releaseYear": 1967,
+      "format": "LP, Album, Mono",
+      "description": "Original mono pressing of the influential debut album by The Velvet Underground & Nico. Features the iconic Andy Warhol banana cover design. The vinyl plays well with some light surface noise, and the cover shows some wear but the banana sticker is intact.",
+      "images": [
+        "/placeholder.svg?height=500&width=500&text=Velvet+Underground+&+Nico",
+        "/placeholder.svg?height=500&width=500&text=Banana+Cover",
+        "/placeholder.svg?height=500&width=500&text=Mono+Label",
+        "/placeholder.svg?height=500&width=500&text=Back+Cover+Details"
+      ],
+      "seller": {
+        "name": "WarholVinylArt",
+        "avatar": "/placeholder.svg?height=100&width=100&text=WVA",
+        "rating": 4.8,
+        "reviews": 287
+      }
+    },
+    {
+      "id": 7,
+      "title": "What's Going On",
+      "artist": "Marvin Gaye",
+      "price": 199.99,
+      "condition": "Excellent",
+      "genre": "Soul",
+      "releaseYear": 1971,
+      "format": "LP, Album",
+      "description": "First pressing of Marvin Gaye's socially conscious masterpiece 'What's Going On'. This copy is in excellent condition, offering a warm, full-bodied sound that showcases the album's intricate arrangements and Gaye's soulful vocals.",
+      "images": [
+        "/placeholder.svg?height=500&width=500&text=What's+Going+On",
+        "/placeholder.svg?height=500&width=500&text=Gatefold+Spread",
+        "/placeholder.svg?height=500&width=500&text=Vinyl+Close-up",
+        "/placeholder.svg?height=500&width=500&text=Label+Detail"
+      ],
+      "seller": {
+        "name": "SoulfulSounds",
+        "avatar": "/placeholder.svg?height=100&width=500&text=SS",
+        "rating": 4.9,
+        "reviews": 412
+      }
+    },
+    {
+      "id": 8,
+      "title": "Led Zeppelin IV (Zoso)",
+      "artist": "Led Zeppelin",
+      "price": 349.99,
+      "condition": "Near Mint",
+      "genre": "Hard Rock",
+      "releaseYear": 1971,
+      "format": "LP, Album",
+      "description": "Original UK pressing of Led Zeppelin's untitled fourth album, commonly known as 'Led Zeppelin IV' or 'Zoso'. This copy is in exceptional condition, complete with the original inner sleeve and cover insert. The vinyl plays flawlessly, delivering the album's iconic riffs and mystical atmosphere in all their glory.",
+      "images": [
+        "/placeholder.svg?height=500&width=500&text=Led+Zeppelin+IV",
+        "/placeholder.svg?height=500&width=500&text=Zoso+Symbols",
+        "/placeholder.svg?height=500&width=500&text=Inner+Sleeve+Art",
+        "/placeholder.svg?height=500&width=500&text=Vinyl+Surface"
+      ],
+      "seller": {
+        "name": "RockLegends",
+        "avatar": "/placeholder.svg?height=100&width=100&text=RL",
+        "rating": 4.8,
+        "reviews": 576
+      }
+    },
+    {
+      "id": 9,
+      "title": "Nevermind (Original Pressing)",
+      "artist": "Nirvana",
+      "price": 299.99,
+      "condition": "Very Good Plus",
+      "genre": "Grunge",
+      "releaseYear": 1991,
+      "format": "LP, Album",
+      "description": "First pressing of Nirvana's groundbreaking album 'Nevermind'. This copy is in very good plus condition, capturing the raw energy and angst of the grunge movement. The iconic cover art is vibrant, and the vinyl plays with minimal surface noise.",
+      "images": [
+        "/placeholder.svg?height=500&width=500&text=Nevermind",
+        "/placeholder.svg?height=500&width=500&text=Swimming+Baby+Cover",
+        "/placeholder.svg?height=500&width=500&text=Back+Cover+Credits",
+        "/placeholder.svg?height=500&width=500&text=DGC+Label"
+      ],
+      "seller": {
+        "name": "AlternativeAntiques",
+        "avatar": "/placeholder.svg?height=100&width=100&text=AA",
+        "rating": 4.7,
+        "reviews": 329
+      }
+    },
+    {
+      "id": 10,
+      "title": "The Freewheelin' Bob Dylan",
+      "artist": "Bob Dylan",
+      "price": 449.99,
+      "condition": "Very Good",
+      "genre": "Folk",
+      "releaseYear": 1963,
+      "format": "LP, Album, Mono",
+      "description": "Rare first mono pressing of Bob Dylan's sophomore album 'The Freewheelin' Bob Dylan'. This copy includes the four original tracks that were later replaced in subsequent pressings, making it a true collector's item. The vinyl shows some signs of age but plays well, and the cover has retained its colors despite some wear.",
+      "images": [
+        "/placeholder.svg?height=500&width=500&text=Freewheelin'",
+        "/placeholder.svg?height=500&width=500&text=Original+Mono+Label",
+        "/placeholder.svg?height=500&width=500&text=Rare+Track+Listing",
+        "/placeholder.svg?height=500&width=500&text=Cover+Photo+Detail"
+      ],
+      "seller": {
+        "name": "VintageFolkFinds",
+        "avatar": "/placeholder.svg?height=100&width=100&text=VFF",
+        "rating": 4.9,
+        "reviews": 201
+      }
+    },
+    {
+      "id": 11,
+      "title": "Autobahn",
+      "artist": "Kraftwerk",
+      "price": 199.99,
+      "condition": "Near Mint",
+      "genre": "Electronic",
+      "releaseYear": 1974,
+      "format": "LP, Album",
+      "description": "Original German pressing of Kraftwerk's seminal album 'Autobahn'. This copy is in exceptional condition, offering a pristine listening experience of this electronic masterpiece. The futuristic cover art is crisp and unblemished.",
+      "images": [
+        "/placeholder.svg?height=500&width=500&text=Autobahn",
+        "/placeholder.svg?height=500&width=500&text=Autobahn+Cover+Art",
+        "/placeholder.svg?height=500&width=500&text=German+Pressing+Label",
+        "/placeholder.svg?height=500&width=500&text=Inner+Sleeve"
+      ],
+      "seller": {
+        "name": "ElektronischSchallplatten",
+        "avatar": "/placeholder.svg?height=100&width=100&text=ES",
+        "rating": 4.8,
+        "reviews": 167
+      }
+    },
+    {
+      "id": 12,
+      "title": "Purple Rain",
+      "artist": "Prince and The Revolution",
+      "price": 149.99,
+      "condition": "Excellent",
+      "genre": "Funk / Rock",
+      "releaseYear": 1984,
+      "format": "LP, Album",
+      "description": "Original pressing of Prince's magnum opus 'Purple Rain'. This copy is in excellent condition, delivering the album's dynamic range and Prince's virtuosic performances with clarity. The iconic purple cover is well-preserved with minimal wear.",
+      "images": [
+        "/placeholder.svg?height=500&width=500&text=Purple+Rain",
+        "/placeholder.svg?height=500&width=500&text=Purple+Cover+Art",
+        "/placeholder.svg?height=500&width=500&text=Warner+Bros+Label",
+        "/placeholder.svg?height=500&width=500&text=Lyric+Inner+Sleeve"
+      ],
+      "seller": {
+        "name": "PurpleVinylRain",
+        "avatar": "/placeholder.svg?height=100&width=100&text=PVR",
+        "rating": 4.9,
+        "reviews": 438
+      }
+    }
+  ]
+}

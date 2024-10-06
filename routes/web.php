@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\ListingController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -12,6 +13,12 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
+});
+
+Route::get('/listings/{id}', [ListingController::class, 'show'])->name('listings.show');
+
+Route::get('/about', function () {
+    return Inertia::render('About');
 });
 
 Route::get('/dashboard', function () {
