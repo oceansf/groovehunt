@@ -1,11 +1,11 @@
 <script setup lang="ts">
-
+//
+import Navbar from "@/Components/Navbar.vue";
+import Footer from "@/Components/Footer.vue";
 </script>
 
 <template>
-  $END$
+    <Navbar />
+    <slot />
+    <Footer />
 </template>
-
-<style scoped>
-
-</style>
