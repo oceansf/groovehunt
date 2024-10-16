@@ -15,8 +15,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/vue/24/outline";
 import { UserCircleIcon } from "@heroicons/vue/24/solid";
 
 const page = usePage();
-
-const user = page.props.auth.user;
+const auth = computed(() => page.props.auth);
 
 const mockuser = {
     name: "Chelsea Hagon",
@@ -25,15 +24,16 @@ const mockuser = {
         "https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
 };
 const links = [
-    { name: "Market", href: "/" },
-    { name: "Sellers", href: "/sellers" },
-    { name: "About", href: "/about" },
+    { name: "Market".toUpperCase(), href: "/" },
+    { name: "Sell".toUpperCase(), href: "/sell" },
+    { name: "About".toUpperCase(), href: "/about" },
 ];
 
 const currentPath = computed(() => usePage().url);
 
 const sortOptions = [
     { name: "Profile", href: "#", method: "get", current: false },
+    { name: "Messages", href: "#", method: "get", current: false },
     { name: "Wishlist", href: "#", method: "get", current: false },
     { name: "Sign Out", href: "/logout", method: "post", current: false },
 ];
@@ -104,7 +104,7 @@ const sortOptions = [
                             :key="link.name"
                             :href="link.href"
                             :class="[
-                                'inline-flex items-center px-1 pt-1 text-sm font-medium',
+                                'inline-flex items-center px-1 pt-1 text-sm font-medium tracking-tight',
                                 currentPath === link.href
                                     ? 'border-b-2 border-slate-500 text-gray-900'
                                     : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
@@ -114,7 +114,7 @@ const sortOptions = [
                         </Link>
                         <!-- <Link href="/login" method="post" as="button" type="button">Log In</Link> -->
                         <Link
-                            v-if="!user"
+                            v-if="!auth.check"
                             href="/login"
                             method="get"
                             as="button"
@@ -132,9 +132,16 @@ const sortOptions = [
                                 <MenuButton
                                     class="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900"
                                 >
-                                    <UserCircleIcon
-                                        class="hidden lg:block h-10 w-10"
-                                    />
+                                    <span class="relative inline-block">
+                                        <img
+                                            class="h-10 w-10 rounded-full"
+                                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                            alt=""
+                                        />
+                                        <span
+                                            class="absolute right-0 top-0 block h-2.5 w-2.5 rounded-full bg-red-400 ring-2 ring-white"
+                                        />
+                                    </span>
                                 </MenuButton>
                             </div>
 
@@ -156,6 +163,7 @@ const sortOptions = [
                                             v-slot="{ active }"
                                         >
                                             <Link
+                                                as="span"
                                                 :href="option.href"
                                                 :method="option.method"
                                                 :class="[
@@ -163,7 +171,7 @@ const sortOptions = [
                                                         ? 'font-medium text-gray-900'
                                                         : 'text-gray-500',
                                                     active ? 'bg-gray-100' : '',
-                                                    'block px-4 py-2 text-sm',
+                                                    'block px-4 py-2 text-sm cursor-pointer',
                                                 ]"
                                                 >{{ option.name }}</Link
                                             >
