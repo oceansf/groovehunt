@@ -8,8 +8,8 @@ const listings = listingsData.listings
 
 <template>
     <div class="bg-white">
-        <div class="mx-auto max-w-2xl py-6 sm:px-6 lg:max-w-7xl lg:px-8">
-            <h2 class="text-3xl px-3 lg:px-0 font-bold tracking-tight text-gray-900">Market</h2>
+        <div class="mx-auto max-w-2xl lg:max-w-6xl">
+            <!-- <h2 class="text-3xl px-3 lg:px-0 font-bold tracking-tight text-gray-900">Market</h2>
             <div class="mt-4 flex justify-between">
                 <button type="button" class="inline-flex items-center gap-x-1.5 rounded-md px-2.5 py-1.5 text-sm font-semibold text-slate-600 hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -23,9 +23,9 @@ const listings = listingsData.listings
                     </svg>
                     Sort
                 </button>
-            </div>
+            </div> -->
             <!--Listings Grid-->
-            <div class="mt-2 grid grid-cols-2 gap-x-1 gap-y-10 lg:grid-cols-4 ">
+            <div class="mt-2 grid grid-cols-2 gap-x-1 gap-y-8 lg:grid-cols-4 ">
                 <div v-for="listing in listings" :key="listing.id" class="group relative">
                     <ListingItem :listing="listing" />
                 </div>

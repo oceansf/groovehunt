@@ -11,7 +11,7 @@
                 <p class="font-normal text-base leading-6 text-gray-600">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum.In the first place we have granted to God, and by this our present charter confirmed for us and our heirs forever that the English Church shall be free, and shall have her rights entire, and her liberties inviolate; and we will that it be thus observed; which is apparent from</p>
             </div>
             <div class="w-full lg:w-8/12">
-                <img class="w-full h-full" src="https://res.cloudinary.com/oceansf/image/upload/v1728771164/sqrttekzovujm5dy8zix.jpg" alt="A collection of vinyl records" />
+                <img class="w-full h-full" src="https://res.cloudinary.com/oceansf/image/upload/v1728834738/l4d043pqwrsw9ulgcmpv.jpg" alt="A collection of vinyl records" />
             </div>
         </div>
 
