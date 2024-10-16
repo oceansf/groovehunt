@@ -12,16 +12,8 @@ defineProps({
 </script>
 
 <template>
-    <div v-if="icon === 'genre'">
-        <MusicalNoteIcon />
-    </div>
-    <div v-else-if="icon === 'format'">
-        <Disc :size="20" />
-    </div>
-    <div v-else-if="icon === 'country'">
-        <GlobeAmericasIcon />
-    </div>
-    <div v-else-if="icon === 'decade'">
-        <CalendarDateRangeIcon />
-    </div>
+    <MusicalNoteIcon v-if="icon === 'genre'" />
+    <Disc v-else-if="icon === 'format'" :size="20" />
+    <GlobeAmericasIcon v-else-if="icon === 'country'" />
+    <CalendarDateRangeIcon v-else-if="icon === 'decade'" />
 </template>

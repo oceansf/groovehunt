@@ -12,16 +12,16 @@ import {
 } from "@headlessui/vue";
 import { MagnifyingGlassIcon } from "@heroicons/vue/20/solid";
 import { Bars3Icon, XMarkIcon } from "@heroicons/vue/24/outline";
-import { UserCircleIcon } from "@heroicons/vue/24/solid";
 
 const page = usePage();
 const auth = computed(() => page.props.auth);
+const currentPath = computed(() => usePage().url);
 
 const mockuser = {
     name: "Chelsea Hagon",
     email: "chelsea.hagon@example.com",
     imageUrl:
-        "https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
 };
 const links = [
     { name: "Market".toUpperCase(), href: "/" },
@@ -29,9 +29,7 @@ const links = [
     { name: "About".toUpperCase(), href: "/about" },
 ];
 
-const currentPath = computed(() => usePage().url);
-
-const sortOptions = [
+const userNavigation = [
     { name: "Profile", href: "#", method: "get", current: false },
     { name: "Messages", href: "#", method: "get", current: false },
     { name: "Wishlist", href: "#", method: "get", current: false },
@@ -70,7 +68,7 @@ const sortOptions = [
                             >
                         </Link>
                     </div>
-                    <div class="min-w-0 flex-1 md:px-8 lg:px-0 xl:col-span-6">
+                    <div class="min-w-0 flex-1 md:px-8 lg:px-0 xl:col-span-5">
                         <div
                             class="flex items-center px-6 py-4 md:mx-auto md:max-w-3xl lg:mx-0 lg:max-w-none xl:px-0"
                         >
@@ -91,14 +89,14 @@ const sortOptions = [
                                         id="search"
                                         name="search"
                                         class="block w-full rounded-md border-0 bg-white py-1.5 pl-10 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
-                                        placeholder="Search"
+                                        placeholder="Search by title or artist..."
                                         type="search"
                                     />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8 col-span-4">
+                    <div class="hidden sm:ml-6 sm:flex justify-end sm:space-x-8 col-span-5">
                         <Link
                             v-for="link in links"
                             :key="link.name"
@@ -113,22 +111,31 @@ const sortOptions = [
                             {{ link.name }}
                         </Link>
                         <!-- <Link href="/login" method="post" as="button" type="button">Log In</Link> -->
-                        <Link
-                            v-if="!auth.check"
-                            href="/login"
-                            method="get"
-                            as="button"
-                            type="button"
-                            class="px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700"
-                            >Log In</Link
-                        >
+                        <div v-if="!auth.check" class="flex items-baseline gap-2 self-center">
+                            <Link
+                                href="/login"
+                                method="get"
+                                as="button"
+                                type="button"
+                                class="px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:underline"
+                                >Log In</Link
+                            >
+                            <Link
+                                href="/register"
+                                method="get"
+                                as="button"
+                                type="button"
+                                class="rounded-md h-8 bg-slate-900 px-3 text-sm font-semibold text-gray-100 shadow-sm hover:text-white hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                                >Register</Link
+                            >
+                        </div>
                         <!-- Profile button -->
                         <Menu
                             v-else
                             as="div"
                             class="relative inline-block text-left self-center"
                         >
-                            <div>
+                            <div class="">
                                 <MenuButton
                                     class="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900"
                                 >
@@ -136,7 +143,7 @@ const sortOptions = [
                                         <img
                                             class="h-10 w-10 rounded-full"
                                             src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                            alt=""
+                                            alt="Profile picture"
                                         />
                                         <span
                                             class="absolute right-0 top-0 block h-2.5 w-2.5 rounded-full bg-red-400 ring-2 ring-white"
@@ -144,7 +151,7 @@ const sortOptions = [
                                     </span>
                                 </MenuButton>
                             </div>
-
+    
                             <transition
                                 enter-active-class="transition ease-out duration-100"
                                 enter-from-class="transform opacity-0 scale-95"
@@ -158,7 +165,7 @@ const sortOptions = [
                                 >
                                     <div class="py-1">
                                         <MenuItem
-                                            v-for="option in sortOptions"
+                                            v-for="option in userNavigation"
                                             :key="option.name"
                                             v-slot="{ active }"
                                         >
@@ -207,21 +214,24 @@ const sortOptions = [
 
             <PopoverPanel as="nav" class="lg:hidden" aria-label="Global">
                 <div class="mx-auto max-w-3xl space-y-1 px-2 pb-3 pt-2 sm:px-4">
-                    <a
+                    <Link
                         v-for="link in links"
                         :key="link.name"
                         :href="link.href"
                         :aria-current="link.current ? 'page' : undefined"
                         :class="[
-                            link.current
+                            currentPath === link.href
                                 ? 'bg-gray-100 text-gray-900'
                                 : 'hover:bg-gray-50',
                             'block rounded-md px-3 py-2 text-base font-medium',
                         ]"
-                        >{{ link.name }}</a
+                        >{{ link.name }}</Link
                     >
                 </div>
-                <div class="border-t border-gray-200 pb-3 pt-4">
+                <div
+                    v-if="auth.check"
+                    class="border-t border-gray-200 pb-3 pt-4"
+                >
                     <div
                         class="mx-auto flex max-w-3xl items-center px-4 sm:px-6"
                     >
@@ -234,13 +244,41 @@ const sortOptions = [
                         </div>
                         <div class="ml-3">
                             <div class="text-base font-medium text-gray-800">
-                                {{ mockuser.name }}
+                                {{ auth.user.name }}
                             </div>
                             <div class="text-sm font-medium text-gray-500">
-                                {{ mockuser.email }}
+                                {{ auth.user.email }}
                             </div>
                         </div>
                     </div>
+
+                    <div class="mx-auto mt-3 max-w-3xl space-y-1 px-2 sm:px-4">
+                        <Link
+                            v-for="item in userNavigation"
+                            :key="item.name"
+                            :href="item.href"
+                            :method="item.method"
+                            class="block rounded-md px-3 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+                            >{{ item.name }}</Link
+                        >
+                    </div>
+                </div>
+                <div
+                    v-else
+                    class="border-t border-gray-200 mx-auto max-w-3xl space-y-1 px-2 pb-3 pt-2 sm:px-4"
+                >
+                    <Link
+                        href="/login"
+                        method="get"
+                        class="block rounded-md px-5 py-2 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+                        >Log In</Link
+                    >
+                    <Link
+                        href="/register"
+                        method="get"
+                        class="block rounded-md px-5 py-2 text-base font-medium text-gray-100 bg-slate-900 hover:bg-gray-50 hover:text-gray-900"
+                        >Register</Link
+                    >
                 </div>
             </PopoverPanel>
         </nav>

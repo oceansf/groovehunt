@@ -125,6 +125,8 @@ const currentImageIndex = ref(0);
                 <div class="border-t pt-4">
                     <h2 class="text-xl font-semibold mb-2">Tracklist</h2>
                     <Tracklist />
+                    <h2 class="text-xl font-semibold my-4">Have a listen..</h2>
+                    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/album/1weenld61qoidwYuZ1GESA?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
                 </div>
 
                 <div class="border-t pt-4">

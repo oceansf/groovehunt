@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import Checkbox from "@/Components/Checkbox.vue";
+import Checkbox from "@/Components/breeze/Checkbox.vue";
 import GuestLayout from "@/Layouts/GuestLayout.vue";
-import InputError from "@/Components/InputError.vue";
-import InputLabel from "@/Components/InputLabel.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
-import TextInput from "@/Components/TextInput.vue";
+import InputError from "@/Components/breeze/InputError.vue";
+import InputLabel from "@/Components/breeze/InputLabel.vue";
+import PrimaryButton from "@/Components/breeze/PrimaryButton.vue";
+import TextInput from "@/Components/breeze/TextInput.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 
 defineProps<{
@@ -93,7 +93,11 @@ const submit = () => {
             <div class="mt-6 text-center">
                 <span>
                     Not registered?
-                    <Link :href="route('register')" class="text-slate-900 font-medium hover:underline">Create an account</Link>
+                    <Link
+                        :href="route('register')"
+                        class="text-slate-900 font-medium hover:underline"
+                        >Create an account</Link
+                    >
                 </span>
             </div>
         </form>
