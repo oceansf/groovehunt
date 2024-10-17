@@ -30,7 +30,7 @@ const links = [
 ];
 
 const userNavigation = [
-    { name: "Profile", href: "#", method: "get", current: false },
+    { name: "Profile", href: "/profile", method: "get", current: false },
     { name: "Messages", href: "#", method: "get", current: false },
     { name: "Wishlist", href: "#", method: "get", current: false },
     { name: "Sign Out", href: "/logout", method: "post", current: false },
@@ -167,8 +167,9 @@ const userNavigation = [
                                         <MenuItem
                                             v-for="option in userNavigation"
                                             :key="option.name"
-                                            v-slot="{ active }"
+                                            v-slot="{close}"
                                         >
+                                        
                                             <Link
                                                 as="span"
                                                 :href="option.href"
@@ -180,8 +181,10 @@ const userNavigation = [
                                                     active ? 'bg-gray-100' : '',
                                                     'block px-4 py-2 text-sm cursor-pointer',
                                                 ]"
-                                                >{{ option.name }}</Link
+                                                
+                                                ><span @click="close">{{ option.name }}</span></Link
                                             >
+                                        
                                         </MenuItem>
                                     </div>
                                 </MenuItems>
