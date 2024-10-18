@@ -8,7 +8,7 @@ import { Link } from "@inertiajs/vue3";
         class="flex min-h-screen flex-col items-center bg-gray-900 pt-6 sm:justify-center sm:pt-0"
     >
         <div
-            class="mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg"
+            class="mt-6 w-full overflow-hidden bg-white px-10 py-12 shadow-md sm:max-w-md sm:rounded-lg"
         >
             <div class="flex justify-center my-12">
                 <Link href="/">

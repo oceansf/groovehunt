@@ -14,8 +14,8 @@ function truncateText(length, text) {
 </script>
 
 <template>
-    <div class="h-[225px] max-w-full lg:h-[260px] lg:w-[270px] overflow-hidden bg-gray-200 group-hover:opacity-75 transition-opacity">
-        <img :src="listing.images[0]" :alt="listing.images[0]" class="rounded-md h-full w-full object-cover object-center" />
+    <div class="h-[225px] max-w-full lg:h-[260px] lg:w-[270px] overflow-hidden group-hover:opacity-75 transition-opacity rounded-md">
+        <img :src="listing.images[0]" :alt="listing.images[0]" class="h-full w-full object-cover object-center" />
     </div>
     <div class="mt-2 flex justify-between">
         <div class="pl-1">

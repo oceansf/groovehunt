@@ -202,7 +202,9 @@ const mobileFiltersOpen = ref(false);
                                             <DisclosureButton
                                                 class="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500"
                                             >
-                                                <div class="flex items-center gap-2">
+                                                <div
+                                                    class="flex items-center gap-2"
+                                                >
                                                     <Icon
                                                         :icon="
                                                             section.name.toLocaleLowerCase()
@@ -273,7 +275,7 @@ const mobileFiltersOpen = ref(false);
 
             <main class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div
-                    class="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-12 px-2"
+                    class="flex items-baseline justify-between border-b border-gray-200 px-2 pb-6 pt-12"
                 >
                     <h1 class="text-4xl font-bold tracking-tight text-gray-900">
                         Market
@@ -367,7 +369,7 @@ const mobileFiltersOpen = ref(false);
                                     <DisclosureButton
                                         class="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500"
                                     >
-                                        <div class="flex gap-2 items-center">
+                                        <div class="flex items-center gap-2">
                                             <Icon
                                                 :icon="
                                                     section.name.toLocaleLowerCase()

@@ -43,7 +43,7 @@ const userNavigation = [
         <nav
             :class="[
                 open ? 'fixed inset-0 z-40 overflow-y-auto' : '',
-                'sticky top-0 z-40 bg-white border-b lg:overflow-y-visible backdrop-filter backdrop-blur bg-opacity-75',
+                'sticky top-0 z-40 border-b bg-white bg-opacity-75 backdrop-blur backdrop-filter lg:overflow-y-visible',
             ]"
         >
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -63,7 +63,7 @@ const userNavigation = [
                                 alt="Groove Hunt"
                             />
                             <span
-                                class="hidden md:block text-xl text-black font-bold tracking-tight font-['Helvetica']"
+                                class="hidden font-['Helvetica'] text-xl font-bold tracking-tight text-black md:block"
                                 >groovehunt</span
                             >
                         </Link>
@@ -96,22 +96,27 @@ const userNavigation = [
                             </div>
                         </div>
                     </div>
-                    <div class="hidden sm:ml-6 sm:flex justify-end sm:space-x-8 col-span-5">
+                    <div
+                        class="col-span-5 hidden justify-end sm:ml-6 sm:flex sm:space-x-8"
+                    >
                         <Link
                             v-for="link in links"
                             :key="link.name"
                             :href="link.href"
                             :class="[
-                                'inline-flex items-center px-1 pt-1 text-sm font-medium tracking-tight',
+                                'inline-flex items-center border-b-4 px-1 pt-1 text-sm font-medium tracking-tight',
                                 currentPath === link.href
-                                    ? 'border-b-2 border-slate-500 text-gray-900'
-                                    : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
+                                    ? 'border-slate-500 text-gray-900'
+                                    : 'border-transparent text-gray-500 transition hover:border-gray-300 hover:text-gray-700',
                             ]"
                         >
                             {{ link.name }}
                         </Link>
                         <!-- <Link href="/login" method="post" as="button" type="button">Log In</Link> -->
-                        <div v-if="!auth.check" class="flex items-baseline gap-2 self-center">
+                        <div
+                            v-if="!auth.check"
+                            class="flex items-baseline gap-2 self-center"
+                        >
                             <Link
                                 href="/login"
                                 method="get"
@@ -125,7 +130,7 @@ const userNavigation = [
                                 method="get"
                                 as="button"
                                 type="button"
-                                class="rounded-md h-8 bg-slate-900 px-3 text-sm font-semibold text-gray-100 shadow-sm hover:text-white hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                                class="h-8 rounded-md bg-slate-900 px-3 text-sm font-semibold text-gray-100 shadow-sm hover:bg-slate-800 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                                 >Register</Link
                             >
                         </div>
@@ -133,7 +138,7 @@ const userNavigation = [
                         <Menu
                             v-else
                             as="div"
-                            class="relative inline-block text-left self-center"
+                            class="relative inline-block self-center text-left"
                         >
                             <div class="">
                                 <MenuButton
@@ -142,7 +147,7 @@ const userNavigation = [
                                     <span class="relative inline-block">
                                         <img
                                             class="h-10 w-10 rounded-full"
-                                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                            :src="auth.user.avatar"
                                             alt="Profile picture"
                                         />
                                         <span
@@ -151,7 +156,7 @@ const userNavigation = [
                                     </span>
                                 </MenuButton>
                             </div>
-    
+
                             <transition
                                 enter-active-class="transition ease-out duration-100"
                                 enter-from-class="transform opacity-0 scale-95"
@@ -167,9 +172,8 @@ const userNavigation = [
                                         <MenuItem
                                             v-for="option in userNavigation"
                                             :key="option.name"
-                                            v-slot="{close}"
+                                            v-slot="{ close }"
                                         >
-                                        
                                             <Link
                                                 as="span"
                                                 :href="option.href"
@@ -179,12 +183,12 @@ const userNavigation = [
                                                         ? 'font-medium text-gray-900'
                                                         : 'text-gray-500',
                                                     active ? 'bg-gray-100' : '',
-                                                    'block px-4 py-2 text-sm cursor-pointer',
+                                                    'block cursor-pointer px-4 py-2 text-sm hover:bg-black/5',
                                                 ]"
-                                                
-                                                ><span @click="close">{{ option.name }}</span></Link
+                                                ><span @click="close">{{
+                                                    option.name
+                                                }}</span></Link
                                             >
-                                        
                                         </MenuItem>
                                     </div>
                                 </MenuItems>
@@ -268,7 +272,7 @@ const userNavigation = [
                 </div>
                 <div
                     v-else
-                    class="border-t border-gray-200 mx-auto max-w-3xl space-y-1 px-2 pb-3 pt-2 sm:px-4"
+                    class="mx-auto max-w-3xl space-y-1 border-t border-gray-200 px-2 pb-3 pt-2 sm:px-4"
                 >
                     <Link
                         href="/login"
@@ -279,7 +283,7 @@ const userNavigation = [
                     <Link
                         href="/register"
                         method="get"
-                        class="block rounded-md px-5 py-2 text-base font-medium text-gray-100 bg-slate-900 hover:bg-gray-50 hover:text-gray-900"
+                        class="block rounded-md bg-slate-900 px-5 py-2 text-base font-medium text-gray-100 hover:bg-gray-50 hover:text-gray-900"
                         >Register</Link
                     >
                 </div>
