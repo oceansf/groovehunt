@@ -1,22 +1,9 @@
 <script setup>
 import { ref } from 'vue'
 </script>
-<!--
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
--->
+
 <template>
-  <div class="isolate bg-white md:max-w-2xl mx-auto p-6 lg:px-10 lg:py-12 md:border rounded-2xl mb-12 shadow-lg">
+  <div class="isolate bg-white md:max-w-2xl mx-auto p-6 lg:px-10 lg:py-12 md:border rounded-2xl mb-12 md:shadow-lg">
     <div class="mx-auto max-w-2xl text-center">
       <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Give feedback</h2>
       <p class="mt-2 text-lg leading-8 text-gray-600">Your feedback is invaluable to us. We're always eager to hear your thoughts on how we can enhance the platform and improve your experience!</p>

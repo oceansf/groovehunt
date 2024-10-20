@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, onMounted } from "vue";
 import { usePage } from "@inertiajs/vue3";
 import Navbar from "@/Components/Navbar.vue";
 import SuccessAlert from "@/Components/SuccessAlert.vue";
@@ -10,16 +10,28 @@ const alertMessage = ref("");
 
 const page = usePage();
 
+const showAlertMessage = (message) => {
+    alertMessage.value = message;
+    showAlert.value = true;
+    setTimeout(() => {
+        closeAlert();
+    }, 3000); // Hide after 3 seconds
+};
+
+// Check for login on component mount
+onMounted(() => {
+    if (page.props.auth.user) {
+        showAlertMessage("Signed in successfully");
+    }
+});
+
+// Watch for changes in auth state
 watch(
-    () => page.props.auth.check,
+    () => page.props.auth.user,
     (newValue, oldValue) => {
         if (oldValue && !newValue) {
             // User has logged out
-            alertMessage.value = "Signed out";
-            showAlert.value = true;
-            setTimeout(() => {
-                showAlert.value = false;
-            }, 3000); // Hide after 3 seconds
+            showAlertMessage("Signed out successfully");
         }
     }
 );

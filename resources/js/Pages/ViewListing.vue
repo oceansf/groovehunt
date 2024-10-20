@@ -217,7 +217,6 @@ const handleOutsideClick = (event) => {
     </div>
 
     <!-- Message Modal -->
-    <!-- Animated Message Modal using Tailwind with enhanced closing options -->
     <Teleport to="body">
         <Transition
             enter-active-class="transition ease-out duration-300"
