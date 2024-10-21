@@ -51,12 +51,12 @@ const userNavigation = [
                         <LogoLink size="sm" />
                     </div>
 
-                    <div class="min-w-0 flex-1 md:px-8 lg:px-0 xl:col-span-5">
+                    <div class="min-w-0 flex-1 md:px-8 lg:px-0 xl:col-span-6 align-cen">
                         <Searchbar />
                     </div>
 
                     <div
-                        class="col-span-5 hidden justify-end sm:ml-6 sm:flex sm:space-x-8"
+                        class="col-span-4 hidden justify-end sm:ml-6 sm:flex sm:space-x-8"
                     >
                         <Link
                             v-for="link in navLinks"
@@ -74,23 +74,15 @@ const userNavigation = [
                         
                         <div
                             v-if="!auth.check"
-                            class="flex items-baseline gap-2 self-center"
+                            class="inline-flex items-center px-1 pt-1 text-sm font-medium tracking-tight"
                         >
                             <Link
                                 href="/login"
                                 method="get"
                                 as="button"
                                 type="button"
-                                class="px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:underline"
-                                >Log In</Link
-                            >
-                            <Link
-                                href="/register"
-                                method="get"
-                                as="button"
-                                type="button"
-                                class="h-8 rounded-md bg-slate-900 px-3 text-sm font-semibold text-gray-100 shadow-sm hover:bg-slate-800 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-                                >Register</Link
+                                class="text-sm font-medium text-gray-500 hover:text-gray-700 hover:underline"
+                                >Log in</Link
                             >
                         </div>
                         <!-- Profile button -->

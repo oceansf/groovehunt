@@ -14,6 +14,10 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
+Route::get('/sell', function () {
+    return Inertia::render('CreateListing');
+});
+
 Route::get('/about', function () {
     return Inertia::render('About');
 });
