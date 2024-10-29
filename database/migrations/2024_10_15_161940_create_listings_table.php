@@ -13,6 +13,16 @@ return new class extends Migration
     {
         Schema::create('listings', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->string('artist');
+            $table->string('genre');
+            $table->string('format');
+            $table->string('media_condition');
+            $table->string('sleeve_condition');
+            $table->char('description', length: 300);
+            $table->array('images');
+            $table->decimal('price', total: 8, places: 2);
+            $table->decimal('shipping', total: 8, places: 2);
             $table->timestamps();
         });
     }

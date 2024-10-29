@@ -100,6 +100,7 @@ const handleOutsideClick = (event) => {
                 </div>
             </div>
 
+
             <!-- Listing Details -->
             <div class="space-y-6">
                 <div>

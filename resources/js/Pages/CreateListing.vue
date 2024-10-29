@@ -1,6 +1,7 @@
 <script setup>
 import { PhotoIcon } from "@heroicons/vue/24/solid";
 import { useForm } from "@inertiajs/vue3";
+import DetailsMenu from "@/Components/DetailsMenu.vue";
 
 const form = useForm({
     title: "",
@@ -59,11 +60,14 @@ const handleFileUpload = (e) => {
             <div class="space-y-12">
                 <div class="border-b border-gray-900/10 pb-12">
                     <!-- Clear section heading -->
-                    <h2 class="text-3xl font-semibold leading-7 text-gray-900">
+                    <h2 class="text-3xl font-bold leading-7 text-gray-900">
                         Create a listing
                     </h2>
+                    <br />
                     <p class="mt-1 text-sm leading-6 text-gray-600">
-                        Enter details about your listing
+                        Enter details about your listing to list on the market.
+                        The more information you provide about your listing the
+                        more potential buyers can make an informed decision.
                     </p>
 
                     <!-- Single column layout -->
@@ -81,7 +85,7 @@ const handleFileUpload = (e) => {
                                     id="title"
                                     v-model="form.title"
                                     class="block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                    placeholder="e.g., Abbey Road"
+                                    placeholder="e.g., Abbey Road 1969 First Pressing"
                                 />
                                 <p
                                     v-if="form.errors.title"
@@ -116,35 +120,16 @@ const handleFileUpload = (e) => {
                             </div>
                         </div>
 
-                        <!-- Format field -->
+                        <hr />
                         <div>
-                            <label
-                                for="genre"
-                                class="block text-sm font-medium leading-6 text-gray-900"
-                                >Genre</label
+                            <h2
+                                class="text-xl font-semibold leading-7 text-gray-900"
                             >
-                            <div class="mt-2">
-                                <select
-                                    id="genre"
-                                    v-model="form.genre"
-                                    class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                >
-                                    <option value="">Select a genre</option>
-                                    <option
-                                        v-for="genre in genres"
-                                        :key="genre.value"
-                                        :value="genre.value"
-                                    >
-                                        {{ genre.label }}
-                                    </option>
-                                </select>
-                                <p
-                                    v-if="form.errors.genre"
-                                    class="mt-1 text-sm text-red-600"
-                                >
-                                    {{ form.errors.genre }}
-                                </p>
-                            </div>
+                                Item details
+                            </h2>
+                            <p class="mt-1 text-sm leading-6 text-gray-600">
+                                Enter specific details about your listing
+                            </p>
                         </div>
 
                         <!-- Format field -->
@@ -255,7 +240,7 @@ const handleFileUpload = (e) => {
                             >
                             <p class="mt-1 text-sm leading-6 text-gray-600">
                                 Add up to 12 photos. The first photo will be
-                                your listing's primary photo.
+                                your listing's cover photo.
                             </p>
                             <div
                                 class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10"
@@ -323,8 +308,21 @@ const handleFileUpload = (e) => {
                                 </p>
                             </div>
                         </div>
+                        <DetailsMenu />
+                        <hr />
 
                         <!-- Price field -->
+                        <div>
+                            <h2
+                                class="text-xl font-semibold leading-7 text-gray-900"
+                            >
+                                Pricing
+                            </h2>
+                            <p class="mt-1 text-sm leading-6 text-gray-600">
+                                Enter how much the buyer will pay for your item
+                                and any additional costs for shipping to them
+                            </p>
+                        </div>
                         <div>
                             <label
                                 for="price"
@@ -334,16 +332,25 @@ const handleFileUpload = (e) => {
                             <p class="mt-1 text-sm text-gray-500">
                                 Enter price in USD
                             </p>
-                            <div class="mt-2">
+                            <div class="relative mt-2 rounded-md shadow-sm">
+                                <div
+                                    class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
+                                >
+                                    <span class="text-gray-500 sm:text-sm"
+                                        >$</span
+                                    >
+                                </div>
                                 <input
                                     type="number"
+                                    name="price"
                                     id="price"
-                                    min="0.01"
+                                    min="0.00"
                                     step="0.01"
                                     max="2500"
                                     v-model="form.price"
-                                    class="block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                    placeholder="e.g., $35.97"
+                                    class="block w-full rounded-md border-0 py-1.5 pl-7 pr-12 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    placeholder="0.00"
+                                    aria-describedby="price-currency"
                                 />
                                 <p
                                     v-if="form.errors.price"
@@ -351,28 +358,47 @@ const handleFileUpload = (e) => {
                                 >
                                     {{ form.errors.price }}
                                 </p>
+                                <div
+                                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3"
+                                >
+                                    <span
+                                        class="text-gray-500 sm:text-sm"
+                                        id="price-currency"
+                                        >USD</span
+                                    >
+                                </div>
                             </div>
                         </div>
-                        <!-- Currency field -->
+
+                        <!-- Shipping field -->
                         <div>
                             <label
-                                for="shippingCost"
+                                for="price"
                                 class="block text-sm font-medium leading-6 text-gray-900"
                                 >Shipping cost</label
                             >
                             <p class="mt-1 text-sm text-gray-500">
-                                Enter cost for shipping in USD
+                                Enter cost for shipping
                             </p>
-                            <div class="mt-2">
+                            <div class="relative mt-2 rounded-md shadow-sm">
+                                <div
+                                    class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
+                                >
+                                    <span class="text-gray-500 sm:text-sm"
+                                        >$</span
+                                    >
+                                </div>
                                 <input
                                     type="number"
-                                    min="0.01"
+                                    name="price"
+                                    id="price"
+                                    min="0.00"
                                     step="0.01"
                                     max="2500"
-                                    id="shippingCost"
                                     v-model="form.shippingCost"
-                                    class="block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                    placeholder="e.g., $5.00"
+                                    class="block w-full rounded-md border-0 py-1.5 pl-7 pr-12 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    placeholder="0.00"
+                                    aria-describedby="price-currency"
                                 />
                                 <p
                                     v-if="form.errors.shippingCost"
@@ -380,6 +406,15 @@ const handleFileUpload = (e) => {
                                 >
                                     {{ form.errors.shippingCost }}
                                 </p>
+                                <div
+                                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3"
+                                >
+                                    <span
+                                        class="text-gray-500 sm:text-sm"
+                                        id="price-currency"
+                                        >USD</span
+                                    >
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -160,7 +160,7 @@ const mobileFiltersOpen = ref(false);
 
                                 <!-- Filters -->
                                 <form class="mt-4 border-t border-gray-200">
-                                    <h3 class="sr-only">Categories</h3>
+                                    <h3 class="sr-only">Filters</h3>
                                     <ul
                                         role="list"
                                         class="px-2 py-3 font-medium text-gray-900"
@@ -261,7 +261,7 @@ const mobileFiltersOpen = ref(false);
 
             <main class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div
-                    class="flex items-baseline justify-between border-b border-gray-200 px-2 pb-6 pt-12"
+                    class="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-12 px-3 md:px-0"
                 >
                     <h1 class="text-4xl font-bold tracking-tight text-gray-900">
                         Market
@@ -339,6 +339,7 @@ const mobileFiltersOpen = ref(false);
                 <section aria-labelledby="products-heading" class="pb-24 pt-6">
                     <h2 id="products-heading" class="sr-only">Products</h2>
 
+                    <h2 class="hidden md:inline-block text-xl font-medium">Filters</h2>
                     <div
                         class="grid grid-cols-1 gap-x-6 gap-y-10 lg:grid-cols-5"
                     >

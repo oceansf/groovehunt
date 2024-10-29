@@ -31,6 +31,7 @@
         "@headlessui/vue": "^1.7.23",
         "@heroicons/vue": "^2.1.5",
         "@vueuse/core": "^11.1.0",
-        "lucide-vue-next": "^0.452.0"
+        "lucide-vue-next": "^0.452.0",
+        "vue3-apexcharts": "^1.7.0"
     }
 }
