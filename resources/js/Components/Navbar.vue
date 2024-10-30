@@ -28,6 +28,7 @@ const userNavigation = [
     { name: "Profile", href: "/profile", method: "get", current: false },
     { name: "Messages", href: "#", method: "get", current: false },
     { name: "Wishlist", href: "#", method: "get", current: false },
+    { name: "Collection", href: "#", method: "get", current: false },
     { name: "Sign Out", href: "/logout", method: "post", current: false },
 ];
 </script>

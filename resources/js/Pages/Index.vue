@@ -24,7 +24,7 @@ import {
 
 } from "@heroicons/vue/20/solid";
 import ListingsGrid from "@/Components/ListingsGrid.vue";
-import Icon from "@/Components/Icon.vue";
+import Icon from "@/Components/FilterIcon.vue";
 
 const sortOptions = [
     { name: "Most Popular", href: "#", current: true },

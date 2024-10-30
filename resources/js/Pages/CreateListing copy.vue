@@ -1,8 +1,8 @@
 <script setup>
-import { ref, watch } from "vue";
-import { useForm } from "@inertiajs/vue3";
+import { ref } from "vue";
 import { PhotoIcon } from "@heroicons/vue/24/solid";
 import { DiscAlbum } from "lucide-vue-next";
+import { useForm } from "@inertiajs/vue3";
 import DetailsMenu from "@/Components/Form/DetailsMenu.vue";
 import FormTextInput from "@/Components/Form/FormTextInput.vue";
 import FormInputLabel from "@/Components/Form/FormInputLabel.vue";
@@ -28,8 +28,11 @@ const form = useForm({
 
     // Condition & Details
     mediaCondition: "", // Using standard grading system (M/NM/VG+/etc)
+    mediaGradingNotes: "", // Specific notes about condition
     sleeveCondition: "",
+    sleeveGradingNotes: "",
     weight: "", // Standard or 180g
+    isFirstPress: false,
 
     // Release Details
     label: "",
@@ -48,31 +51,51 @@ const form = useForm({
     description: "", // General notes, bundle info, etc.
 });
 
-const formats = [
-    { value: "12-lp", label: '12" LP' },
-    { value: "7-single", label: '7" Single' },
-    { value: "10-lp", label: '10" LP' },
-    { value: "12-single", label: '12" Single' },
-    { value: "12-ep", label: '12" EP' },
-    { value: "7-ep", label: '7" EP' },
-    { value: "78-rpm", label: "78 RPM" },
-    { value: "picture-disc", label: "Picture Disc" },
-    { value: "vinyl-box-set", label: "Box Set (Vinyl)" },
-    { value: "cd-album", label: "CD Album" },
-    { value: "cd-single", label: "CD Single" },
-    { value: "cd-ep", label: "CD EP" },
-    { value: "sacd", label: "SACD" },
-    { value: "cd-box-set", label: "Box Set (CD)" },
-    { value: "cassette", label: "Cassette" },
-    { value: "cassette-single", label: "Cassette Single" },
-    { value: "dat", label: "DAT" },
-    { value: "cassette-box-set", label: "Box Set (Cassette)" },
-    { value: "8-track", label: "8-Track" },
-    { value: "minidisc", label: "Minidisc" },
-    { value: "reel-to-reel", label: "Reel-to-Reel" },
-    { value: "dvd-audio", label: "DVD Audio" },
-    { value: "blu-ray-audio", label: "Blu-ray Audio" },
-];
+const formats = {
+    vinyl: [
+        '12" LP',
+        '7" Single',
+        '10" LP',
+        '12" Single',
+        '12" EP',
+        '7" EP',
+        '10" Single',
+        "78 RPM",
+        "Box Set (Vinyl)",
+        "Picture Disc",
+        "Shaped Vinyl",
+    ],
+
+    cassette: [
+        "Cassette",
+        "Cassette Single",
+        "Micro Cassette",
+        "DAT (Digital Audio Tape)",
+        "Box Set (Cassette)",
+    ],
+
+    cd: [
+        "CD Album",
+        "CD Single",
+        "CD EP",
+        "Mini CD",
+        "CD-R",
+        "Box Set (CD)",
+        "SACD (Super Audio CD)",
+        "DualDisc",
+    ],
+
+    other: [
+        "8-Track",
+        "Reel-to-Reel",
+        "Minidisc",
+        "DVD Audio",
+        "Blu-ray Audio",
+        "Edison Cylinder",
+        "Flexi-disc",
+        "Box Set (Mixed Media)",
+    ],
+};
 
 const conditions = [
     { value: "M", label: "Mint (M)" },
