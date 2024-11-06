@@ -24,6 +24,14 @@ import {
 import ListingsGrid from "@/Components/ListingsGrid.vue";
 import Icon from "@/Components/FilterIcon.vue";
 
+defineProps({
+    listings: Object,
+    canLogin: Boolean,
+    canRegister: Boolean,
+    laravelVersion: String,
+    phpVersion: String,
+});
+
 const sortOptions = [
     { name: "Most Popular", href: "#", current: true },
     { name: "Newest", href: "#", current: false },
@@ -426,7 +434,7 @@ const mobileFiltersOpen = ref(false);
                         <!-- Product grid -->
                         <div class="lg:col-span-4">
                             <!-- Your content -->
-                            <ListingsGrid />
+                            <ListingsGrid :listings="listings"/>
                         </div>
                     </div>
                 </section>

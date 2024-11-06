@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('media_condition');
             $table->string('sleeve_condition');
             $table->char('description', length: 300);
-            $table->string('images');
+            $table->json('images');
             $table->decimal('price', 8, 2);
             $table->boolean('allow_offers')->default(false);
             $table->decimal('min_offer', 8, 2)->nullable();

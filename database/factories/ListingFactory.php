@@ -29,7 +29,11 @@ class ListingFactory extends Factory
             'media_condition' => $this->faker->randomElement($conditions),
             'sleeve_condition' => $this->faker->randomElement($conditions),
             'description' => $this->faker->sentence(),
-            'images' => $this->faker->imageUrl(),
+            'images' => [
+    'https://placehold.co/400x400/1E90FF/FFFFFF?text=Listing\nCover',
+    'https://placehold.co/400x400/1E90FF/FFFFFF?text=Image\n2',
+    'https://placehold.co/400x400/1E90FF/FFFFFF?text=Image\n3',
+            ],
             'price' => $this->faker->randomFloat(2, 0, 100),
             'allow_offers' => $this->faker->boolean(),
             'min_offer' => $this->faker->randomFloat(2, 0, 100),
