@@ -19,9 +19,7 @@ import {
     FunnelIcon,
     MinusIcon,
     PlusIcon,
-    Squares2X2Icon,
     ListBulletIcon,
-
 } from "@heroicons/vue/20/solid";
 import ListingsGrid from "@/Components/ListingsGrid.vue";
 import Icon from "@/Components/FilterIcon.vue";
@@ -103,6 +101,7 @@ const filters = [
 
 const mobileFiltersOpen = ref(false);
 </script>
+
 <template>
     <div class="bg-white">
         <div>
@@ -159,7 +158,9 @@ const mobileFiltersOpen = ref(false);
                                 </div>
 
                                 <!-- Filters -->
-                                <form class="mt-4 border-t border-gray-200">
+                                <form
+                                    class="mt-4 overflow-y-auto border-t border-gray-200"
+                                >
                                     <h3 class="sr-only">Filters</h3>
                                     <ul
                                         role="list"
@@ -261,7 +262,7 @@ const mobileFiltersOpen = ref(false);
 
             <main class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div
-                    class="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-12 px-3 md:px-0"
+                    class="flex items-baseline justify-between border-b border-gray-200 px-3 pb-6 pt-12 md:px-0"
                 >
                     <h1 class="text-4xl font-bold tracking-tight text-gray-900">
                         Market
@@ -339,12 +340,16 @@ const mobileFiltersOpen = ref(false);
                 <section aria-labelledby="products-heading" class="pb-24 pt-6">
                     <h2 id="products-heading" class="sr-only">Products</h2>
 
-                    <h2 class="hidden md:inline-block text-xl font-medium">Filters</h2>
                     <div
-                        class="grid grid-cols-1 gap-x-6 gap-y-10 lg:grid-cols-5"
+                    class="grid grid-cols-1 gap-x-6 gap-y-10 lg:grid-cols-5"
                     >
-                        <!-- Filters -->
-                        <div class="sticky top-[69px] z-10 hidden h-max lg:block">
+                    <!-- Filters -->
+                    <div
+                    class="sticky top-[89px] z-10 hidden h-max lg:block"
+                    >
+                    <h2 class="hidden text-xl font-medium md:inline-block">
+                        Filters
+                    </h2>
                             <form>
                                 <Disclosure
                                     as="div"
@@ -403,11 +408,11 @@ const mobileFiltersOpen = ref(false);
                                                     :value="option.value"
                                                     type="checkbox"
                                                     :checked="option.checked"
-                                                    class="h-4 w-4 rounded border-gray-300 text-blue-500 focus:ring-blue-500 cursor-pointer"
+                                                    class="h-4 w-4 cursor-pointer rounded border-gray-300 text-blue-500 focus:ring-blue-500"
                                                 />
                                                 <label
                                                     :for="`filter-${section.id}-${optionIdx}`"
-                                                    class="ml-3 text-sm text-gray-600 cursor-pointer"
+                                                    class="ml-3 cursor-pointer text-sm text-gray-600"
                                                 >
                                                     {{ option.label }}</label
                                                 >

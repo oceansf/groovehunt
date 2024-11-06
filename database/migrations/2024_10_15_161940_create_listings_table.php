@@ -15,14 +15,24 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('artist');
-            $table->string('genre');
             $table->string('format');
             $table->string('media_condition');
             $table->string('sleeve_condition');
             $table->char('description', length: 300);
-            $table->array('images');
-            $table->decimal('price', total: 8, places: 2);
-            $table->decimal('shipping', total: 8, places: 2);
+            $table->string('images');
+            $table->decimal('price', 8, 2);
+            $table->boolean('allow_offers')->default(false);
+            $table->decimal('min_offer', 8, 2)->nullable();
+            $table->decimal('shipping', 8, 2);
+            $table->string('genre');
+            $table->string('speed');
+            $table->string('color');
+            $table->string('release_country')->nullable();
+            $table->string('release_year')->nullable();
+            $table->string('release_label')->nullable();
+            $table->string('release_cat_no')->nullable();
+            $table->string('release_matrix_no')->nullable();
+            $table->string('release_upc')->nullable();
             $table->timestamps();
         });
     }
