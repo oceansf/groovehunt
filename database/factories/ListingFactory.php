@@ -22,6 +22,8 @@ class ListingFactory extends Factory
         $speeds = ['33', '45', '16', '78'];
         $colors = ['Black', 'Blue', 'Brown', 'Clear', 'Gold', 'Green', 'Grey', 'Orange', 'Pink', 'Purple', 'Red', 'Silver', 'White', 'Yellow'];
         
+        $allowoffers = $this->faker->boolean();
+
         return [
             'title' => $this->faker->sentence(),
             'artist' => $this->faker->name(),
@@ -30,13 +32,13 @@ class ListingFactory extends Factory
             'sleeve_condition' => $this->faker->randomElement($conditions),
             'description' => $this->faker->sentence(),
             'images' => [
-    'https://placehold.co/400x400/1E90FF/FFFFFF?text=Listing\nCover',
-    'https://placehold.co/400x400/1E90FF/FFFFFF?text=Image\n2',
-    'https://placehold.co/400x400/1E90FF/FFFFFF?text=Image\n3',
+                'https://placehold.co/400x400/1E90FF/FFFFFF?text=Listing\nCover',
+                'https://placehold.co/400x400/1E90FF/FFFFFF?text=Image\n2',
+                'https://placehold.co/400x400/1E90FF/FFFFFF?text=Image\n3',
             ],
             'price' => $this->faker->randomFloat(2, 0, 100),
-            'allow_offers' => $this->faker->boolean(),
-            'min_offer' => $this->faker->randomFloat(2, 0, 100),
+            'allow_offers' => $allowoffers,
+            'min_offer' => $allowoffers ? $this->faker->randomFloat(2, 0, 100) : null,
             'shipping' => $this->faker->randomFloat(2, 0, 100),
             'genre' => $this->faker->randomElement($genres),
             'speed' => $this->faker->word(),
