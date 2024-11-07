@@ -23,7 +23,7 @@ function truncateText(length, text) {
         <div class="mt-2 flex justify-between">
             <div class="pl-1">
                 <h3 class="text-sm text-gray-700 font-semibold">
-                    <Link href="/listings/1">
+                    <Link :href="route('listings.show', listing.id)">
                         <span aria-hidden="true" class="absolute inset-0" />
                         {{ truncateText(width < 768 ? 23 : 30, listing.title) }}
                     </Link>

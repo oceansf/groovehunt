@@ -345,8 +345,8 @@ const mobileFiltersOpen = ref(false);
                     </div>
                 </div>
 
-                <section aria-labelledby="products-heading" class="pb-24 pt-6">
-                    <h2 id="products-heading" class="sr-only">Products</h2>
+                <section aria-labelledby="products-heading" class="pb-24 pt-6 ">
+                    <h2 id="products-heading" class="sr-only">Listings</h2>
 
                     <div
                     class="grid grid-cols-1 gap-x-6 gap-y-10 lg:grid-cols-5"

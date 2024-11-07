@@ -5,32 +5,36 @@ import { UserCircleIcon, StarIcon } from "@heroicons/vue/20/solid";
 import Tracklist from "@/Components/Tracklist.vue";
 import { listingsData } from "../../mockListings.js";
 
-// Mock data for the listing
-const listing = ref({
-    title: "Original Pressing: Miles Davis - Kind of Blue",
-    artist: "Miles Davis",
-    price: 299.99,
-    condition: "Near Mint",
-    genre: "Jazz",
-    releaseYear: 1959,
-    format: "LP, Album, Mono",
-    description:
-        "Original 1959 mono pressing of Miles Davis' seminal album 'Kind of Blue'. This is a rare find in near mint condition. The vinyl shows minimal signs of play and the cover is in excellent condition with only slight wear on the edges. A must-have for any serious jazz collector.",
-    images: [
-        "https://res.cloudinary.com/oceansf/image/upload/v1728876609/hks5ddopfyhxjdw4gng1.webp",
-        "https://res.cloudinary.com/oceansf/image/upload/v1728876609/knv7c27fchmibi4q7cuc.webp",
-        "https://res.cloudinary.com/oceansf/image/upload/v1728876608/b1t9628ictltt8x7qxdy.webp",
-        "https://res.cloudinary.com/oceansf/image/upload/v1728876609/wziomkl8z9h24t5tu5lf.webp",
-        "https://res.cloudinary.com/oceansf/image/upload/v1728876609/jggjatnyalqzjd4gigbc.webp",
-        "https://res.cloudinary.com/oceansf/image/upload/v1728876609/nsytezhib398ghwxgag3.webp",
-    ],
-    seller: {
-        name: "VinylVault",
-        avatar: "/placeholder.svg?height=100&width=100&text=VV",
-        rating: 4.9,
-        reviews: 382,
-    },
+defineProps({
+    listing: Object,
 });
+
+// Mock data for the listing
+// const listing = ref({
+//     title: "Original Pressing: Miles Davis - Kind of Blue",
+//     artist: "Miles Davis",
+//     price: 299.99,
+//     condition: "Near Mint",
+//     genre: "Jazz",
+//     releaseYear: 1959,
+//     format: "LP, Album, Mono",
+//     description:
+//         "Original 1959 mono pressing of Miles Davis' seminal album 'Kind of Blue'. This is a rare find in near mint condition. The vinyl shows minimal signs of play and the cover is in excellent condition with only slight wear on the edges. A must-have for any serious jazz collector.",
+//     images: [
+//         "https://res.cloudinary.com/oceansf/image/upload/v1728876609/hks5ddopfyhxjdw4gng1.webp",
+//         "https://res.cloudinary.com/oceansf/image/upload/v1728876609/knv7c27fchmibi4q7cuc.webp",
+//         "https://res.cloudinary.com/oceansf/image/upload/v1728876608/b1t9628ictltt8x7qxdy.webp",
+//         "https://res.cloudinary.com/oceansf/image/upload/v1728876609/wziomkl8z9h24t5tu5lf.webp",
+//         "https://res.cloudinary.com/oceansf/image/upload/v1728876609/jggjatnyalqzjd4gigbc.webp",
+//         "https://res.cloudinary.com/oceansf/image/upload/v1728876609/nsytezhib398ghwxgag3.webp",
+//     ],
+//     seller: {
+//         name: "VinylVault",
+//         avatar: "/placeholder.svg?height=100&width=100&text=VV",
+//         rating: 4.9,
+//         reviews: 382,
+//     },
+// });
 
 const mockListings = listingsData.listings;
 
@@ -68,8 +72,8 @@ const handleOutsideClick = (event) => {
 </script>
 
 <template>
-    <div class="container mx-auto px-4 py-8 max-w-5xl h-full">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <div class="container mx-auto h-full max-w-5xl px-4 py-8">
+        <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
             <!-- Image Gallery -->
             <div class="space-y-4">
                 <div
@@ -78,7 +82,7 @@ const handleOutsideClick = (event) => {
                     <img
                         :src="listing.images[currentImageIndex]"
                         :alt="listing.title"
-                        class="w-full h-full object-contain"
+                        class="h-full w-full object-contain"
                     />
                 </div>
                 <div class="grid grid-cols-4 gap-4">
@@ -94,12 +98,11 @@ const handleOutsideClick = (event) => {
                         <img
                             :src="image"
                             :alt="`${listing.title} - Image ${index + 1}`"
-                            class="w-full h-full object-cover"
+                            class="h-full w-full object-cover"
                         />
                     </button>
                 </div>
             </div>
-
 
             <!-- Listing Details -->
             <div class="space-y-6">
@@ -113,13 +116,13 @@ const handleOutsideClick = (event) => {
                         >${{ listing.price.toFixed(2) }}</span
                     >
                     <span
-                        class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium"
+                        class="rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800"
                     >
-                        {{ listing.condition }}
+                        {{ listing.media_condition }}
                     </span>
                 </div>
                 <div class="space-y-2 md:w-9/12">
-                    <div class="flex gap-2 items-center">
+                    <div class="flex items-center gap-2">
                         <button
                             type="button"
                             class="flex-1 rounded-md bg-slate-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600"
@@ -144,28 +147,28 @@ const handleOutsideClick = (event) => {
 
                 <div class="space-y-4">
                     <div class="flex items-center space-x-2">
-                        <Disc class="w-5 h-5 text-gray-500" />
+                        <Disc class="h-5 w-5 text-gray-500" />
                         <span>{{ listing.genre }}</span>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <Music class="w-5 h-5 text-gray-500" />
+                        <Music class="h-5 w-5 text-gray-500" />
                         <span>{{ listing.releaseYear }}</span>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <Album class="w-5 h-5 text-gray-500" />
+                        <Album class="h-5 w-5 text-gray-500" />
                         <span>{{ listing.format }}</span>
                     </div>
                 </div>
 
                 <div class="border-t pt-4">
-                    <h2 class="text-xl font-semibold mb-2">Description</h2>
+                    <h2 class="mb-2 text-xl font-semibold">Description</h2>
                     <p class="text-gray-600">{{ listing.description }}</p>
                 </div>
 
                 <div class="border-t pt-4">
-                    <h2 class="text-xl font-semibold mb-2">Tracklist</h2>
+                    <h2 class="mb-2 text-xl font-semibold">Tracklist</h2>
                     <Tracklist />
-                    <h2 class="text-xl font-semibold my-4">Have a listen</h2>
+                    <h2 class="my-4 text-xl font-semibold">Have a listen</h2>
                     <iframe
                         style="border-radius: 12px"
                         src="https://open.spotify.com/embed/album/1weenld61qoidwYuZ1GESA?utm_source=generator"
@@ -179,21 +182,16 @@ const handleOutsideClick = (event) => {
                 </div>
 
                 <div class="border-t pt-4">
-                    <h2 class="text-xl font-semibold mb-2">
+                    <h2 class="mb-2 text-xl font-semibold">
                         Seller Information
                     </h2>
                     <div class="flex items-center space-x-4">
-                        <UserCircleIcon class="w-12 h-12 rounded-full" />
+                        <UserCircleIcon class="h-12 w-12 rounded-full" />
                         <div>
-                            <p class="font-medium">{{ listing.seller.name }}</p>
+                            <p class="font-medium">VinylVault</p>
                             <div class="flex items-center">
-                                <StarIcon class="w-4 h-4 text-yellow-400" />
-                                <span class="ml-1"
-                                    >{{ listing.seller.rating }} ({{
-                                        listing.seller.reviews
-                                    }}
-                                    reviews)</span
-                                >
+                                <StarIcon class="h-4 w-4 text-yellow-400" />
+                                <span class="ml-1">4.9 (382 reviews)</span>
                             </div>
                         </div>
                     </div>
@@ -209,7 +207,7 @@ const handleOutsideClick = (event) => {
                         <img
                             :src="listing.images[0]"
                             :alt="`${listing.title}`"
-                            class="w-full h-full object-cover"
+                            class="h-full w-full object-cover"
                         />
                     </button>
                 </div>
@@ -229,7 +227,7 @@ const handleOutsideClick = (event) => {
         >
             <div
                 v-if="showMessageModal"
-                class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4"
+                class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-4"
                 @click="handleOutsideClick"
             >
                 <Transition
@@ -242,22 +240,25 @@ const handleOutsideClick = (event) => {
                 >
                     <div
                         v-if="showMessageModal"
-                        class="bg-white rounded-lg p-6 w-full max-w-md transform relative"
+                        class="relative w-full max-w-md transform rounded-lg bg-white p-6"
                     >
                         <!-- Close button -->
                         <button
                             @click="closeMessageModal"
-                            class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 focus:outline-none"
+                            class="absolute right-2 top-2 text-gray-500 hover:text-gray-700 focus:outline-none"
                             aria-label="Close modal"
                         >
-                            <X class="w-6 h-6" />
+                            <X class="h-6 w-6" />
                         </button>
 
-                        <h2 class="text-xl font-semibold mb-2">
+                        <h2 class="mb-2 text-xl font-semibold">
                             Message Seller
                         </h2>
 
-                        <p class="text-gray-700 mb-6">Have questions for the seller regarding this listing? Ask them here.</p>
+                        <p class="mb-6 text-gray-700">
+                            Have questions for the seller regarding this
+                            listing? Ask them here.
+                        </p>
                         <form @submit.prevent="sendMessage" class="space-y-4">
                             <div>
                                 <label
@@ -278,13 +279,13 @@ const handleOutsideClick = (event) => {
                                 <button
                                     type="button"
                                     @click="closeMessageModal"
-                                    class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                    class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
-                                    class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-slate-900 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                    class="rounded-md border border-transparent bg-slate-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                                 >
                                     Send Message
                                 </button>

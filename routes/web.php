@@ -12,9 +12,7 @@ Route::get('/about', function () {
     return Inertia::render('About');
 });
 
-Route::get('/listings/{id}', function () {
-    return Inertia::render('ViewListing'); 
-});
+Route::get('/listings/{listing}', [ListingController::class, 'show'])->name('listings.show');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
