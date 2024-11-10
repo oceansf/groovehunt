@@ -353,7 +353,7 @@ const mobileFiltersOpen = ref(false);
                     >
                     <!-- Filters -->
                     <div
-                    class="sticky top-[89px] z-10 hidden h-max lg:block"
+                    class="sticky top-[95px] z-10 hidden h-max lg:block"
                     >
                     <h2 class="hidden text-xl font-medium md:inline-block">
                         Filters

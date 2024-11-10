@@ -6,7 +6,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', [ListingController::class, 'index'])->name('listings.index');
+Route::get('/', [ListingController::class, 'index'])->name('home');
 
 Route::get('/about', function () {
     return Inertia::render('About');
