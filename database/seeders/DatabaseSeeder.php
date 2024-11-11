@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
     {
         User::factory(10)->create();
 
-        Listing::factory(35)->create();
+        Listing::factory(100)->create();
 
     }
 }

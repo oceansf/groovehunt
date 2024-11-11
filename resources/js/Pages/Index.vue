@@ -433,7 +433,6 @@ const mobileFiltersOpen = ref(false);
 
                         <!-- Product grid -->
                         <div class="lg:col-span-4">
-                            <!-- Your content -->
                             <ListingsGrid :listings="listings"/>
                         </div>
                     </div>

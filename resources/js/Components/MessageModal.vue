@@ -1,7 +1,4 @@
 <script setup>
-import { ref } from "vue";
-import { Disc, Music, Album, X } from "lucide-vue-next";
-
 defineProps({
     showMessageModal: Boolean,
     messageForm: Object,

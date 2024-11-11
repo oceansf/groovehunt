@@ -20,7 +20,7 @@ class ListingController extends Controller
             'listings' => Listing::query()
                 ->select('id', 'title', 'artist', 'price', 'images', 'media_condition')
                 ->latest()
-                ->simplePaginate(12)
+                ->simplePaginate(25)
                 ->through(fn($listing) => [
                     'id' => $listing->id,
                     'title' => $listing->title,
