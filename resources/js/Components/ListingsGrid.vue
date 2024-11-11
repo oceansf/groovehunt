@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import ListingItem from "@/Components/ListingItem.vue";
 import { usePage, router, Link } from "@inertiajs/vue3";
 
@@ -31,6 +31,25 @@ const loadMoreItems = () => {
         },
     );
 };
+
+const observer = new IntersectionObserver(
+    (entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                loadMoreItems();
+            }
+        });
+    },
+    {
+        rootMargin: "0px 0px 400px 0px",
+    },
+);
+
+const landmark = ref(null);
+
+onMounted(() => {
+    observer.observe(landmark.value);
+});
 </script>
 
 <template>
@@ -47,13 +66,5 @@ const loadMoreItems = () => {
             </div>
         </div>
     </div>
-    <Link
-        :href="props.listings.next_page_url || '#'"
-        @click.prevent="loadMoreItems"
-        :class="{
-            'cursor-not-allowed opacity-50': !props.listings.next_page_url,
-        }"
-    >
-        Load more
-    </Link>
+    <div ref="landmark"></div>
 </template>
