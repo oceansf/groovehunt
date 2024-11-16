@@ -1,7 +1,7 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import ListingItem from "@/Components/ListingItem.vue";
-import { usePage, router, Link } from "@inertiajs/vue3";
+import useInifiniteScroll from "@/composables/useInfiniteScroll";
 
 const props = defineProps({
     listings: {
@@ -10,46 +10,9 @@ const props = defineProps({
     },
 });
 
-const items = ref(props.listings.data);
-const initialUrl = usePage().url;
-
-const loadMoreItems = () => {
-    if (!props.listings.next_page_url) {
-        return;
-    }
-
-    router.get(
-        props.listings.next_page_url,
-        {},
-        {
-            preserveState: true,
-            preserveScroll: true,
-            onSuccess: (page) => {
-                window.history.replaceState({}, "", initialUrl);
-                items.value = [...items.value, ...page.props.listings.data];
-            },
-        },
-    );
-};
-
-const observer = new IntersectionObserver(
-    (entries) => {
-        entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-                loadMoreItems();
-            }
-        });
-    },
-    {
-        rootMargin: "0px 0px 400px 0px",
-    },
-);
-
 const landmark = ref(null);
 
-onMounted(() => {
-    observer.observe(landmark.value);
-});
+const { items } = useInifiniteScroll("listings", landmark);
 </script>
 
 <template>
