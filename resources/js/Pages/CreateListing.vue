@@ -15,78 +15,36 @@ import {
     SwitchLabel,
 } from "@headlessui/vue";
 import FormCurrencyInput from "@/Components/Form/FormCurrencyInput.vue";
+import formats from "../Shared/formats";
+import conditions from "../Shared/conditions";
 
 const allowOffers = ref(false);
 
 const form = useForm({
-    // Essential Info
     title: "",
     artist: "",
-    format: "", // LP, 45, 78
-    releaseYear: "",
-    genre: "",
-
-    // Condition & Details
-    mediaCondition: "", // Using standard grading system (M/NM/VG+/etc)
-    sleeveCondition: "",
-    weight: "", // Standard or 180g
-
-    // Release Details
-    label: "",
-    catalogNumber: "",
-    country: "",
-    matrixNumber: "", // Optional but valuable
-
-    // Sales Info
+    format: "",
+    media_condition: "",
+    sleeve_condition: "",
+    description: "",
+    images: [],
     price: "",
-    shippingCost: "",
-    allowOffers: false,
-    shippingFrom: "",
-
-    // Media
-    photos: [],
-    description: "", // General notes, bundle info, etc.
+    allow_offers: false,
+    min_offer: "",
+    shipping: "",
+    genre: "",
+    speed: "",
+    color: "",
+    release_country: "",
+    release_year: "",
+    release_label: "",
+    release_cat_no: "",
+    release_matrix_no: "",
+    release_upc: "",
 });
 
-const formats = [
-    { value: "12-lp", label: '12" LP' },
-    { value: "7-single", label: '7" Single' },
-    { value: "10-lp", label: '10" LP' },
-    { value: "12-single", label: '12" Single' },
-    { value: "12-ep", label: '12" EP' },
-    { value: "7-ep", label: '7" EP' },
-    { value: "78-rpm", label: "78 RPM" },
-    { value: "picture-disc", label: "Picture Disc" },
-    { value: "vinyl-box-set", label: "Box Set (Vinyl)" },
-    { value: "cd-album", label: "CD Album" },
-    { value: "cd-single", label: "CD Single" },
-    { value: "cd-ep", label: "CD EP" },
-    { value: "sacd", label: "SACD" },
-    { value: "cd-box-set", label: "Box Set (CD)" },
-    { value: "cassette", label: "Cassette" },
-    { value: "cassette-single", label: "Cassette Single" },
-    { value: "dat", label: "DAT" },
-    { value: "cassette-box-set", label: "Box Set (Cassette)" },
-    { value: "8-track", label: "8-Track" },
-    { value: "minidisc", label: "Minidisc" },
-    { value: "reel-to-reel", label: "Reel-to-Reel" },
-    { value: "dvd-audio", label: "DVD Audio" },
-    { value: "blu-ray-audio", label: "Blu-ray Audio" },
-];
-
-const conditions = [
-    { value: "M", label: "Mint (M)" },
-    { value: "NM", label: "Near Mint (NM or NM-)" },
-    { value: "VG+", label: "Very Good Plus (VG+)" },
-    { value: "VG", label: "Very Good (VG)" },
-    { value: "G+", label: "Good Plus (G+)" },
-    { value: "G", label: "Good (G)" },
-    { value: "F", label: "Fair (F)" },
-    { value: "P", label: "Poor (P)" },
-];
-
 const handleSubmit = () => {
-    form.post(route("listings.store"), {
+    form.submit("post", route("listings.store"), {
         preserveScroll: true,
         onSuccess: () => {
             // Optional: Add success notification or redirect
@@ -101,7 +59,7 @@ const handleFileUpload = (e) => {
         e.target.value = "";
         return;
     }
-    form.photos = files;
+    form.images = files;
 };
 </script>
 
@@ -190,11 +148,11 @@ const handleFileUpload = (e) => {
                             />
                             <FormSelectInput
                                 id="media-condition"
-                                v-model="form.mediaCondition"
+                                v-model="form.media_condition"
                                 type="condition"
                                 :options="conditions"
                             />
-                            <FormError :message="form.errors.mediaCondition" />
+                            <FormError :message="form.errors.media_condition" />
                         </div>
 
                         <!-- Sleeve condition field -->
@@ -206,17 +164,19 @@ const handleFileUpload = (e) => {
                             />
                             <FormSelectInput
                                 id="sleeve-condition"
-                                v-model="form.sleeveCondition"
+                                v-model="form.sleeve_condition"
                                 type="condition"
                                 :options="conditions"
                             />
-                            <FormError :message="form.errors.sleeveCondition" />
+                            <FormError
+                                :message="form.errors.sleeve_condition"
+                            />
                         </div>
 
                         <!-- Photos upload -->
                         <div>
                             <label
-                                for="photos"
+                                for="images"
                                 class="block text-sm font-medium leading-6 text-gray-900"
                                 >Photos</label
                             >
@@ -256,7 +216,7 @@ const handleFileUpload = (e) => {
                                     </p>
                                 </div>
                             </div>
-                            <FormError :message="form.errors.photos" />
+                            <FormError :message="form.errors.images" />
                         </div>
 
                         <!-- Description field -->

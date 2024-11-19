@@ -8,6 +8,7 @@ use App\Http\Controllers\ListingController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 
 class ListingController extends Controller
 {
@@ -41,7 +42,7 @@ class ListingController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('CreateListing');
     }
 
     /**
@@ -49,7 +50,9 @@ class ListingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request->all());
+
+        return to_route('home');
     }
 
     /**

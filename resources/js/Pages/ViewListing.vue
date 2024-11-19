@@ -16,7 +16,7 @@ import {
 import { UserCircleIcon, StarIcon } from "@heroicons/vue/20/solid";
 import Tracklist from "@/Components/Tracklist.vue";
 import Modal from "@/Components/MessageModal.vue";
-import { listingsData } from "../../mockListings.js";
+import { listingsData } from "../Shared/mockListings.js";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 

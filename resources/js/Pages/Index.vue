@@ -9,6 +9,7 @@ import {
 import ListingsGrid from "@/Components/ListingsGrid.vue";
 import MobileFilterDialog from "@/Components/MobileFilterDialog.vue";
 import FiltersSidebar from "@/Components/FiltersSidebar.vue";
+import filters from "../Shared/filters";
 
 defineProps({
     listings: Object,
@@ -24,73 +25,6 @@ const sortOptions = [
     { name: "Seller Rating", href: "#", current: false },
     { name: "Price: Low to High", href: "#", current: false },
     { name: "Price: High to Low", href: "#", current: false },
-];
-
-const filters = [
-    {
-        id: "genre",
-        name: "Genre",
-        options: [
-            { value: "Rock", label: "Rock", checked: false },
-            { value: "Electronic", label: "Electronic", checked: false },
-            { value: "Pop", label: "Pop", checked: false },
-            { value: "Jazz", label: "Jazz", checked: false },
-            { value: "Funk / Soul", label: "Funk / Soul", checked: false },
-            { value: "Classical", label: "Classical", checked: false },
-            { value: "Hip Hop", label: "Hip Hop", checked: false },
-            { value: "Latin", label: "Latin", checked: false },
-            {
-                value: "Stage & Screen",
-                label: "Stage & Screen",
-                checked: false,
-            },
-            { value: "Reggae", label: "Reggae", checked: false },
-            { value: "Blues", label: "Blues", checked: false },
-            { value: "Non-Music", label: "Non-Music", checked: false },
-            { value: "Children's", label: "Children's", checked: false },
-            {
-                value: "Brass & Military",
-                label: "Brass & Military",
-                checked: false,
-            },
-        ],
-    },
-    {
-        id: "format",
-        name: "Format",
-        options: [
-            { value: "vinyl", label: "Vinyl", checked: false },
-            { value: "CD", label: "CD", checked: false },
-            { value: "cassette", label: "Cassette", checked: false },
-            { value: '7"" vinyl', label: '7" Vinyl', checked: false },
-        ],
-    },
-    {
-        id: "country",
-        name: "Country",
-        options: [
-            { value: "US", label: "US", checked: false },
-            { value: "UK", label: "UK", checked: false },
-            { value: "Germany", label: "Germany", checked: false },
-            { value: "France", label: "France", checked: false },
-            { value: "Japan", label: "Japan", checked: false },
-        ],
-    },
-    {
-        id: "decade",
-        name: "Decade",
-        options: [
-            { value: "2020", label: "2020s", checked: false },
-            { value: "2010", label: "2010s", checked: false },
-            { value: "2000", label: "2000s", checked: false },
-            { value: "1990", label: "1990s", checked: false },
-            { value: "1980", label: "1980s", checked: false },
-            { value: "1970", label: "1970s", checked: false },
-            { value: "1960", label: "1960s", checked: false },
-            { value: "1950", label: "1950s", checked: false },
-            { value: "1940", label: "1940s", checked: false },
-        ],
-    },
 ];
 
 const mobileFiltersOpen = ref(false);
