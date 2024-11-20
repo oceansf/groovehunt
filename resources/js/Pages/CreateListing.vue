@@ -4,7 +4,6 @@ import { useForm } from "@inertiajs/vue3";
 import { DiscAlbum } from "lucide-vue-next";
 import DetailsMenu from "@/Components/Form/DetailsMenu.vue";
 import FormTextInput from "@/Components/Form/FormTextInput.vue";
-import FormError from "@/Components/Form/FormError.vue";
 import FormSelectInput from "@/Components/Form/FormSelectInput.vue";
 import FormTextarea from "@/Components/Form/FormTextarea.vue";
 import FormFileUpload from "@/Components/Form/FormFileUpload.vue";
@@ -60,16 +59,6 @@ const handleSubmit = () => {
             console.error("Form submission errors:", errors);
         },
     });
-};
-
-const handleFileUpload = (e) => {
-    const files = Array.from(e.target.files);
-    if (files.length > 12) {
-        alert("You can only upload up to 12 photos");
-        e.target.value = "";
-        return;
-    }
-    form.images = files;
 };
 
 watch(
@@ -271,6 +260,9 @@ watch(
                                 </p>
                             </div>
                         </div>
+
+                        <!-- TODO: Add shipping-from field -->
+                        
 
                         <!-- Shipping field -->
                         <FormCurrencyInput

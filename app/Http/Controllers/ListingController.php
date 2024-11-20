@@ -58,7 +58,7 @@ class ListingController extends Controller
         'media_condition' => 'required|string|in:Mint,Near Mint,Very Good Plus,Very Good,Good Plus,Good,Fair,Poor',
         'sleeve_condition' => 'nullable|string|in:Mint,Near Mint,Very Good Plus,Very Good,Good Plus,Good,Fair,Poor',
         'description' => 'nullable|string|max:5000',
-        'images.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        'images.*' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         'price' => 'required|numeric|min:0',
         'allow_offers' => 'boolean',
         'min_offer' => 'required_if:allow_offers,true|nullable|numeric|min:0|lt:price',
