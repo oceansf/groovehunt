@@ -218,7 +218,7 @@ watch(
                             currency-symbol="$"
                         />
 
-                        <!-- Offer switch -->
+                        <!-- Allow offer switch -->
                         <div>
                             <SwitchGroup
                                 as="div"
@@ -260,8 +260,12 @@ watch(
                                 </Switch>
                             </SwitchGroup>
                             <div v-if="allowOffers">
-                                <FormCurrencyInput v-model="form.min_offer" />
-                                <FormError :message="form.errors.min_offer" />
+                                <FormCurrencyInput
+                                    :form="form"
+                                    v-model="form.min_offer"
+                                    id="min_offer"
+                                    label="Minimum Offer"
+                                />
                                 <p class="mt-1 text-sm text-gray-400">
                                     Enter the minimum price you'll consider
                                 </p>
