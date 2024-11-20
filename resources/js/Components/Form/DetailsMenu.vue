@@ -4,8 +4,11 @@ import FormSelectInput from "./FormSelectInput.vue";
 import FormInputLabel from "./FormInputLabel.vue";
 import FormTextInput from "./FormTextInput.vue";
 
-defineProps({
-    form: Object,
+const props = defineProps({
+    form: {
+        type: Object,
+        required: true
+    }
 });
 
 const isOpen = ref(false);
@@ -99,25 +102,31 @@ const colors = [
         <div class="mt-4 space-y-2">
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
-                    <FormInputLabel text="Genre" />
+                    <FormInputLabel text="Genre" optional />
                     <FormSelectInput
+                        :form="form"
+                        v-model="form.genre"
                         id="genre"
                         type="genre"
                         :options="genres"
                     />
                 </div>
                 <div>
-                    <FormInputLabel text="Speed" />
+                    <FormInputLabel text="Speed" optional />
                     <FormSelectInput
+                        :form="form"
+                        v-model="form.speed"
                         id="speed"
                         type="speed"
                         :options="speeds"
                     />
                 </div>
                 <div>
-                    <FormInputLabel text="Color" />
+                    <FormInputLabel text="Color" optional />
                     <FormSelectInput
-                        id="colors"
+                        :form="form"
+                        v-model="form.color"
+                        id="color"
                         type="color"
                         :options="colors"
                     />
@@ -130,50 +139,56 @@ const colors = [
             <div class="space-y-2">
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div>
-                        <FormInputLabel text="Country/Region of Manufacture" />
+                        <FormInputLabel text="Country/Region of Manufacture" optional />
                         <FormTextInput
-                            id="release_country"
                             :form="form"
+                            v-model="form.release_country"
+                            id="release_country"
                             placeholder="United States"
                         />
                     </div>
                     <div>
-                        <FormInputLabel text="Release Year" />
+                        <FormInputLabel text="Release Year" optional />
                         <FormTextInput
-                            id="release_year"
                             :form="form"
-                            :placeholder="new Date().getFullYear()"
+                            v-model="form.release_year"
+                            id="release_year"
+                            :placeholder="new Date().getFullYear().toString()"
                         />
                     </div>
                     <div>
-                        <FormInputLabel text="Record Label" />
+                        <FormInputLabel text="Record Label" optional />
                         <FormTextInput
-                            id="release_label"
                             :form="form"
+                            v-model="form.release_label"
+                            id="release_label"
                             placeholder="e.g., Universal Music Group"
                         />
                     </div>
                     <div>
-                        <FormInputLabel text="Catalog Number" />
+                        <FormInputLabel text="Catalog Number" optional />
                         <FormTextInput
-                            id="release_cat"
                             :form="form"
+                            v-model="form.release_cat_no"
+                            id="release_cat_no"
                             placeholder="e.g., SAMLP000"
                         />
                     </div>
                     <div>
-                        <FormInputLabel text="Vinyl Matrix Number" />
+                        <FormInputLabel text="Vinyl Matrix Number" optional />
                         <FormTextInput
-                            id="release_matrix"
                             :form="form"
+                            v-model="form.release_matrix_no"
+                            id="release_matrix_no"
                             placeholder="e.g., XTAL001-A, SD 18114-A, ST-AL-32037"
                         />
                     </div>
                     <div>
-                        <FormInputLabel text="UPC" />
+                        <FormInputLabel text="UPC" optional />
                         <FormTextInput
-                            id="release_upc"
                             :form="form"
+                            v-model="form.release_upc"
+                            id="release_upc"
                             placeholder="e.g., XTAL001-A"
                         />
                     </div>

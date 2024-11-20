@@ -50,9 +50,73 @@ class ListingController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        // Validate the request
+    $validated = $request->validate([
+        'title' => 'required|string|max:255',
+        'artist' => 'required|string|max:255',
+        'format' => 'required|string|in:LP,45,78,EP,Single',
+        'media_condition' => 'required|string|in:Mint,Near Mint,Very Good Plus,Very Good,Good Plus,Good,Fair,Poor',
+        'sleeve_condition' => 'nullable|string|in:Mint,Near Mint,Very Good Plus,Very Good,Good Plus,Good,Fair,Poor',
+        'description' => 'nullable|string|max:5000',
+        'images.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        'price' => 'required|numeric|min:0',
+        'allow_offers' => 'boolean',
+        'min_offer' => 'required_if:allow_offers,true|nullable|numeric|min:0|lt:price',
+        'shipping' => 'required|numeric|min:0',
+        'genre' => 'nullable|string|max:255',
+        'speed' => 'nullable|string|in:33,45,78',
+        'color' => 'nullable|string|max:255',
+        'release_country' => 'nullable|string|max:255',
+        'release_year' => 'nullable|string|max:4',
+        'release_label' => 'nullable|string|max:255',
+        'release_cat_no' => 'nullable|string|max:255',
+        'release_matrix_no' => 'nullable|string|max:255',
+        'release_upc' => 'nullable|string|max:255',
+        'location' => 'nullable|string|max:255',
+        'local_pickup' => 'boolean',
+        'shipping_restrictions' => 'nullable|array',
+        'weight' => 'nullable|numeric|min:0',
+        'notes' => 'nullable|string',
+    ]);
 
-        return to_route('home');
+    try {
+        // Handle image uploads
+        $imagesPaths = [];
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('listings', 'public');
+                $imagesPaths[] = $path;
+            }
+        }
+
+        // Create the listing
+        $listing = auth()->user()->listings()->create([
+            ...$validated,
+            'images' => $imagesPaths,
+            'seller_id' => auth()->id(),
+            'status' => 'available',
+            'is_active' => true,
+            'views_count' => 0,
+            'shipping_restrictions' => $request->shipping_restrictions ?? [],
+            'last_price_update' => now(),
+        ]);
+
+        return to_route('listings.show', $listing)
+            ->with('success', 'Listing created successfully!');
+            
+    } catch (\Exception $e) {
+        // Log the error
+        \Log::error('Error creating listing: ' . $e->getMessage());
+        
+        // Delete uploaded images if listing creation fails
+        foreach ($imagesPaths as $path) {
+            \Storage::disk('public')->delete($path);
+        }
+        
+        return back()
+            ->withInput()
+            ->with('error', 'There was an error creating your listing. Please try again.');
+    }
     }
 
     /**

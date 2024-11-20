@@ -110,12 +110,12 @@ const handleOutsideClick = (event) => {
                 <div class="flex items-center justify-between">
                     <div class="flex flex-col">
                         <span class="text-3xl font-bold"
-                            >${{ listing.price.toFixed(2) }}</span
+                            >${{ listing.price }}</span
                         >
                         <div class="flex items-center space-x-2 text-gray-600">
                             <em
                                 >Shipping: ${{
-                                    listing.shipping.toFixed(2)
+                                    listing.shipping
                                 }}</em
                             >
                         </div>

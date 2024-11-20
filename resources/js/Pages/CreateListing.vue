@@ -8,6 +8,8 @@ import FormTextInput from "@/Components/Form/FormTextInput.vue";
 import FormInputLabel from "@/Components/Form/FormInputLabel.vue";
 import FormError from "@/Components/Form/FormError.vue";
 import FormSelectInput from "@/Components/Form/FormSelectInput.vue";
+import FormTextarea from "@/Components/Form/FormTextarea.vue";
+import FormFileUpload from "@/Components/Form/FormFileUpload.vue";
 import {
     Switch,
     SwitchDescription,
@@ -19,6 +21,11 @@ import formats from "../Shared/formats";
 import conditions from "../Shared/conditions";
 
 const allowOffers = ref(false);
+
+// Sync allowOffers with form state
+watch(allowOffers, (newValue) => {
+    form.allow_offers = newValue;
+});
 
 const form = useForm({
     title: "",
@@ -44,10 +51,15 @@ const form = useForm({
 });
 
 const handleSubmit = () => {
-    form.submit("post", route("listings.store"), {
+    // Remove extra parenthesis and fix options object syntax
+    form.post(route("listings.store"), {
         preserveScroll: true,
         onSuccess: () => {
             // Optional: Add success notification or redirect
+            console.log("Form submitted successfully");
+        },
+        onError: (errors) => {
+            console.error("Form submission errors:", errors);
         },
     });
 };
@@ -61,11 +73,19 @@ const handleFileUpload = (e) => {
     }
     form.images = files;
 };
+
+watch(
+    () => form.data,
+    (newVal) => {
+        console.log("Form state updated:", newVal);
+    },
+    { deep: true },
+);
 </script>
 
 <template>
     <div class="mx-auto mb-32 mt-12 max-w-3xl px-3">
-        <form @submit.prevent="handleSubmit" novalidate>
+        <form @submit.prevent="handleSubmit" enctype="multipart/form-data">
             <div class="space-y-12">
                 <div class="border-b border-gray-900/10 pb-12">
                     <!-- Heading -->
@@ -90,32 +110,26 @@ const handleFileUpload = (e) => {
                     <!-- Single column layout -->
                     <div class="mt-10 space-y-8">
                         <!-- Title field -->
-                        <div>
-                            <FormInputLabel for="title" text="Title" />
-                            <FormTextInput
-                                :form="form"
-                                v-model="form.title"
-                                id="title"
-                                placeholder="e.g., Abbey Road 1969 First Pressing"
-                            />
-                            <FormError :message="form.errors.title" />
-                        </div>
+                        <FormTextInput
+                            :form="form"
+                            id="title"
+                            v-model="form.title"
+                            placeholder="e.g., The Beatles"
+                            label="Title"
+                        />
 
                         <!-- Artist field -->
-                        <div>
-                            <FormInputLabel for="artist" text="Artist" />
-                            <FormTextInput
-                                :form="form"
-                                v-model="form.artist"
-                                id="title"
-                                placeholder="e.g., The Beatles"
-                            />
-                            <FormError :message="form.errors.artist" />
-                        </div>
+                        <FormTextInput
+                            :form="form"
+                            id="artist"
+                            v-model="form.artist"
+                            placeholder="e.g., The Beatles"
+                            label="Artist"
+                        />
 
                         <hr />
 
-                        <div>
+                        <div class="my-2">
                             <h2
                                 class="text-xl font-semibold leading-7 text-gray-900"
                             >
@@ -127,121 +141,60 @@ const handleFileUpload = (e) => {
                         </div>
 
                         <!-- Format field -->
-                        <div>
-                            <div class="mt-2">
-                                <FormInputLabel for="format" text="Format" />
-                                <FormSelectInput
-                                    id="format"
-                                    v-model="form.format"
-                                    type="format"
-                                    :options="formats"
-                                />
-                                <FormError :message="form.errors.format" />
-                            </div>
-                        </div>
+                        <FormSelectInput
+                            :form="form"
+                            v-model="form.format"
+                            id="format"
+                            type="format"
+                            :options="formats"
+                            label="Format"
+                        />
 
                         <!-- Media condition field -->
-                        <div>
-                            <FormInputLabel
-                                for="media-condition"
-                                text="Media condition"
-                            />
-                            <FormSelectInput
-                                id="media-condition"
-                                v-model="form.media_condition"
-                                type="condition"
-                                :options="conditions"
-                            />
-                            <FormError :message="form.errors.media_condition" />
-                        </div>
+                        <FormSelectInput
+                            :form="form"
+                            v-model="form.media_condition"
+                            id="media_condition"
+                            type="condition"
+                            :options="conditions"
+                            label="Media condition"
+                        />
 
                         <!-- Sleeve condition field -->
-                        <div>
-                            <FormInputLabel
-                                for="sleeve-condition"
-                                text="Sleeve condition"
-                                optional
-                            />
-                            <FormSelectInput
-                                id="sleeve-condition"
-                                v-model="form.sleeve_condition"
-                                type="condition"
-                                :options="conditions"
-                            />
-                            <FormError
-                                :message="form.errors.sleeve_condition"
-                            />
-                        </div>
+                        <FormSelectInput
+                            :form="form"
+                            v-model="form.sleeve_condition"
+                            id="sleeve_condition"
+                            type="condition"
+                            :options="conditions"
+                            label="Sleeve condition"
+                            :optional="true"
+                        />
 
                         <!-- Photos upload -->
-                        <div>
-                            <label
-                                for="images"
-                                class="block text-sm font-medium leading-6 text-gray-900"
-                                >Photos</label
-                            >
-                            <p class="mt-1 text-sm leading-6 text-gray-600">
-                                Add up to 12 photos. The first photo will be
-                                your listing's cover photo.
-                            </p>
-                            <div
-                                class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10"
-                            >
-                                <div class="text-center">
-                                    <PhotoIcon
-                                        class="mx-auto h-12 w-12 text-gray-300"
-                                        aria-hidden="true"
-                                    />
-                                    <div
-                                        class="mt-4 flex text-sm leading-6 text-gray-600"
-                                    >
-                                        <label
-                                            for="file-upload"
-                                            class="relative cursor-pointer rounded-md bg-white font-semibold text-blue-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-blue-600 focus-within:ring-offset-2 hover:text-blue-500"
-                                        >
-                                            <span>Upload images</span>
-                                            <input
-                                                id="file-upload"
-                                                type="file"
-                                                multiple
-                                                accept="image/*"
-                                                class="sr-only"
-                                                @change="handleFileUpload"
-                                            />
-                                        </label>
-                                        <p class="pl-1">or drag and drop</p>
-                                    </div>
-                                    <p class="text-xs leading-5 text-gray-600">
-                                        PNG, JPG, GIF up to 10MB each
-                                    </p>
-                                </div>
-                            </div>
-                            <FormError :message="form.errors.images" />
-                        </div>
+                        <FormFileUpload
+                            :form="form"
+                            v-model="form.images"
+                            id="images"
+                            label="Photos"
+                            help-text="Add up to 12 photos. The first photo will be your listing's cover photo."
+                        />
 
                         <!-- Description field -->
-                        <div>
-                            <FormInputLabel text="Description" optional />
-                            <p class="mt-1 text-sm text-gray-500">
-                                Provide details about the item's condition and
-                                any other relevant information
-                            </p>
-                            <div class="mt-2">
-                                <textarea
-                                    id="description"
-                                    v-model="form.description"
-                                    rows="4"
-                                    class="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                />
-                                <p
-                                    v-if="form.errors.description"
-                                    class="mt-1 text-sm text-red-600"
-                                >
-                                    {{ form.errors.description }}
-                                </p>
-                            </div>
-                        </div>
+                        <FormTextarea
+                            :form="form"
+                            v-model="form.description"
+                            id="description"
+                            label="Description"
+                            :optional="true"
+                            help-text="Provide details about the item's condition and any other relevant information"
+                            :rows="4"
+                            placeholder="Enter details about your item..."
+                        />
+
+                        <!-- Additional fields -->
                         <DetailsMenu :form="form" />
+
                         <hr />
 
                         <!-- Price field -->
@@ -256,10 +209,16 @@ const handleFileUpload = (e) => {
                                 and any additional costs for shipping to them
                             </p>
                         </div>
-                        <div>
-                            <FormInputLabel text="Price" />
-                            <FormCurrencyInput />
-                        </div>
+
+                        <FormCurrencyInput
+                            :form="form"
+                            v-model="form.price"
+                            id="price"
+                            label="Price"
+                            placeholder="0.00"
+                            currency="USD"
+                            currency-symbol="$"
+                        />
 
                         <!-- Offer switch -->
                         <div>
@@ -303,7 +262,8 @@ const handleFileUpload = (e) => {
                                 </Switch>
                             </SwitchGroup>
                             <div v-if="allowOffers">
-                                <FormCurrencyInput />
+                                <FormCurrencyInput v-model="form.min_offer" />
+                                <FormError :message="form.errors.min_offer" />
                                 <p class="mt-1 text-sm text-gray-400">
                                     Enter the minimum price you'll consider
                                 </p>
@@ -311,14 +271,13 @@ const handleFileUpload = (e) => {
                         </div>
 
                         <!-- Shipping field -->
-                        <div>
-                            <label
-                                for="shipping_cost"
-                                class="block text-sm/6 font-medium text-gray-900"
-                                >Shipping cost</label
-                            >
-                            <FormCurrencyInput />
-                        </div>
+                        <FormCurrencyInput
+                            :form="form"
+                            v-model="form.shipping"
+                            id="shipping"
+                            label="Shipping Cost"
+                            :optional="true"
+                        />
                     </div>
                 </div>
             </div>

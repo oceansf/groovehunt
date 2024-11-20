@@ -36,4 +36,20 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Get the listings that the user has created (as a seller)
+     */
+    public function listings()
+    {
+        return $this->hasMany(Listing::class, 'seller_id');
+    }
+
+    /**
+     * Get the listings that the user has purchased (as a buyer)
+     */
+    public function purchasedListings()
+    {
+        return $this->hasMany(Listing::class, 'buyer_id');
+    }
 }
