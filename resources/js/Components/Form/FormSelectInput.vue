@@ -13,6 +13,11 @@ defineProps({
         type: Boolean,
         default: false,
     },
+    // Add the form prop
+    form: {
+        type: Object,
+        required: true,
+    },
 });
 
 const emit = defineEmits(["update:modelValue"]);
