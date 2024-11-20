@@ -1,11 +1,9 @@
 <script setup>
 import { ref, watch } from "vue";
 import { useForm } from "@inertiajs/vue3";
-import { PhotoIcon } from "@heroicons/vue/24/solid";
 import { DiscAlbum } from "lucide-vue-next";
 import DetailsMenu from "@/Components/Form/DetailsMenu.vue";
 import FormTextInput from "@/Components/Form/FormTextInput.vue";
-import FormInputLabel from "@/Components/Form/FormInputLabel.vue";
 import FormError from "@/Components/Form/FormError.vue";
 import FormSelectInput from "@/Components/Form/FormSelectInput.vue";
 import FormTextarea from "@/Components/Form/FormTextarea.vue";

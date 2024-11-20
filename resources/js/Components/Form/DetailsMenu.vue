@@ -4,11 +4,20 @@ import FormSelectInput from "./FormSelectInput.vue";
 import FormInputLabel from "./FormInputLabel.vue";
 import FormTextInput from "./FormTextInput.vue";
 
-const props = defineProps({
+defineProps({
     form: {
         type: Object,
-        required: true
-    }
+        required: true,
+    },
+    type: String,
+    options: Array,
+    modelValue: [String, Number],
+    id: String,
+    label: String,
+    optional: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 const isOpen = ref(false);
@@ -87,6 +96,7 @@ const colors = [
 </script>
 
 <template>
+    <!-- Collapsible content -->
     <div class="w-full rounded-lg bg-slate-50 p-4">
         <!-- Main collapsible button -->
         <button
@@ -101,36 +111,33 @@ const colors = [
         </p>
         <div class="mt-4 space-y-2">
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <div>
-                    <FormInputLabel text="Genre" optional />
-                    <FormSelectInput
-                        :form="form"
-                        v-model="form.genre"
-                        id="genre"
-                        type="genre"
-                        :options="genres"
-                    />
-                </div>
-                <div>
-                    <FormInputLabel text="Speed" optional />
-                    <FormSelectInput
-                        :form="form"
-                        v-model="form.speed"
-                        id="speed"
-                        type="speed"
-                        :options="speeds"
-                    />
-                </div>
-                <div>
-                    <FormInputLabel text="Color" optional />
-                    <FormSelectInput
-                        :form="form"
-                        v-model="form.color"
-                        id="color"
-                        type="color"
-                        :options="colors"
-                    />
-                </div>
+                <FormSelectInput
+                    :form="form"
+                    v-model="form.genre"
+                    id="genre"
+                    type="genre"
+                    :options="genres"
+                    label="Genre"
+                    :optional="true"
+                />
+                <FormSelectInput
+                    :form="form"
+                    v-model="form.speed"
+                    id="speed"
+                    type="speed"
+                    :options="speeds"
+                    label="Speed"
+                    :optional="true"
+                />
+                <FormSelectInput
+                    :form="form"
+                    v-model="form.color"
+                    id="color"
+                    type="color"
+                    :options="colors"
+                    label="Color"
+                    :optional="true"
+                />
             </div>
         </div>
 
@@ -138,60 +145,54 @@ const colors = [
         <div v-show="isOpen" class="mt-4 space-y-4">
             <div class="space-y-2">
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                    <div>
-                        <FormInputLabel text="Country/Region of Manufacture" optional />
-                        <FormTextInput
-                            :form="form"
-                            v-model="form.release_country"
-                            id="release_country"
-                            placeholder="United States"
-                        />
-                    </div>
-                    <div>
-                        <FormInputLabel text="Release Year" optional />
-                        <FormTextInput
-                            :form="form"
-                            v-model="form.release_year"
-                            id="release_year"
-                            :placeholder="new Date().getFullYear().toString()"
-                        />
-                    </div>
-                    <div>
-                        <FormInputLabel text="Record Label" optional />
-                        <FormTextInput
-                            :form="form"
-                            v-model="form.release_label"
-                            id="release_label"
-                            placeholder="e.g., Universal Music Group"
-                        />
-                    </div>
-                    <div>
-                        <FormInputLabel text="Catalog Number" optional />
-                        <FormTextInput
-                            :form="form"
-                            v-model="form.release_cat_no"
-                            id="release_cat_no"
-                            placeholder="e.g., SAMLP000"
-                        />
-                    </div>
-                    <div>
-                        <FormInputLabel text="Vinyl Matrix Number" optional />
-                        <FormTextInput
-                            :form="form"
-                            v-model="form.release_matrix_no"
-                            id="release_matrix_no"
-                            placeholder="e.g., XTAL001-A, SD 18114-A, ST-AL-32037"
-                        />
-                    </div>
-                    <div>
-                        <FormInputLabel text="UPC" optional />
-                        <FormTextInput
-                            :form="form"
-                            v-model="form.release_upc"
-                            id="release_upc"
-                            placeholder="e.g., XTAL001-A"
-                        />
-                    </div>
+                    <FormTextInput
+                        :form="form"
+                        v-model="form.release_country"
+                        id="release_country"
+                        label="Country/Region of Manufacture"
+                        placeholder="United States"
+                        :optional="true"
+                    />
+                    <FormTextInput
+                        :form="form"
+                        v-model="form.release_year"
+                        id="release_year"
+                        label="Release Year"
+                        :placeholder="new Date().getFullYear().toString()"
+                        :optional="true"
+                    />
+                    <FormTextInput
+                        :form="form"
+                        v-model="form.release_label"
+                        id="release_label"
+                        label="Record Label"
+                        placeholder="e.g., Universal Music Group"
+                        :optional="true"
+                    />
+                    <FormTextInput
+                        :form="form"
+                        v-model="form.release_cat_no"
+                        id="release_cat_no"
+                        label="Catalog Number"
+                        placeholder="e.g., SAMLP000"
+                        :optional="true"
+                    />
+                    <FormTextInput
+                        :form="form"
+                        v-model="form.release_matrix_no"
+                        id="release_matrix_no"
+                        label="Vinyl Matrix Number"
+                        placeholder="e.g., XTAL001-A, SD 18114-A, ST-AL-32037"
+                        :optional="true"
+                    />
+                    <FormTextInput
+                        :form="form"
+                        v-model="form.release_upc"
+                        id="release_upc"
+                        label="UPC"
+                        placeholder="e.g., XTAL001-A"
+                        :optional="true"
+                    />
                 </div>
             </div>
         </div>
