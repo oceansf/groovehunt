@@ -58,7 +58,8 @@ class ListingController extends Controller
         'media_condition' => 'required|string|in:Mint,Near Mint,Very Good Plus,Very Good,Good Plus,Good,Fair,Poor',
         'sleeve_condition' => 'nullable|string|in:Mint,Near Mint,Very Good Plus,Very Good,Good Plus,Good,Fair,Poor',
         'description' => 'nullable|string|max:5000',
-        'images.*' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        'images' => 'required|array|min:1|max:12',
+        'images.*' => 'required|image|mimes:jpeg,png,jpg|max:10240', // 10MB limit
         'price' => 'required|numeric|min:0',
         'allow_offers' => 'boolean',
         'min_offer' => 'required_if:allow_offers,true|nullable|numeric|min:0|lt:price',
@@ -80,19 +81,13 @@ class ListingController extends Controller
     ]);
 
     try {
-        // Handle image uploads
-        $imagesPaths = [];
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                $path = $image->store('listings', 'public');
-                $imagesPaths[] = $path;
-            }
-        }
-
+        // Process and upload images
+        $processedImages = $this->imageHandler->handleMultipleUploads($request->file('images'));
+        
         // Create the listing
         $listing = auth()->user()->listings()->create([
             ...$validated,
-            'images' => $imagesPaths,
+            'images' => $processedImages, // This will store the array of image data
             'seller_id' => auth()->id(),
             'status' => 'available',
             'is_active' => true,
@@ -105,18 +100,12 @@ class ListingController extends Controller
             ->with('success', 'Listing created successfully!');
             
     } catch (\Exception $e) {
-        // Log the error
         \Log::error('Error creating listing: ' . $e->getMessage());
-        
-        // Delete uploaded images if listing creation fails
-        foreach ($imagesPaths as $path) {
-            \Storage::disk('public')->delete($path);
-        }
         
         return back()
             ->withInput()
             ->with('error', 'There was an error creating your listing. Please try again.');
-    }
+        }
     }
 
     /**
