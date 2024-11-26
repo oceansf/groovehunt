@@ -21,6 +21,11 @@ defineProps({
 });
 
 const emit = defineEmits(["update:modelValue"]);
+
+const handleInput = (event) => {
+    const value = event.target.value;
+    emit('update:modelValue', value);
+};
 </script>
 
 <template>
@@ -29,7 +34,7 @@ const emit = defineEmits(["update:modelValue"]);
         <select
             :id="id"
             :value="modelValue"
-            @input="emit('update:modelValue', $event.target.value)"
+            @change="handleInput"
             class="mt-1 block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:cursor-pointer focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6"
         >
             <option selected disabled hidden value="">

@@ -30,9 +30,9 @@ class ListingFactory extends Factory
             'sleeve_condition' => $this->faker->randomElement($conditions),
             'description' => $this->faker->paragraphs(rand(1, 3), true),
             'images' => [
-                'https://placehold.co/400x400/?text=Listing\nCover',
-                'https://placehold.co/400x400/?text=Image\n2',
-                'https://placehold.co/400x400/?text=Image\n3',
+                ['url' => 'https://placehold.co/400x400/?text=Listing\nCover'],
+                ['url' => 'https://placehold.co/400x400/?text=Image\n2'],
+                ['url' => 'https://placehold.co/400x400/?text=Image\n3'],
             ],
             'price' => $price,
             'allow_offers' => $allowOffers,

@@ -166,7 +166,7 @@ onBeforeUnmount(() => {
                         <p class="pl-1">or drag and drop</p>
                     </div>
                     <p class="text-xs leading-5 text-gray-600">
-                        PNG, JPG, GIF up to {{ maxFileSize }}MB each (max
+                        PNG, JPG, WEBP up to {{ maxFileSize }}MB each (max
                         {{ maxFiles }} files)
                     </p>
                 </div>

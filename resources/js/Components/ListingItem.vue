@@ -15,8 +15,8 @@ function truncateText(length, text) {
     <div class="group">
         <div class="h-[225px] max-w-full lg:h-[260px] lg:w-[270px] overflow-hidden rounded-md">
             <img 
-                :src="listing.images[0]" 
-                :alt="listing.images[0]" 
+                :src="listing.images[0].url" 
+                :alt="listing.images[0].url" 
                 class="h-full w-full object-cover object-center transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:opacity-75" 
             />
         </div>

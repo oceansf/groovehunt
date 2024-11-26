@@ -47,8 +47,9 @@ const form = useForm({
     release_upc: "",
 });
 
+// TODO - Add shipping-from field and frontend validation
 const handleSubmit = () => {
-    // Remove extra parenthesis and fix options object syntax
+
     form.post(route("listings.store"), {
         preserveScroll: true,
         onSuccess: () => {
@@ -262,7 +263,6 @@ watch(
                         </div>
 
                         <!-- TODO: Add shipping-from field -->
-                        
 
                         <!-- Shipping field -->
                         <FormCurrencyInput

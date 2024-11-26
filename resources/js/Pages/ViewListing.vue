@@ -67,6 +67,7 @@ const handleOutsideClick = (event) => {
 };
 </script>
 
+TODO - Format images so they are square and have a max height of 400px
 <template>
     <div class="container mx-auto h-full max-w-5xl px-4 py-8">
         <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
@@ -76,7 +77,7 @@ const handleOutsideClick = (event) => {
                     class="aspect-square overflow-hidden rounded-lg bg-gray-100"
                 >
                     <img
-                        :src="listing.images[currentImageIndex]"
+                        :src="listing.images[currentImageIndex].url"
                         :alt="listing.title"
                         class="h-full w-full object-contain"
                     />
@@ -92,7 +93,7 @@ const handleOutsideClick = (event) => {
                         }"
                     >
                         <img
-                            :src="image"
+                            :src="image.url"
                             :alt="`${listing.title} - Image ${index + 1}`"
                             class="h-full w-full object-cover"
                         />

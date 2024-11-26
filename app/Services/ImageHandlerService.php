@@ -2,66 +2,58 @@
 
 namespace App\Services;
 
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ImageHandlerService
 {
-    private ImageManager $imageManager;
-    
+    private $manager;
+
     public function __construct()
     {
-        $this->imageManager = new ImageManager(new Driver());
+        // New way to initialize ImageManager in v3
+        $this->manager = new ImageManager(new Driver());
     }
-    
-    /**
-     * Process and store multiple images
-     */
-    public function handleMultipleUploads(array $images, string $folder = 'listings'): array
+
+    public function handleMultipleUploads($images)
     {
-        $uploadedImages = [];
-        
-        foreach ($images as $index => $image) {
-            $uploadedImages[] = $this->handleSingleUpload($image, $folder, $index === 0);
+        if (!$images) {
+            return [];
         }
-        
-        return $uploadedImages;
+
+        $processedImages = [];
+
+        foreach ($images as $image) {
+            $processedImages[] = $this->handleSingleUpload($image);
+        }
+
+        return $processedImages;
     }
-    
-    /**
-     * Process and store a single image
-     */
-    private function handleSingleUpload(UploadedFile $image, string $folder, bool $isCover = false): array
+
+    private function handleSingleUpload($image)
     {
-        // Create image instance
-        $img = $this->imageManager->read($image->getRealPath());
+        // Generate a unique filename
+        $filename = Str::uuid() . '.' . $image->getClientOriginalExtension();
         
-        // Resize if needed (maintaining aspect ratio)
-        $img->scaleDown(1200, 1200);
+        // Create an instance of intervention image
+        $img = $this->manager->read($image); // Note the change from 'make' to 'read'
         
-        // Convert to WebP for better compression
-        $processed = $img->toWebp(80);
-        
-        // Generate unique filename
-        $filename = uniqid() . '.webp';
-        $path = $folder . '/' . $filename;
-        
-        // Store in S3
-        Storage::disk('s3')->put(
-            $path,
-            $processed->toString(),
-            ['visibility' => 'public']
-        );
-        
+        // Resize if needed while maintaining aspect ratio
+        $img->scale(width: 1200);
+
+        // Store the processed image
+        $path = 'listings/' . $filename;
+        Storage::disk('public')->put($path, $img->toJpeg());
+
+        // Return the path and any additional metadata you want to store
         return [
             'path' => $path,
-            'url' => Storage::disk('s3')->url($path),
-            'is_cover' => $isCover,
-            'size' => $processed->size(),
-            'width' => $img->width(),
-            'height' => $img->height()
+            'url' => Storage::disk('public')->url($path),
+            'original_name' => $image->getClientOriginalName(),
+            'size' => $image->getSize(),
+            'mime_type' => $image->getMimeType(),
         ];
     }
 }

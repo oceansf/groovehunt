@@ -38,7 +38,7 @@ return new class extends Migration
             $table->boolean('is_featured')->default(false);  // For premium/featured listings
             $table->boolean('is_active')->default(true);     // To temporarily hide/deactivate listings
             $table->integer('views_count')->default(0);      // Track listing views
-            $table->string('location');                      // Seller's location for local pickup options
+            $table->string('location')->nullable();                      // Seller's location for local pickup options
             $table->boolean('local_pickup')->default(false); // Allow local pickup option
             $table->json('shipping_restrictions')->nullable(); // Countries/regions where shipping is not available
             $table->decimal('weight', 8, 2)->nullable();     // For shipping calculations
