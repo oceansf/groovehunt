@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import {
     CalendarIcon,
     Disc3Icon,
@@ -12,23 +12,30 @@ import {
     CircleGaugeIcon,
     PaletteIcon,
     TruckIcon,
+    EditIcon,
+    MailIcon,
 } from "lucide-vue-next";
 import { UserCircleIcon, StarIcon } from "@heroicons/vue/20/solid";
 import Tracklist from "@/Components/Tracklist.vue";
 import Modal from "@/Components/MessageModal.vue";
-import { listingsData } from "../Shared/mockListings.js";
+import ConditionBadge from "@/Components/ConditionBadge.vue";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { usePage } from "@inertiajs/vue3";
 
 dayjs.extend(relativeTime);
 
-defineProps({
+const page = usePage();
+const currentUser = computed(() => page.props.auth.user);
+
+const props = defineProps({
     listing: Object,
+    seller: Object,
+    sellerListings: Array,
 });
 
-// Remove this line when using real data
-const mockListings = listingsData.listings;
-
+const listingData = props.listing.data;
+const sellerData = props.seller.data;
 const currentImageIndex = ref(0);
 
 const showMessageModal = ref(false);
@@ -77,14 +84,14 @@ TODO - Format images so they are square and have a max height of 400px
                     class="aspect-square overflow-hidden rounded-lg bg-gray-100"
                 >
                     <img
-                        :src="listing.images[currentImageIndex].url"
-                        :alt="listing.title"
+                        :src="listingData.images[currentImageIndex].url"
+                        :alt="listingData.title"
                         class="h-full w-full object-contain"
                     />
                 </div>
                 <div class="grid grid-cols-4 gap-4">
                     <button
-                        v-for="(image, index) in listing.images"
+                        v-for="(image, index) in listingData.images"
                         :key="index"
                         @click="currentImageIndex = index"
                         class="aspect-square overflow-hidden rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -94,7 +101,7 @@ TODO - Format images so they are square and have a max height of 400px
                     >
                         <img
                             :src="image.url"
-                            :alt="`${listing.title} - Image ${index + 1}`"
+                            :alt="`${listingData.title} - Image ${index + 1}`"
                             class="h-full w-full object-cover"
                         />
                     </button>
@@ -104,74 +111,99 @@ TODO - Format images so they are square and have a max height of 400px
             <!-- Listing Details -->
             <div class="space-y-6">
                 <div>
-                    <h1 class="text-3xl font-bold">{{ listing.title }}</h1>
-                    <p class="text-xl text-gray-600">{{ listing.artist }}</p>
+                    <div class="flex items-start justify-between gap-2">
+                        <h1 class="text-3xl font-bold">
+                            {{ listingData.title }}
+                        </h1>
+                        <button
+                            v-if="
+                                currentUser?.id &&
+                                listingData.user_id === currentUser.id
+                            "
+                            class="inline-flex shrink-0 items-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-50 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                            @click="$emit('click')"
+                        >
+                            <EditIcon class="mr-2 h-4 w-4" />
+                            <span>Edit Listing</span>
+                        </button>
+                    </div>
+                    <p class="text-xl text-gray-600">
+                        {{ listingData.artist }}
+                    </p>
                 </div>
 
-                <div class="flex items-center justify-between">
-                    <div class="flex flex-col">
-                        <span class="text-3xl font-bold"
-                            >${{ listing.price }}</span
-                        >
-                        <div class="flex items-center space-x-2 text-gray-600">
-                            <em
-                                >Shipping: ${{
-                                    listing.shipping
-                                }}</em
+                <div class="space-y-6 md:w-9/12">
+                    <div class="flex items-center justify-between">
+                        <div class="flex flex-col">
+                            <span class="text-3xl font-bold"
+                                >${{ listingData.price }}</span
                             >
+                            <div
+                                class="flex items-center space-x-2 text-gray-700"
+                            >
+                                <em>Shipping: ${{ listingData.shipping }}</em>
+                            </div>
+                        </div>
+                        <!-- <span
+                            class="rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800"
+                        >
+                            {{ listingData.media_condition }}
+                        </span> -->
+                        <ConditionBadge :condition="listingData.media_condition" />
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex items-center gap-2">
+                            <button
+                                type="button"
+                                class="flex-1 rounded-md bg-slate-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600"
+                            >
+                                Buy Now
+                            </button>
+                            <button
+                                type="button"
+                                class="flex-1 rounded-md px-6 py-3 text-sm font-semibold shadow-sm ring-1 ring-inset"
+                                :class="[
+                                    listingData.allow_offers
+                                        ? 'bg-white text-gray-900 ring-slate-300 hover:bg-slate-50'
+                                        : 'cursor-not-allowed bg-gray-200 text-gray-500 ring-gray-300',
+                                ]"
+                                :disabled="!listingData.allow_offers"
+                            >
+                                Make Offer
+                            </button>
+                        </div>
+                        <button
+                            type="button"
+                            class="inline-flex w-full items-center justify-center rounded-md bg-white px-6 py-3 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-50"
+                            @click="openMessageModal"
+                        >
+                            <MailIcon class="mr-2 h-4 w-4 text-gray-700" />
+                            Message Seller
+                        </button>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-2">
+                            <TruckIcon class="h-5 w-5 text-gray-500" />
+                            <span>Ships from: United States</span>
                         </div>
                     </div>
-                    <span
-                        class="rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800"
-                    >
-                        {{ listing.media_condition }}
-                    </span>
-                </div>
-                <div class="space-y-2 md:w-9/12">
-                    <div class="flex items-center gap-2">
-                        <button
-                            type="button"
-                            class="flex-1 rounded-md bg-slate-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600"
-                        >
-                            Buy Now
-                        </button>
-                        <button
-                            v-if="listing.allow_offers"
-                            type="button"
-                            class="flex-1 rounded-md bg-white px-6 py-3 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-50"
-                        >
-                            Make Offer
-                        </button>
-                        <button
-                            v-else
-                            type="button"
-                            class="flex-1 cursor-not-allowed rounded-md bg-gray-200 px-6 py-3 text-sm font-semibold text-gray-500 shadow-sm ring-1 ring-inset ring-gray-300"
-                            disabled
-                        >
-                            Make Offer
-                        </button>
-                    </div>
-                    <button
-                        type="button"
-                        class="w-full rounded-md bg-white px-6 py-3 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-50"
-                        @click="openMessageModal"
-                    >
-                        Message Seller
-                    </button>
-                </div>
 
-                <div class="space-y-4">
-                    <div class="flex items-center space-x-2">
-                        <TruckIcon class="h-5 w-5 text-gray-500" />
-                        <span>Ships from: United States</span>
+                    <div class="space-y-4">
+                        <span class="text-gray-600"
+                            >Posted
+                            {{
+                                formatRelativeTime(listingData.created_at)
+                            }}</span
+                        >
                     </div>
                 </div>
 
-                <div class="border-t pt-4">
+                <div v-if="listingData.discription" class="border-t pt-4">
                     <h2 class="mb-2 text-xl font-semibold">Description</h2>
-                    <p class="text-gray-600">{{ listing.description }}</p>
+                    <p class="text-gray-600">{{ listingData.description }}</p>
                 </div>
-
+                <!-- TODO - Make tracklist dynamic -->
                 <div class="border-t pt-4">
                     <h2 class="mb-2 text-xl font-semibold">Tracklist</h2>
                     <Tracklist />
@@ -186,90 +218,129 @@ TODO - Format images so they are square and have a max height of 400px
                             <p class="flex items-center">
                                 <Disc3Icon class="mr-2 h-4 w-4 text-gray-500" />
                                 Format:
-                                {{ listing.format }}
+                                {{ listingData.format }}
                             </p>
                             <p class="flex items-center">
                                 <SparklesIcon
                                     class="mr-2 h-4 w-4 text-gray-500"
                                 />
-                                Media condition: {{ listing.media_condition }}
+                                Media condition:
+                                {{ listingData.media_condition }}
                             </p>
-                            <p class="flex items-center">
+                            <p
+                                v-if="listingData.sleeve_condition"
+                                class="flex items-center"
+                            >
                                 <DiscAlbumIcon
                                     class="mr-2 h-4 w-4 text-gray-500"
                                 />
-                                Sleeve condition: {{ listing.sleeve_condition }}
+                                Sleeve condition:
+                                {{ listingData.sleeve_condition }}
                             </p>
-                            <p class="flex items-center">
+                            <p
+                                v-if="listingData.genre"
+                                class="flex items-center"
+                            >
                                 <MusicIcon class="mr-2 h-4 w-4 text-gray-500" />
                                 Genre:
-                                {{ listing.genre }}
+                                {{ listingData.genre }}
                             </p>
-                            <p class="flex items-center">
+                            <p
+                                v-if="listingData.speed"
+                                class="flex items-center"
+                            >
                                 <CircleGaugeIcon
                                     class="mr-2 h-4 w-4 text-gray-500"
                                 />
                                 Speed:
-                                {{ listing.speed }}
+                                {{ listingData.speed }}
                             </p>
-                            <p class="flex items-center">
+                            <p
+                                v-if="listingData.color"
+                                class="flex items-center"
+                            >
                                 <PaletteIcon
                                     class="mr-2 h-4 w-4 text-gray-500"
                                 />
                                 Color:
-                                {{ listing.color }}
+                                {{ listingData.color }}
                             </p>
                         </div>
                     </div>
                     <div>
                         <div class="space-y-4">
-                            <p class="flex items-center">
+                            <p
+                                v-if="listingData.release_country"
+                                class="flex items-center"
+                            >
                                 <GlobeIcon class="mr-2 h-4 w-4 text-gray-500" />
                                 Country:
-                                {{ listing.release_country }}
+                                {{ listingData.release_country }}
                             </p>
-                            <p class="flex items-center">
+                            <p
+                                v-if="listingData.release_year"
+                                class="flex items-center"
+                            >
                                 <CalendarIcon
                                     class="mr-2 h-4 w-4 text-gray-500"
                                 />
                                 Year:
-                                {{ listing.release_year }}
+                                {{ listingData.release_year }}
                             </p>
-                            <p class="flex items-center">
+                            <p
+                                v-if="listingData.release_label"
+                                class="flex items-center"
+                            >
                                 <BuildingIcon
                                     class="mr-2 h-4 w-4 text-gray-500"
                                 />
                                 Record label:
-                                {{ listing.release_label }}
+                                {{ listingData.release_label }}
                             </p>
-                            <p class="flex items-center">
+                            <p
+                                v-if="listingData.release_cat_no"
+                                class="flex items-center"
+                            >
                                 <HashIcon class="mr-2 h-4 w-4 text-gray-500" />
-                                Catalog number: {{ listing.release_cat_no }}
+                                Catalog number: {{ listingData.release_cat_no }}
                             </p>
-                            <p class="flex items-center">
+                            <p
+                                v-if="listingData.release_matrix_no"
+                                class="flex items-center"
+                            >
                                 <HashIcon class="mr-2 h-4 w-4 text-gray-500" />
                                 Matrix number:
-                                {{ listing.release_matrix_no }}
+                                {{ listingData.release_matrix_no }}
                             </p>
-                            <p class="flex items-center">
+                            <p
+                                v-if="listingData.release_upc"
+                                class="flex items-center"
+                            >
                                 <HashIcon class="mr-2 h-4 w-4 text-gray-500" />
                                 UPC:
-                                {{ listing.release_upc }}
+                                {{ listingData.release_upc }}
                             </p>
                         </div>
                     </div>
                 </div>
-
+                <!-- TODO - Make seller info dynamic -->
                 <div class="border-t pt-4">
                     <h2 class="mb-2 text-xl font-semibold">
                         Seller Information
                     </h2>
                     <div class="flex items-center space-x-1">
+                        <img
+                            v-if="seller.avatar_url"
+                            :src="seller.avatar_url"
+                            :alt="seller.name"
+                            class="h-12 w-12 rounded-full object-cover"
+                        />
                         <UserCircleIcon
+                            v-else
                             class="h-12 w-12 rounded-full text-gray-300"
                         />
                         <div>
-                            <p class="font-medium">VinylVault</p>
+                            <p class="font-medium">{{ sellerData.name }}</p>
                             <div class="flex items-center">
                                 <StarIcon class="h-4 w-4 text-yellow-400" />
                                 <span class="pl-1">4.9 (382 reviews)</span>
@@ -278,20 +349,23 @@ TODO - Format images so they are square and have a max height of 400px
                     </div>
                 </div>
 
-                <h2 class="text-xl font-semibold">More from this seller</h2>
-                <div class="grid grid-cols-4 gap-4">
-                    <button
-                        v-for="listing in mockListings"
-                        :key="listing.title"
-                        class="aspect-square overflow-hidden rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                        <img
-                            :src="listing.images[0]"
-                            :alt="`${listing.title}`"
-                            class="h-full w-full object-cover"
-                        />
-                    </button>
-                </div>
+                <template v-if="sellerListings.length > 0">
+                    <h2 class="text-xl font-semibold">More from this seller</h2>
+                    <div class="grid grid-cols-4 gap-4">
+                        <Link
+                            v-for="listingData in sellerListings"
+                            :key="listingData.id"
+                            :href="route('listings.show', listingData.id)"
+                            class="aspect-square overflow-hidden rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                            <img
+                                :src="listingData.images[0].url"
+                                :alt="listingData.title"
+                                class="h-full w-full object-cover"
+                            />
+                        </Link>
+                    </div>
+                </template>
             </div>
         </div>
     </div>

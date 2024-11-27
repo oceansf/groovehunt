@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full/12">
+    <div class="w-full">
         <div class="inline-block min-w-full py-2 align-middle">
             <table class="min-w-full divide-y divide-gray-300">
                 <tbody class="divide-y divide-gray-200">

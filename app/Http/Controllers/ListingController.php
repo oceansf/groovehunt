@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Services\ImageHandlerService;
+use App\Http\Resources\ListingResource;
+use App\Http\Resources\UserResource;
 
 class ListingController extends Controller
 {
@@ -146,8 +148,19 @@ class ListingController extends Controller
      */
     public function show(Listing $listing)
     {
+        $listing->load('seller');
+        
+        $sellerListings = $listing->seller
+            ->listings()
+            ->where('id', '!=', $listing->id)
+            ->latest()
+            ->take(4)
+            ->get();
+
         return Inertia::render('ViewListing', [
-            'listing' => $listing
+            'listing' => new ListingResource($listing),
+            'seller' => new UserResource($listing->seller),
+            'sellerListings' => ListingResource::collection($sellerListings),
         ]);
     }
 

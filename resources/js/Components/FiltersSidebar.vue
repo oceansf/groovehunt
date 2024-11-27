@@ -50,7 +50,7 @@ defineProps({
                     </DisclosureButton>
                 </h3>
                 <DisclosurePanel class="pt-6">
-                    <div class="space-y-4">
+                    <div class="space-y-4 pl-1">
                         <div
                             v-for="(option, optionIdx) in section.options"
                             :key="option.value"

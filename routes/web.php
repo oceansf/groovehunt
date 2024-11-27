@@ -13,7 +13,9 @@ Route::get('/about', function () {
     return Inertia::render('About');
 });
 
+// Show a single listing
 Route::get('/listings/{listing}', [ListingController::class, 'show'])->name('listings.show');
+
 
 // Protected routes
 Route::middleware('auth')->group(function () {
