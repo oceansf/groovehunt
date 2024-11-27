@@ -31,6 +31,23 @@ const userNavigation = [
     { name: "Collection", href: "#", method: "get", current: false },
     { name: "Sign Out", href: "/logout", method: "post", current: false },
 ];
+
+// Watch for changes in the menu state and toggle body scroll
+const toggleBodyScroll = (isOpen) => {
+    if (isOpen) {
+        document.body.style.overflow = "hidden";
+        document.body.style.position = "fixed";
+        document.body.style.width = "100%";
+        document.body.style.top = `-${window.scrollY}px`;
+    } else {
+        const scrollY = document.body.style.top;
+        document.body.style.overflow = "";
+        document.body.style.position = "";
+        document.body.style.width = "";
+        document.body.style.top = "";
+        window.scrollTo(0, parseInt(scrollY || "0") * -1);
+    }
+};
 </script>
 
 <template>
@@ -178,6 +195,8 @@ const userNavigation = [
                     leave-active-class="duration-100 ease-in"
                     leave-from-class="opacity-100 scale-100"
                     leave-to-class="opacity-0 scale-95"
+                    @enter="toggleBodyScroll(true)"
+                    @leave="toggleBodyScroll(false)"
                 >
                     <div
                         v-if="open"

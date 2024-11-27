@@ -90,7 +90,7 @@ TODO - Format images so they are square and have a max height of 400px
             <!-- Image Gallery -->
             <div class="space-y-4">
                 <div
-                    class="h-[400px] overflow-hidden rounded-lg bg-gray-100 md:w-[400px]"
+                    class="h-[400px] md:h-[488px] overflow-hidden rounded-lg bg-gray-100"
                 >
                     <img
                         :src="listingData.images[currentImageIndex].url"

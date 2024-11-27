@@ -1,7 +1,7 @@
 <script setup>
 import { ref, watch, onMounted } from "vue";
 import { useForm } from "@inertiajs/vue3";
-import { DiscAlbum, Trash2 } from "lucide-vue-next";
+import { DiscAlbum, Trash2, EditIcon } from "lucide-vue-next";
 import DetailsMenu from "@/Components/Form/DetailsMenu.vue";
 import FormTextInput from "@/Components/Form/FormTextInput.vue";
 import FormSelectInput from "@/Components/Form/FormSelectInput.vue";
@@ -14,6 +14,7 @@ import {
     SwitchLabel,
 } from "@headlessui/vue";
 import FormCurrencyInput from "@/Components/Form/FormCurrencyInput.vue";
+import DeleteConfirmModal from "@/Components/DeleteConfirmModal.vue";
 import formats from "../../Shared/formats";
 import conditions from "../../Shared/conditions";
 
@@ -24,6 +25,7 @@ const props = defineProps({
     },
 });
 
+const showDeleteModal = ref(false);
 const allowOffers = ref(props.listing.allow_offers);
 
 // Sync allowOffers with form state
@@ -57,12 +59,12 @@ const form = useForm({
 const handleSubmit = () => {
     // Get the original values from props
     const original = props.listing;
-    
+
     // Create an object to store only changed values
     const changes = {};
 
     // Compare each field and only include changed ones
-    Object.keys(form).forEach(key => {
+    Object.keys(form).forEach((key) => {
         if (form[key] !== original[key]) {
             changes[key] = form[key];
         }
@@ -70,33 +72,37 @@ const handleSubmit = () => {
 
     // Only submit if there are actually changes
     if (Object.keys(changes).length > 0) {
-        form.put(route("listings.update", { listing: props.listing.data.id }), changes, {
-            preserveScroll: true,
-            onSuccess: () => {
-                console.log("Listing updated successfully");
+        form.put(
+            route("listings.update", { listing: props.listing.data.id }),
+            changes,
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    console.log("Listing updated successfully");
+                },
+                onError: (errors) => {
+                    console.error("Form submission errors:", errors);
+                },
             },
-            onError: (errors) => {
-                console.error("Form submission errors:", errors);
-            },
-        });
+        );
     }
 };
 
+const confirmDelete = () => {
+    showDeleteModal.value = true;
+};
+
 const handleDelete = () => {
-    if (
-        confirm(
-            "Are you sure you want to delete this listing? This action cannot be undone.",
-        )
-    ) {
-        form.delete(route("listings.destroy", { listing: props.listing.data.id }), {
-            onSuccess: () => {
-                console.log("Listing deleted successfully");
-            },
-            onError: (errors) => {
-                console.error("Delete errors:", errors);
-            },
-        });
-    }
+    form.delete(route("listings.destroy", { listing: props.listing.data.id }), {
+        onSuccess: () => {
+            console.log("Listing deleted successfully");
+            showDeleteModal.value = false;
+        },
+        onError: (errors) => {
+            console.error("Delete errors:", errors);
+            showDeleteModal.value = false;
+        },
+    });
 };
 
 watch(
@@ -117,7 +123,7 @@ watch(
                     <header>
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-2">
-                                <DiscAlbum :size="32" />
+                                <EditIcon :size="32" />
                                 <h2
                                     class="text-3xl font-bold leading-7 text-gray-900"
                                 >
@@ -337,7 +343,7 @@ watch(
             <div class="mt-6 flex items-center justify-between gap-x-6">
                 <button
                     type="button"
-                    @click="handleDelete"
+                    @click.prevent="confirmDelete"
                     class="inline-flex items-center gap-2 rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500"
                 >
                     <Trash2 class="h-4 w-4" />
@@ -362,5 +368,13 @@ watch(
                 </div>
             </div>
         </form>
+
+        <!-- Delete Modal -->
+        <DeleteConfirmModal
+            :is-open="showDeleteModal"
+            :is-loading="form.processing"
+            @close="showDeleteModal = false"
+            @confirm="handleDelete"
+        />
     </div>
 </template>
