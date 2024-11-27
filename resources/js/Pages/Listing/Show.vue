@@ -14,6 +14,7 @@ import {
     TruckIcon,
     EditIcon,
     MailIcon,
+    BarcodeIcon,
 } from "lucide-vue-next";
 import { UserCircleIcon, StarIcon } from "@heroicons/vue/20/solid";
 import Tracklist from "@/Components/Tracklist.vue";
@@ -39,7 +40,7 @@ const canEdit = computed(() => {
 const props = defineProps({
     listing: Object,
     seller: Object,
-    sellerListings: Array,
+    sellerListings: Object,
 });
 
 const listingData = props.listing.data;
@@ -97,7 +98,7 @@ TODO - Format images so they are square and have a max height of 400px
                         class="h-full w-full object-cover"
                     />
                 </div>
-                <div class="grid w-[400px] grid-cols-4 gap-4">
+                <div class="grid md:w-[400px] grid-cols-4 gap-4">
                     <button
                         v-for="(image, index) in listingData.images"
                         :key="index"
@@ -151,11 +152,6 @@ TODO - Format images so they are square and have a max height of 400px
                                 <em>Shipping: ${{ listingData.shipping }}</em>
                             </div>
                         </div>
-                        <!-- <span
-                            class="rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800"
-                        >
-                            {{ listingData.media_condition }}
-                        </span> -->
                         <ConditionBadge
                             :condition="listingData.media_condition"
                         />
@@ -325,7 +321,9 @@ TODO - Format images so they are square and have a max height of 400px
                                 v-if="listingData.release_upc"
                                 class="flex items-center"
                             >
-                                <HashIcon class="mr-2 h-4 w-4 text-gray-500" />
+                                <BarcodeIcon
+                                    class="mr-2 h-4 w-4 text-gray-500"
+                                />
                                 UPC:
                                 {{ listingData.release_upc }}
                             </p>
