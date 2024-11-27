@@ -116,14 +116,14 @@ const mobileFiltersOpen = ref(false);
                     </div>
                 </div>
 
-                <section aria-labelledby="products-heading" class="pb-24 pt-6">
-                    <h2 id="products-heading" class="sr-only">Listings</h2>
+                <section aria-labelledby="filters-heading" class="pb-24 pt-6">
+                    <h2 id="filters-heading" class="sr-only">Filters</h2>
 
                     <div
-                        class="grid grid-cols-1 gap-x-6 gap-y-10 lg:grid-cols-5"
+                    class="grid grid-cols-1 gap-y-10 lg:grid-cols-5"
                     >
-                        <!-- Filters -->
-                        <FiltersSidebar :filters="filters" />
+                    <!-- Filters side menu -->
+                    <FiltersSidebar :filters="filters" />
 
                         <!-- Product grid -->
                         <div class="lg:col-span-4">

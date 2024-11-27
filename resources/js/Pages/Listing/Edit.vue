@@ -1,7 +1,7 @@
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, onMounted } from "vue";
 import { useForm } from "@inertiajs/vue3";
-import { DiscAlbum } from "lucide-vue-next";
+import { DiscAlbum, Trash2 } from "lucide-vue-next";
 import DetailsMenu from "@/Components/Form/DetailsMenu.vue";
 import FormTextInput from "@/Components/Form/FormTextInput.vue";
 import FormSelectInput from "@/Components/Form/FormSelectInput.vue";
@@ -14,10 +14,17 @@ import {
     SwitchLabel,
 } from "@headlessui/vue";
 import FormCurrencyInput from "@/Components/Form/FormCurrencyInput.vue";
-import formats from "../Shared/formats";
-import conditions from "../Shared/conditions";
+import formats from "../../Shared/formats";
+import conditions from "../../Shared/conditions";
 
-const allowOffers = ref(false);
+const props = defineProps({
+    listing: {
+        type: Object,
+        required: true,
+    },
+});
+
+const allowOffers = ref(props.listing.allow_offers);
 
 // Sync allowOffers with form state
 watch(allowOffers, (newValue) => {
@@ -25,41 +32,71 @@ watch(allowOffers, (newValue) => {
 });
 
 const form = useForm({
-    title: "",
-    artist: "",
-    format: "",
-    media_condition: "",
-    sleeve_condition: "",
-    description: "",
-    images: [],
-    price: "",
-    allow_offers: false,
-    min_offer: "",
-    shipping: "",
-    genre: "",
-    speed: "",
-    color: "",
-    release_country: "",
-    release_year: "",
-    release_label: "",
-    release_cat_no: "",
-    release_matrix_no: "",
-    release_upc: "",
+    title: props.listing.title,
+    artist: props.listing.artist,
+    format: props.listing.format,
+    media_condition: props.listing.media_condition,
+    sleeve_condition: props.listing.sleeve_condition,
+    description: props.listing.description,
+    images: props.listing.images || [],
+    price: props.listing.price,
+    allow_offers: props.listing.allow_offers,
+    min_offer: props.listing.min_offer,
+    shipping: props.listing.shipping,
+    genre: props.listing.genre,
+    speed: props.listing.speed,
+    color: props.listing.color,
+    release_country: props.listing.release_country,
+    release_year: props.listing.release_year,
+    release_label: props.listing.release_label,
+    release_cat_no: props.listing.release_cat_no,
+    release_matrix_no: props.listing.release_matrix_no,
+    release_upc: props.listing.release_upc,
 });
 
-// TODO - Add shipping-from field and frontend validation
 const handleSubmit = () => {
+    // Get the original values from props
+    const original = props.listing;
+    
+    // Create an object to store only changed values
+    const changes = {};
 
-    form.post(route("listings.store"), {
-        preserveScroll: true,
-        onSuccess: () => {
-            // Optional: Add success notification or redirect
-            console.log("Form submitted successfully");
-        },
-        onError: (errors) => {
-            console.error("Form submission errors:", errors);
-        },
+    // Compare each field and only include changed ones
+    Object.keys(form).forEach(key => {
+        if (form[key] !== original[key]) {
+            changes[key] = form[key];
+        }
     });
+
+    // Only submit if there are actually changes
+    if (Object.keys(changes).length > 0) {
+        form.put(route("listings.update", { listing: props.listing.data.id }), changes, {
+            preserveScroll: true,
+            onSuccess: () => {
+                console.log("Listing updated successfully");
+            },
+            onError: (errors) => {
+                console.error("Form submission errors:", errors);
+            },
+        });
+    }
+};
+
+const handleDelete = () => {
+    if (
+        confirm(
+            "Are you sure you want to delete this listing? This action cannot be undone.",
+        )
+    ) {
+        form.delete(route("listings.destroy", { listing: props.listing.data.id }), {
+            onSuccess: () => {
+                console.log("Listing deleted successfully");
+            },
+            onError: (errors) => {
+                console.error("Delete errors:", errors);
+            },
+        });
+    }
 };
 
 watch(
@@ -78,20 +115,20 @@ watch(
                 <div class="border-b border-gray-900/10 pb-12">
                     <!-- Heading -->
                     <header>
-                        <div class="flex items-center gap-2">
-                            <DiscAlbum :size="32" />
-                            <h2
-                                class="text-3xl font-bold leading-7 text-gray-900"
-                            >
-                                Create a listing
-                            </h2>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <DiscAlbum :size="32" />
+                                <h2
+                                    class="text-3xl font-bold leading-7 text-gray-900"
+                                >
+                                    Edit listing
+                                </h2>
+                            </div>
                         </div>
-                        <br />
-                        <p class="mt-1 text-sm leading-6 text-gray-600">
-                            Enter details about your listing to list on the
-                            market. The more information you provide about your
-                            listing the more potential buyers can make an
-                            informed decision.
+                        <p class="mt-4 text-sm leading-6 text-gray-600">
+                            Update the details of your listing. The more
+                            information you provide about your listing the more
+                            potential buyers can make an informed decision.
                         </p>
                     </header>
 
@@ -103,6 +140,7 @@ watch(
                             id="title"
                             v-model="form.title"
                             placeholder="e.g., The Beatles"
+                            :value="form.title"
                             label="Title"
                         />
 
@@ -124,7 +162,7 @@ watch(
                                 Item details
                             </h2>
                             <p class="mt-1 text-sm leading-6 text-gray-600">
-                                Enter specific details about your listing
+                                Update specific details about your listing
                             </p>
                         </div>
 
@@ -160,13 +198,32 @@ watch(
                         />
 
                         <!-- Photos upload -->
-                        <FormFileUpload
-                            :form="form"
-                            v-model="form.images"
-                            id="images"
-                            label="Photos"
-                            help-text="Add up to 12 photos. The first photo will be your listing's cover photo."
-                        />
+                        <div>
+                            <FormFileUpload
+                                :form="form"
+                                v-model="form.images"
+                                id="images"
+                                label="Photos"
+                                help-text="Add up to 12 photos. The first photo will be your listing's cover photo. Current photos will be replaced if you upload new ones."
+                            />
+                            <div
+                                v-if="form.images && form.images.length"
+                                class="mt-2"
+                            >
+                                <p class="text-sm text-gray-500">
+                                    Current photos:
+                                </p>
+                                <div class="mt-2 grid grid-cols-3 gap-4">
+                                    <img
+                                        v-for="(image, index) in form.images"
+                                        :key="index"
+                                        :src="image"
+                                        alt="Listing photo"
+                                        class="h-24 w-24 rounded-lg object-cover"
+                                    />
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- Description field -->
                         <FormTextarea
@@ -193,8 +250,8 @@ watch(
                                 Pricing
                             </h2>
                             <p class="mt-1 text-sm leading-6 text-gray-600">
-                                Enter how much the buyer will pay for your item
-                                and any additional costs for shipping to them
+                                Update the price and shipping costs for your
+                                item
                             </p>
                         </div>
 
@@ -219,15 +276,17 @@ watch(
                                         as="span"
                                         class="text-sm/6 font-medium text-gray-900"
                                         passive
-                                        >Allow offers?</SwitchLabel
                                     >
+                                        Allow offers?
+                                    </SwitchLabel>
                                     <SwitchDescription
                                         as="span"
                                         class="text-sm text-gray-600"
-                                        >Buyers interested in your item can make
-                                        you offers. You can accept, counter or
-                                        decline.</SwitchDescription
                                     >
+                                        Buyers interested in your item can make
+                                        you offers. You can accept, counter or
+                                        decline.
+                                    </SwitchDescription>
                                 </span>
                                 <Switch
                                     v-model="allowOffers"
@@ -262,8 +321,6 @@ watch(
                             </div>
                         </div>
 
-                        <!-- TODO: Add shipping-from field -->
-
                         <!-- Shipping field -->
                         <FormCurrencyInput
                             :form="form"
@@ -277,22 +334,32 @@ watch(
             </div>
 
             <!-- Action buttons -->
-            <div class="mt-6 flex items-center justify-end gap-x-6">
+            <div class="mt-6 flex items-center justify-between gap-x-6">
                 <button
                     type="button"
-                    class="text-sm font-semibold leading-6 text-gray-900"
-                    :disabled="form.processing"
+                    @click="handleDelete"
+                    class="inline-flex items-center gap-2 rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500"
                 >
-                    Cancel
+                    <Trash2 class="h-4 w-4" />
+                    Delete Listing
                 </button>
-                <button
-                    type="submit"
-                    class="rounded-md bg-slate-900 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50"
-                    :disabled="form.processing"
-                >
-                    <span v-if="form.processing">Listing...</span>
-                    <span v-else>List item for sale</span>
-                </button>
+                <div class="flex gap-6">
+                    <button
+                        type="button"
+                        class="text-sm font-semibold leading-6 text-gray-900"
+                        :disabled="form.processing"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        type="submit"
+                        class="rounded-md bg-slate-900 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50"
+                        :disabled="form.processing"
+                    >
+                        <span v-if="form.processing">Saving...</span>
+                        <span v-else>Save changes</span>
+                    </button>
+                </div>
             </div>
         </form>
     </div>

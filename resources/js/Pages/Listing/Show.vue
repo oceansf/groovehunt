@@ -26,7 +26,15 @@ import { usePage } from "@inertiajs/vue3";
 dayjs.extend(relativeTime);
 
 const page = usePage();
-const currentUser = computed(() => page.props.auth.user);
+const currentUser = computed(() => {
+    return page.props?.auth?.user;
+});
+
+const canEdit = computed(() => {
+    const hasUser = Boolean(currentUser.value?.id);
+    const isOwner = currentUser.value?.id === listingData.seller?.id;
+    return hasUser && isOwner;
+});
 
 const props = defineProps({
     listing: Object,
@@ -76,25 +84,25 @@ const handleOutsideClick = (event) => {
 
 TODO - Format images so they are square and have a max height of 400px
 <template>
-    <div class="container mx-auto h-full max-w-5xl px-4 py-8">
+    <div class="container mx-auto h-full max-w-5xl px-2 py-8">
         <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
             <!-- Image Gallery -->
             <div class="space-y-4">
                 <div
-                    class="aspect-square overflow-hidden rounded-lg bg-gray-100"
+                    class="h-[400px] overflow-hidden rounded-lg bg-gray-100 md:w-[400px]"
                 >
                     <img
                         :src="listingData.images[currentImageIndex].url"
                         :alt="listingData.title"
-                        class="h-full w-full object-contain"
+                        class="h-full w-full object-cover"
                     />
                 </div>
-                <div class="grid grid-cols-4 gap-4">
+                <div class="grid w-[400px] grid-cols-4 gap-4">
                     <button
                         v-for="(image, index) in listingData.images"
                         :key="index"
                         @click="currentImageIndex = index"
-                        class="aspect-square overflow-hidden rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        class="h-[90px] w-[90px] overflow-hidden rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         :class="{
                             'ring-2 ring-blue-500': currentImageIndex === index,
                         }"
@@ -115,17 +123,16 @@ TODO - Format images so they are square and have a max height of 400px
                         <h1 class="text-3xl font-bold">
                             {{ listingData.title }}
                         </h1>
-                        <button
-                            v-if="
-                                currentUser?.id &&
-                                listingData.user_id === currentUser.id
-                            "
-                            class="inline-flex shrink-0 items-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-50 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                            @click="$emit('click')"
+                        <Link
+                            v-if="canEdit"
+                            :href="`/listings/${listingData.id}/edit`"
+                            class="inline-flex shrink-0 items-center rounded-md border-gray-300 px-2 py-2 text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-50 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 md:border md:px-3"
                         >
-                            <EditIcon class="mr-2 h-4 w-4" />
-                            <span>Edit Listing</span>
-                        </button>
+                            <EditIcon class="h-4 w-4" />
+                            <span class="ml-2 hidden md:inline"
+                                >Edit Listing</span
+                            >
+                        </Link>
                     </div>
                     <p class="text-xl text-gray-600">
                         {{ listingData.artist }}
@@ -149,7 +156,9 @@ TODO - Format images so they are square and have a max height of 400px
                         >
                             {{ listingData.media_condition }}
                         </span> -->
-                        <ConditionBadge :condition="listingData.media_condition" />
+                        <ConditionBadge
+                            :condition="listingData.media_condition"
+                        />
                     </div>
                     <div class="space-y-2">
                         <div class="flex items-center gap-2">
@@ -198,7 +207,7 @@ TODO - Format images so they are square and have a max height of 400px
                         >
                     </div>
                 </div>
-
+                <!-- TODO: Fix description not submitting -->
                 <div v-if="listingData.discription" class="border-t pt-4">
                     <h2 class="mb-2 text-xl font-semibold">Description</h2>
                     <p class="text-gray-600">{{ listingData.description }}</p>

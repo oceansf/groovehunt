@@ -45,12 +45,12 @@ class ImageHandlerService
 
         // Store the processed image
         $path = 'listings/' . $filename;
-        Storage::disk('public')->put($path, $img->toJpeg());
+        Storage::disk('s3')->put($path, $img->toJpeg());
 
         // Return the path and any additional metadata you want to store
         return [
             'path' => $path,
-            'url' => Storage::disk('public')->url($path),
+            'url' => Storage::disk('s3')->url($path),
             'original_name' => $image->getClientOriginalName(),
             'size' => $image->getSize(),
             'mime_type' => $image->getMimeType(),

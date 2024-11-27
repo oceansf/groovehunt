@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Services\ImageHandlerService;
 use App\Http\Resources\ListingResource;
 use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Storage;
 
 class ListingController extends Controller
 {
@@ -52,7 +53,7 @@ class ListingController extends Controller
      */
     public function create()
     {
-        return Inertia::render('CreateListing');
+        return Inertia::render('Listing/Create');
     }
 
     /**
@@ -157,7 +158,7 @@ class ListingController extends Controller
             ->take(4)
             ->get();
 
-        return Inertia::render('ViewListing', [
+        return Inertia::render('Listing/Show', [
             'listing' => new ListingResource($listing),
             'seller' => new UserResource($listing->seller),
             'sellerListings' => ListingResource::collection($sellerListings),
@@ -169,7 +170,14 @@ class ListingController extends Controller
      */
     public function edit(Listing $listing)
     {
-        //
+        // Check if the authenticated user owns the listing
+        if ($listing->seller_id !== auth()->id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        return Inertia::render('Listing/Edit', [
+            'listing' => new ListingResource($listing),
+        ]);
     }
 
     /**
@@ -177,7 +185,48 @@ class ListingController extends Controller
      */
     public function update(Request $request, Listing $listing)
     {
-        //
+        if ($listing->seller_id !== auth()->id()) {
+            abort(403, 'Unauthorized action.');
+        }
+    
+        try {
+            // Only validate fields that were actually sent
+            $rules = [];
+            $data = $request->all();
+            
+            // Build validation rules only for submitted fields
+            if (isset($data['title'])) {
+                $rules['title'] = 'string|max:255';
+            }
+            if (isset($data['artist'])) {
+                $rules['artist'] = 'string|max:255';
+            }
+            if (isset($data['format'])) {
+                $rules['format'] = 'string|in:LP,45,78,EP,Single';
+            }
+            if (isset($data['media_condition'])) {
+                $rules['media_condition'] = 'string|in:Mint,Near Mint,Very Good Plus,Very Good,Good Plus,Good,Fair,Poor';
+            }
+            if (isset($data['price'])) {
+                $rules['price'] = 'numeric|min:0';
+            }
+            // Add other fields as needed...
+    
+            $validated = $request->validate($rules);
+    
+            // Update only the changed fields
+            $listing->update($validated);
+    
+            return redirect()
+                ->route('listings.show', ['listing' => $listing->id])
+                ->with('success', 'Listing updated successfully!');
+    
+        } catch (\Exception $e) {
+            \Log::error('Error in ListingController@update: ' . $e->getMessage());
+            return back()
+                ->withInput()
+                ->withErrors(['error' => 'There was an error updating your listing: ' . $e->getMessage()]);
+        }
     }
 
     /**
@@ -185,6 +234,37 @@ class ListingController extends Controller
      */
     public function destroy(Listing $listing)
     {
-        //
+        \Log::info('=== Starting ListingController@destroy ===');
+        
+        try {
+            // Check if the authenticated user owns the listing
+            if ($listing->seller_id !== auth()->id()) {
+                abort(403, 'Unauthorized action.');
+            }
+
+            // Delete associated images from storage
+            if (!empty($listing->images)) {
+                foreach ($listing->images as $image) {
+                    Storage::delete($image);
+                }
+            }
+
+            \Log::info('Deleting listing:', ['listing_id' => $listing->id]);
+
+            // Delete the listing
+            $listing->delete();
+
+            \Log::info('Listing deleted successfully');
+
+            return redirect()
+                ->route('home')
+                ->with('success', 'Listing deleted successfully!');
+
+        } catch (\Exception $e) {
+            \Log::error('Error in ListingController@destroy: ' . $e->getMessage());
+            \Log::error('Stack trace: ' . $e->getTraceAsString());
+            
+            return back()->withErrors(['error' => 'There was an error deleting your listing: ' . $e->getMessage()]);
+        }
     }
 }

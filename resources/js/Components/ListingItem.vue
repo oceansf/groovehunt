@@ -17,7 +17,7 @@ function truncateText(length, text) {
             <img 
                 :src="listing.images[0].url" 
                 :alt="listing.images[0].url" 
-                class="h-full w-full object-cover object-center transition-all duration-300 ease-in-out group-hover:scale-105 group-hover:opacity-75" 
+                class="h-full w-full object-cover object-center transition-all duration-300 ease-in-out md:group-hover:scale-105 md:group-hover:opacity-75" 
             />
         </div>
         <div class="mt-2 flex justify-between">
