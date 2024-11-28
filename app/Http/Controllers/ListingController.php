@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\Listing;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ListingController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Illuminate\Http\Request;
 use App\Services\ImageHandlerService;
 use App\Http\Resources\ListingResource;
 use App\Http\Resources\UserResource;
@@ -171,9 +175,7 @@ class ListingController extends Controller
     public function edit(Listing $listing)
     {
         // Check if the authenticated user owns the listing
-        if ($listing->seller_id !== auth()->id()) {
-            abort(403, 'Unauthorized action.');
-        }
+        Gate::authorize('update-listing', $listing);
 
         return Inertia::render('Listing/Edit', [
             'listing' => new ListingResource($listing),
@@ -185,9 +187,8 @@ class ListingController extends Controller
      */
     public function update(Request $request, Listing $listing)
     {
-        if ($listing->seller_id !== auth()->id()) {
-            abort(403, 'Unauthorized action.');
-        }
+        // Check if the authenticated user owns the listing
+        Gate::authorize('update-listing', $listing);
     
         try {
             // Only validate fields that were actually sent
@@ -238,9 +239,7 @@ class ListingController extends Controller
         
         try {
             // Check if the authenticated user owns the listing
-            if ($listing->seller_id !== auth()->id()) {
-                abort(403, 'Unauthorized action.');
-            }
+            Gate::authorize('delete-listing', $listing);
 
             // Delete associated images from storage
             if (!empty($listing->images)) {
