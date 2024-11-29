@@ -27,9 +27,9 @@ Route::middleware('auth')->group(function () {
     // Listing management routes
     Route::get('/sell', [ListingController::class, 'create'])->name('listings.create');
     Route::post('/sell', [ListingController::class, 'store'])->name('listings.store');
-    Route::get('/listings/{listing}/edit', [ListingController::class, 'edit'])->name('listings.edit');
-    Route::put('/listings/{listing}', [ListingController::class, 'update'])->name('listings.update');
-    Route::delete('/listings/{listing}', [ListingController::class, 'destroy'])->name('listings.destroy');
+    Route::get('/listings/{listing}/edit', [ListingController::class, 'edit'])->can('update', 'listing')->name('listings.edit');
+    Route::put('/listings/{listing}', [ListingController::class, 'update'])->can('update', 'listing')->name('listings.update');
+    Route::delete('/listings/{listing}', [ListingController::class, 'destroy'])->can('delete', 'listing')->name('listings.destroy');
 });
 
 require __DIR__.'/auth.php';

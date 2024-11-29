@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Listing;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ListingController;
@@ -65,10 +64,6 @@ class ListingController extends Controller
      */
     public function store(Request $request)
     {
-        \Log::info('=== Starting ListingController@store ===');
-        \Log::info('Auth check:', ['is_authenticated' => auth()->check(), 'user_id' => auth()->id()]);
-        \Log::info('Request data:', $request->all());
-        \Log::info('Files:', ['has_files' => $request->hasFile('images'), 'files' => $request->allFiles()]);
 
         try {
             // Validate the request
@@ -101,24 +96,13 @@ class ListingController extends Controller
                 'notes' => 'nullable|string',
             ]);
 
-            \Log::info('Validation passed:', $validated);
-
             // Process and upload images
-            \Log::info('Starting image processing');
             $processedImages = $this->imageHandler->handleMultipleUploads($request->file('images'));
-            \Log::info('Images processed:', ['processed_images' => $processedImages]);
             
             // Get authenticated user
             $user = auth()->user();
-            \Log::info('User retrieved:', ['user_id' => $user->id]);
 
             // Create the listing
-            \Log::info('Creating listing with data:', [
-                'validated' => $validated,
-                'images' => $processedImages,
-                'seller_id' => $user->id
-            ]);
-
             $listing = $user->listings()->create([
                 ...$validated,
                 'images' => $processedImages,
@@ -128,9 +112,7 @@ class ListingController extends Controller
                 'views_count' => 0,
                 'shipping_restrictions' => $request->shipping_restrictions ?? [],
                 'last_price_update' => now(),
-            ]);
-
-            \Log::info('Listing created successfully:', ['listing_id' => $listing->id]);
+            ]);            
 
             // Use redirect() instead of to_route() for more explicit control
             return redirect()
@@ -174,9 +156,6 @@ class ListingController extends Controller
      */
     public function edit(Listing $listing)
     {
-        // Check if the authenticated user owns the listing
-        Gate::authorize('update-listing', $listing);
-
         return Inertia::render('Listing/Edit', [
             'listing' => new ListingResource($listing),
         ]);
@@ -187,9 +166,6 @@ class ListingController extends Controller
      */
     public function update(Request $request, Listing $listing)
     {
-        // Check if the authenticated user owns the listing
-        Gate::authorize('update-listing', $listing);
-    
         try {
             // Only validate fields that were actually sent
             $rules = [];
@@ -235,11 +211,8 @@ class ListingController extends Controller
      */
     public function destroy(Listing $listing)
     {
-        \Log::info('=== Starting ListingController@destroy ===');
-        
         try {
-            // Check if the authenticated user owns the listing
-            Gate::authorize('delete-listing', $listing);
+            
 
             // Delete associated images from storage
             if (!empty($listing->images)) {
@@ -248,12 +221,12 @@ class ListingController extends Controller
                 }
             }
 
-            \Log::info('Deleting listing:', ['listing_id' => $listing->id]);
+            
 
             // Delete the listing
             $listing->delete();
 
-            \Log::info('Listing deleted successfully');
+            
 
             return redirect()
                 ->route('home')

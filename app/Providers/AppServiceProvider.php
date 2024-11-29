@@ -5,10 +5,13 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Vite;
 use App\Policies\ListingPolicy;
-use Illuminate\Support\Facades\Gate;
+use App\Models\Listing;
 
 class AppServiceProvider extends ServiceProvider
 {
+    protected $policies = [
+        Listing::class => ListingPolicy::class,
+    ];
     /**
      * Register any application services.
      */
@@ -23,8 +26,5 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Vite::prefetch(concurrency: 3);
-
-        Gate::define('update-listing', [ListingPolicy::class, 'update']);
-        Gate::define('delete-listing', [ListingPolicy::class, 'delete']);
     }
 }
