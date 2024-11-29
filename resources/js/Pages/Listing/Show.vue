@@ -204,7 +204,7 @@ TODO - Format images so they are square and have a max height of 400px
                     </div>
                 </div>
                 <!-- TODO: Fix description not submitting -->
-                <div v-if="listingData.discription" class="border-t pt-4">
+                <div v-if="listingData.description" class="border-t pt-4">
                     <h2 class="mb-2 text-xl font-semibold">Description</h2>
                     <p class="text-gray-600">{{ listingData.description }}</p>
                 </div>

@@ -3,10 +3,16 @@ import { defineProps, defineEmits } from "vue";
 import FormInputLabel from "./FormInputLabel.vue";
 import FormError from "./FormError.vue";
 
-// Define props including both form and modelValue
-defineProps({
-    form: Object,
+const props = defineProps({
+    form: {
+        type: Object,
+        required: true,
+    },
     modelValue: {
+        type: [String, Number],
+        default: "",
+    },
+    value: {
         type: [String, Number],
         default: "",
     },
@@ -14,7 +20,6 @@ defineProps({
         type: String,
         default: "",
     },
-    // Add these new props
     id: {
         type: String,
         required: true,
@@ -29,7 +34,6 @@ defineProps({
     },
 });
 
-// Define emits for v-model to work
 const emit = defineEmits(["update:modelValue"]);
 </script>
 

@@ -40,13 +40,45 @@ const fileInput = ref(null);
 const dragOver = ref(false);
 const previewUrls = ref([]);
 
-// Create preview URLs for the images
+// Add this helper function
+const isFileObject = (file) => {
+    return typeof file === "object" && file !== null && "size" in file;
+};
+
+const getFileSize = (file) => {
+    if (isFileObject(file)) {
+        return `${(file.size / 1024 / 1024).toFixed(1)}MB`;
+    }
+    return "";
+};
+
+const getImageUrl = (file) => {
+    // If it's already a complete URL string, return it
+    if (typeof file === "string") {
+        return file;
+    }
+    // If it's an object with a URL property (from server)
+    if (file && typeof file === "object" && "url" in file) {
+        return file.url;
+    }
+    // If it's a File object
+    if (file instanceof File) {
+        return URL.createObjectURL(file);
+    }
+    return "";
+};
+
+// Update updatePreviews function
 const updatePreviews = (files) => {
     // Clear old preview URLs
-    previewUrls.value.forEach((url) => URL.revokeObjectURL(url));
-    previewUrls.value = Array.from(files).map((file) =>
-        URL.createObjectURL(file),
-    );
+    previewUrls.value.forEach((url) => {
+        if (url.startsWith("blob:")) {
+            // Only revoke blob URLs
+            URL.revokeObjectURL(url);
+        }
+    });
+
+    previewUrls.value = Array.from(files).map(getImageUrl);
 };
 
 const handleFileUpload = (e) => {
@@ -234,7 +266,7 @@ onBeforeUnmount(() => {
                             <div
                                 class="absolute bottom-2 left-2 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100"
                             >
-                                {{ (file.size / 1024 / 1024).toFixed(1) }}MB
+                                {{ getFileSize(file) }}
                             </div>
                             <div
                                 v-if="index === 0"

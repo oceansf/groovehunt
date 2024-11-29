@@ -34,28 +34,29 @@ watch(allowOffers, (newValue) => {
 });
 
 const form = useForm({
-    title: props.listing.title,
-    artist: props.listing.artist,
-    format: props.listing.format,
-    media_condition: props.listing.media_condition,
-    sleeve_condition: props.listing.sleeve_condition,
-    description: props.listing.description,
-    images: props.listing.images || [],
-    price: props.listing.price,
-    allow_offers: props.listing.allow_offers,
-    min_offer: props.listing.min_offer,
-    shipping: props.listing.shipping,
-    genre: props.listing.genre,
-    speed: props.listing.speed,
-    color: props.listing.color,
-    release_country: props.listing.release_country,
-    release_year: props.listing.release_year,
-    release_label: props.listing.release_label,
-    release_cat_no: props.listing.release_cat_no,
-    release_matrix_no: props.listing.release_matrix_no,
-    release_upc: props.listing.release_upc,
+    title: props.listing.data.title || "",
+    artist: props.listing.data.artist || "",
+    format: props.listing.data.format || "",
+    media_condition: props.listing.data.media_condition || "",
+    sleeve_condition: props.listing.data.sleeve_condition || "",
+    description: props.listing.data.description || "",
+    images: props.listing.data.images || [],
+    price: props.listing.data.price || "",
+    allow_offers: props.listing.data.allow_offers || false,
+    min_offer: props.listing.data.min_offer || "",
+    shipping: props.listing.data.shipping || "",
+    genre: props.listing.data.genre || "",
+    speed: props.listing.data.speed || "",
+    color: props.listing.data.color || "",
+    release_country: props.listing.data.release_country || "",
+    release_year: props.listing.data.release_year || "",
+    release_label: props.listing.data.release_label || "",
+    release_cat_no: props.listing.data.release_cat_no || "",
+    release_matrix_no: props.listing.data.release_matrix_no || "",
+    release_upc: props.listing.data.release_upc || "",
 });
 
+// Rest of the component logic remains the same
 const handleSubmit = () => {
     // Get the original values from props
     const original = props.listing;
@@ -119,7 +120,7 @@ watch(
         <form @submit.prevent="handleSubmit" enctype="multipart/form-data">
             <div class="space-y-12">
                 <div class="border-b border-gray-900/10 pb-12">
-                    <!-- Heading -->
+                    <!-- Header remains the same -->
                     <header>
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-2">
@@ -138,7 +139,6 @@ watch(
                         </p>
                     </header>
 
-                    <!-- Single column layout -->
                     <div class="mt-10 space-y-8">
                         <!-- Title field -->
                         <FormTextInput
@@ -146,7 +146,6 @@ watch(
                             id="title"
                             v-model="form.title"
                             placeholder="e.g., The Beatles"
-                            :value="form.title"
                             label="Title"
                         />
 
@@ -212,23 +211,6 @@ watch(
                                 label="Photos"
                                 help-text="Add up to 12 photos. The first photo will be your listing's cover photo. Current photos will be replaced if you upload new ones."
                             />
-                            <div
-                                v-if="form.images && form.images.length"
-                                class="mt-2"
-                            >
-                                <p class="text-sm text-gray-500">
-                                    Current photos:
-                                </p>
-                                <div class="mt-2 grid grid-cols-3 gap-4">
-                                    <img
-                                        v-for="(image, index) in form.images"
-                                        :key="index"
-                                        :src="image"
-                                        alt="Listing photo"
-                                        class="h-24 w-24 rounded-lg object-cover"
-                                    />
-                                </div>
-                            </div>
                         </div>
 
                         <!-- Description field -->
@@ -242,13 +224,13 @@ watch(
                             :rows="4"
                             placeholder="Enter details about your item..."
                         />
-
+                        <!-- TODO: Fix details menu not submitting changes -->
                         <!-- Additional fields -->
                         <DetailsMenu :form="form" />
 
                         <hr />
 
-                        <!-- Price field -->
+                        <!-- Pricing section -->
                         <div>
                             <h2
                                 class="text-xl font-semibold leading-7 text-gray-900"
@@ -261,6 +243,7 @@ watch(
                             </p>
                         </div>
 
+                        <!-- Price field -->
                         <FormCurrencyInput
                             :form="form"
                             v-model="form.price"
@@ -271,7 +254,7 @@ watch(
                             currency-symbol="$"
                         />
 
-                        <!-- Allow offer switch -->
+                        <!-- Allow offers switch -->
                         <div>
                             <SwitchGroup
                                 as="div"
