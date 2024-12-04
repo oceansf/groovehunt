@@ -93,7 +93,7 @@ watch(
                         informed decision.
                     </p>
                 </header>
-                
+
                 <!-- TODO: Fix no error messages showing on form submit -->
                     <!-- Single column layout -->
                     <div class="mt-10 space-y-8">
@@ -102,7 +102,7 @@ watch(
                             :form="form"
                             id="title"
                             v-model="form.title"
-                            placeholder="e.g., The Beatles"
+                            placeholder="e.g., Abbey Road (1969 Original Pressing)"
                             label="Title"
                         />
 

@@ -2,21 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Listing;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ListingController;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
-use App\Services\ImageHandlerService;
 use App\Http\Resources\ListingResource;
 use App\Http\Resources\UserResource;
-use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\StoreListingRequest;
 use App\Http\Requests\UpdateListingRequest;
+use App\Services\ImageHandlerService;
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 class ListingController extends Controller
 {
@@ -68,7 +63,7 @@ class ListingController extends Controller
         try {
             // Process and upload images
             $processedImages = $this->imageHandler->handleMultipleUploads($request->file('images'));
-            
+
             // Create the listing
             $listing = auth()->user()->listings()->create([
                 ...$request->validated(),
@@ -80,14 +75,14 @@ class ListingController extends Controller
                 'shipping_restrictions' => $request->shipping_restrictions ?? [],
                 'last_price_update' => now(),
             ]);
-            
+
             return redirect()
                 ->route('listings.show', ['listing' => $listing->id])
                 ->with('success', 'Listing created successfully!');
-                
+
         } catch (\Exception $e) {
             report($e); // Uses Laravel's error reporting system
-            
+
             return back()
                 ->withInput()
                 ->withErrors(['error' => 'There was an error creating your listing. Please try again.']);
@@ -100,7 +95,7 @@ class ListingController extends Controller
     public function show(Listing $listing)
     {
         $listing->load('seller');
-        
+
         $sellerListings = $listing->seller
             ->listings()
             ->where('id', '!=', $listing->id)
@@ -168,9 +163,9 @@ class ListingController extends Controller
                 ->with('success', 'Listing deleted successfully!');
 
         } catch (\Exception $e) {
-            \Log::error('Error in ListingController@destroy: ' . $e->getMessage());
-            \Log::error('Stack trace: ' . $e->getTraceAsString());
-            
+//            \Log::error('Error in ListingController@destroy: ' . $e->getMessage());
+//            \Log::error('Stack trace: ' . $e->getTraceAsString());
+
             return back()->withErrors(['error' => 'There was an error deleting your listing: ' . $e->getMessage()]);
         }
     }
