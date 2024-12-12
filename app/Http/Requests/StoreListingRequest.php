@@ -43,7 +43,7 @@ class StoreListingRequest extends FormRequest
             'release_matrix_no' => 'nullable|string|max:255',
             'release_upc' => 'nullable|string|max:255',
             'location' => 'nullable|string|max:255',
-            'local_pickup' => 'required|boolean',
+            'local_pickup' => 'nullable|boolean',
             'shipping_restrictions' => 'nullable|array',
             'weight' => 'nullable|numeric|min:0',
             'notes' => 'nullable|string',
