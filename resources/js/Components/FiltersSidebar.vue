@@ -10,7 +10,7 @@ defineProps({
 
 <template>
     <div
-        class="sticky top-[25px] z-10 hidden h-screen overflow-y-auto pb-36 pr-4 lg:block"
+        class="sticky top-[96px] hidden h-screen overflow-y-auto pb-36 pr-4 lg:block"
     >
         <h2 class="hidden text-xl font-medium md:inline-block">Filters</h2>
         <form>
