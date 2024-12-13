@@ -333,13 +333,14 @@ watch(
                     Delete Listing
                 </button>
                 <div class="flex gap-6">
-                    <button
-                        type="button"
+                    <Link
+                        as="button"
+                        :href="route('listings.show', { listing: props.listing.data.id })"
                         class="text-sm font-semibold leading-6 text-gray-900"
                         :disabled="form.processing"
                     >
                         Cancel
-                    </button>
+                    </Link>
                     <button
                         type="submit"
                         class="rounded-md bg-slate-900 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50"

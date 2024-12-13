@@ -80,21 +80,21 @@ watch(
                         <div class="flex items-center gap-2">
                             <DiscAlbum :size="32" />
                             <h2
-                            class="text-3xl font-bold leading-7 text-gray-900"
+                                class="text-3xl font-bold leading-7 text-gray-900"
                             >
-                            Create a listing
-                        </h2>
-                    </div>
-                    <br />
-                    <p class="mt-1 text-sm leading-6 text-gray-600">
-                        Enter details about your listing to list on the
-                        market. The more information you provide about your
-                        listing the more potential buyers can make an
-                        informed decision.
-                    </p>
-                </header>
+                                Create a listing
+                            </h2>
+                        </div>
+                        <br />
+                        <p class="mt-1 text-sm leading-6 text-gray-600">
+                            Enter details about your listing to list on the
+                            market. The more information you provide about your
+                            listing the more potential buyers can make an
+                            informed decision.
+                        </p>
+                    </header>
 
-                <!-- TODO: Fix no error messages showing on form submit -->
+                    <!-- TODO: Fix no error messages showing on form submit -->
                     <!-- Single column layout -->
                     <div class="mt-10 space-y-8">
                         <!-- Title field -->
@@ -277,13 +277,22 @@ watch(
 
             <!-- Action buttons -->
             <div class="mt-6 flex items-center justify-end gap-x-6">
-                <button
+                <!-- <button
                     type="button"
+                    class="text-sm font-semibold leading-6 text-gray-900"
+                    :disabled="form.processing"
+                    @click="route('home')"
+                >
+                    Cancel
+                </button> -->
+                <Link
+                    as="button"
+                    :href="route('home')"
                     class="text-sm font-semibold leading-6 text-gray-900"
                     :disabled="form.processing"
                 >
                     Cancel
-                </button>
+                </Link>
                 <button
                     type="submit"
                     class="rounded-md bg-slate-900 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50"
