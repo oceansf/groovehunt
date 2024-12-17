@@ -1,82 +1,258 @@
-# GrooveHunt
+# Groovehunt
 
-An online marketplace designed specifically for vinyl enthusiasts, offering a modern platform to buy and sell records and other music formats with lower fees and a better user experience.
+A community-driven marketplace for buying and selling physical music formats like vinyl records, CDs, and cassettes. Users can create their own music collections, track historical prices for specific releases and connect with other collectors. Built with Laravel, Vue.js, and Inertia.js.
 
-## Overview
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![PHP](https://img.shields.io/badge/PHP-8.1%2B-777BB4.svg)
+![Laravel](https://img.shields.io/badge/Laravel-10.x-FF2D20.svg)
+![Vue.js](https://img.shields.io/badge/Vue.js-3.x-4FC08D.svg)
 
-GrooveHunt aims to revolutionize the vinyl marketplace by addressing common pain points faced by sellers and buyers on existing platforms. With significantly lower selling fees (5% compared to competitors' 8-13%) and a vinyl-focused interface, GrooveHunt provides a superior alternative to platforms like Discogs and eBay.
-
-## Key Features
-
-### For Sellers
-- Low 5% selling fee with no hidden charges on shipping
-- Customizable storefront to showcase your collection
-- Streamlined listing creation with auto-population capabilities
-- Comprehensive seller tools and analytics (premium feature)
-
-### For Buyers
-- Modern, intuitive interface for browsing and purchasing
-- Robust search with advanced filtering options
-- Buyer protection on all purchases
-- Audio previews for tracks (coming soon)
-- Detailed condition reports and verification
+## Features
 
 ### Core Functionality
-- Secure user authentication
-- Integrated payment processing
-- Real-time messaging between users
-- Personal collection management
-- Comprehensive review system
 
-## Technical Architecture
+- Buy and sell physical music formats
+- Create and manage personal collections
+- Track your music library with detailed metadata
+- Advanced search functionality powered by Typesense
+- Social authentication options
+- Mobile-responsive design
 
-### Database Structure
-- Users: Profile information and authentication
-- Listings: Active sale items with detailed metadata
-- Orders: Transaction processing and tracking
-- Reviews: User feedback and ratings
-- Messages: User-to-user communication
+### For Buyers
 
-### Key Integrations
-- Stripe for payment processing
-- MusicBrainz API for record metadata
-- Cloud-based hosting for reliability
+- Advanced search with filters (format, genre, condition, price)
+- Wishlist management
+- Seller ratings and reviews
+- Real-time chat with sellers
+- Collection tracking and statistics
 
-## Order Process
+### For Sellers
 
-1. Seller creates listing with detailed condition information
-2. Buyer purchases item through secure payment system
-3. Seller ships item and provides tracking
-4. Buyer confirms receipt and can leave review
-5. Transaction completed with buyer protection throughout
+- Easy listing creation with bulk upload option
+- Inventory management tools
+- Sales analytics dashboard
+- Automated pricing suggestions
+- Secure payment processing
 
-## Development Roadmap
+## 🛠 Tech Stack
 
-### Phase 1 (Current)
-- Core marketplace functionality
-- User authentication
-- Basic listing management
-- Search and filter capabilities
+- **Backend:** Laravel 10.x
+- **Frontend:** Vue.js 3.x with Composition API
+- **SSR:** Inertia.js
+- **Database:** PostgreSQL
+- **Search Engine:** Laravel Scout with Typesense
+- **Authentication:** Laravel Breeze + Socialite
+- **File Storage:** Laravel Storage with AWS S3
+- **Real-time Features:** Laravel Echo & Pusher
+- **Payment Processing:** Stripe
 
-### Phase 2 (Upcoming)
-- Advanced seller tools
-- Audio preview integration
-- Enhanced storefront customization
-- Premium subscription features
+## 📋 Prerequisites
 
-## Getting Started
+Before installation, ensure you have:
 
-To start using GrooveHunt:
+- PHP >= 8.1
+- Composer
+- Node.js >= 16.x
+- PostgreSQL >= 14.0
+- Git
+- [Typesense](https://typesense.org/docs/guide/install-typesense.html#option-2-local-machine-install) server running locally or hosted
 
-1. Create an account
-2. Set up your profile
-3. For sellers: Add payment information and create listings
-4. For buyers: Browse listings and make secure purchases
+## 🚀 Installation
 
-## Support
+1. **Clone the repository**
 
-For questions or assistance, contact our support team through the platform's messaging system.
+   ```bash
+   git clone https://github.com/your_username/groovehunt.git
+   cd groovehunt
+   ```
 
----
+2. **Install PHP dependencies**
 
-GrooveHunt is committed to building the premier online music marketplace, focusing on fair pricing, user experience, and community trust. Join us in revolutionizing how vinyl enthusiasts buy and sell records online.
+   ```bash
+   composer install
+   ```
+
+3. **Install Node.js dependencies**
+
+   ```bash
+   npm install
+   ```
+
+4. **Environment Setup**
+
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+5. **Configure your `.env` file with:**
+
+   ```env
+   DB_CONNECTION=pgsql
+   DB_HOST=127.0.0.1
+   DB_PORT=5432
+   DB_DATABASE=your_database
+   DB_USERNAME=your_username
+   DB_PASSWORD=your_password
+
+   TYPESENSE_API_KEY=your_typesense_api_key
+   TYPESENSE_HOST=localhost
+   TYPESENSE_PORT=8108
+   TYPESENSE_PROTOCOL=http
+
+   GITHUB_CLIENT_ID=your_github_client_id
+   GITHUB_CLIENT_SECRET=your_github_client_secret
+   GITHUB_REDIRECT_URI=http://localhost:8000/auth/github/callback
+
+   AWS_ACCESS_KEY_ID=your_aws_key
+   AWS_SECRET_ACCESS_KEY=your_aws_secret
+   AWS_DEFAULT_REGION=your_region
+   AWS_BUCKET=your_bucket
+
+   STRIPE_KEY=your_stripe_public_key
+   STRIPE_SECRET=your_stripe_secret_key
+
+   PUSHER_APP_ID=your_pusher_app_id
+   PUSHER_APP_KEY=your_pusher_key
+   PUSHER_APP_SECRET=your_pusher_secret
+   PUSHER_APP_CLUSTER=your_pusher_cluster
+   ```
+
+6. **Database Setup**
+
+   ```bash
+   php artisan migrate
+   php artisan db:seed
+   ```
+
+7. **Link Storage**
+
+   ```bash
+   php artisan storage:link
+   ```
+
+8. **Build Assets**
+
+   ```bash
+   npm run build
+   ```
+
+9. **Start the Development Server**
+   ```bash
+   php artisan serve
+   ```
+
+Visit `http://localhost:8000` to view the application.
+
+## 💻 Development
+
+1. **Start the Laravel development server**
+
+   ```bash
+   php artisan serve
+   ```
+
+2. **Watch for frontend changes**
+
+   ```bash
+   npm run dev
+   ```
+
+3. **Index existing records in Typesense**
+   ```bash
+   php artisan scout:import "App\Models\Record"
+   ```
+
+## 🧪 Testing
+
+```bash
+# Run PHP tests
+php artisan test
+
+# Run JavaScript tests
+npm run test
+
+# Run e2e tests
+npm run test:e2e
+```
+
+## 📁 Project Structure
+
+```
+groovehunt/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   └── Resources/
+│   ├── Models/
+│   └── Services/
+├── database/
+│   ├── factories/
+│   ├── migrations/
+│   └── seeders/
+├── resources/
+│   ├── js/
+│   │   ├── Components/
+│   │   ├── Layouts/
+│   │   └── Pages/
+│   └── views/
+└── routes/
+    ├── api.php
+    └── web.php
+```
+
+## 🌟 Collection Features
+
+### Managing Collections
+
+- Create multiple collections
+- Add records from marketplace or manual entry
+- Import collections from Discogs
+- Track collection value and statistics
+- Share collections publicly or keep private
+- Generate collection insights and reports
+
+### Collection Organization
+
+- Custom tags and categories
+- Condition grading
+- Purchase history tracking
+- Notes and annotations
+- Want list management
+- Duplicate detection
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch
+   ```bash
+   git checkout -b feature/AmazingFeature
+   ```
+3. Commit your changes
+   ```bash
+   git commit -m 'Add some AmazingFeature'
+   ```
+4. Push to the branch
+   ```bash
+   git push origin feature/AmazingFeature
+   ```
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+
+## 🆘 Support
+
+For support, please:
+
+- Create an issue in the GitHub repository
+- Join our Discord community [link]
+- Check out our [documentation](docs/README.md)
+
+## 🙏 Acknowledgments
+
+- [Laravel](https://laravel.com)
+- [Vue.js](https://vuejs.org)
+- [Inertia.js](https://inertiajs.com)
+- [Typesense](https://typesense.org)
