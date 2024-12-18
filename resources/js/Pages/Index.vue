@@ -11,13 +11,18 @@ import MobileFilterDialog from "@/Components/MobileFilterDialog.vue";
 import FiltersSidebar from "@/Components/FiltersSidebar.vue";
 import filters from "../Shared/filters";
 
-defineProps({
+const props = defineProps({
     listings: Object,
     canLogin: Boolean,
     canRegister: Boolean,
     laravelVersion: String,
     phpVersion: String,
+
+    searchResults: Array,
+    filters: Object,
 });
+
+console.log(props.searchResults);
 
 const sortOptions = [
     { name: "Most Popular", href: "#", current: true },
@@ -119,11 +124,9 @@ const mobileFiltersOpen = ref(false);
                 <section aria-labelledby="filters-heading" class="pb-24 pt-6">
                     <h2 id="filters-heading" class="sr-only">Filters</h2>
 
-                    <div
-                    class="grid grid-cols-1 gap-y-10 lg:grid-cols-5"
-                    >
-                    <!-- Filters side menu -->
-                    <FiltersSidebar :filters="filters" />
+                    <div class="grid grid-cols-1 gap-y-10 lg:grid-cols-5">
+                        <!-- Filters side menu -->
+                        <FiltersSidebar :filters="filters" />
 
                         <!-- Product grid -->
                         <div class="lg:col-span-4">

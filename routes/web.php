@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ListingController;
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -16,6 +16,8 @@ Route::get('/about', function () {
 // Show a single listing
 Route::get('/listings/{listing}', [ListingController::class, 'show'])->name('listings.show');
 
+//Search
+Route::get('/search', [SearchController::class, 'search']);
 
 // Protected routes
 Route::middleware('auth')->group(function () {
