@@ -53,7 +53,7 @@ const toggleBodyScroll = (isOpen) => {
 <template>
         <Popover as="template" v-slot="{ open, close }">
             <nav
-                class="sticky top-0 z-10 border-b bg-white bg-opacity-85 backdrop-blur backdrop-filter lg:overflow-y-visible"
+                class="sticky top-0 z-40 border-b bg-white bg-opacity-85 backdrop-blur backdrop-filter lg:overflow-y-visible"
             >
                 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div
