@@ -27,13 +27,31 @@ class ListingController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-{
-    $searchQuery = $request->input('search');
+    {
+        $query = $request->input('search');
 
-    if ($searchQuery) {
-        $listings = Listing::search($searchQuery)
-            ->get()
-            ->map(fn($listing) => [
+        if ($query && trim($query) !== '') {
+            \Log::info('Search query:', ['query' => $query]);
+            // Get raw Typesense results
+            $searchResults = Listing::search($query)->get();
+            \Log::info('Search results count:', ['count' => count($searchResults)]);
+            // Convert to a paginator instance
+            $page = $request->input('page', 1);
+            $perPage = 24;
+
+            $items = collect($searchResults)->forPage($page, $perPage);
+
+            // Create a new LengthAwarePaginator
+            $listings = new \Illuminate\Pagination\LengthAwarePaginator(
+                $items,
+                count($searchResults),
+                $perPage,
+                $page,
+                ['path' => $request->url(), 'query' => $request->query()]
+            );
+
+            // Transform the items
+            $listings->through(fn($listing) => [
                 'id' => $listing->id,
                 'title' => $listing->title,
                 'artist' => $listing->artist,
@@ -41,28 +59,28 @@ class ListingController extends Controller
                 'images' => $listing->images,
                 'media_condition' => $listing->media_condition,
             ]);
-    } else {
-        $listings = Listing::query()
-            ->select('id', 'title', 'artist', 'price', 'images', 'media_condition')
-            ->latest()
-            ->simplePaginate(24)
-            ->through(fn($listing) => [
-                'id' => $listing->id,
-                'title' => $listing->title,
-                'artist' => $listing->artist,
-                'price' => $listing->price,
-                'images' => $listing->images,
-                'media_condition' => $listing->media_condition,
-            ]);
+        } else {
+            $listings = Listing::query()
+                ->select('id', 'title', 'artist', 'price', 'images', 'media_condition')
+                ->latest()
+                ->simplePaginate(24)
+                ->through(fn($listing) => [
+                    'id' => $listing->id,
+                    'title' => $listing->title,
+                    'artist' => $listing->artist,
+                    'price' => $listing->price,
+                    'images' => $listing->images,
+                    'media_condition' => $listing->media_condition,
+                ]);
+        }
+
+        return Inertia::render('Index', [
+            'listings' => $listings,
+            'filters' => [
+                'search' => $query ?? ''
+            ]
+        ]);
     }
-
-    return Inertia::render('Index', [
-        'listings' => $listings,
-        'filters' => [
-            'search' => $searchQuery ?? ''
-        ]
-    ]);
-}
 
     /**
      * Show the form for creating a new resource.

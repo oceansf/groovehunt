@@ -8,35 +8,45 @@ const isLoading = ref(false);
 const showResults = ref(false);
 
 const handleSearch = () => {
-    // if (!searchQuery.value.trim()) return;
-    
     isLoading.value = true;
     showResults.value = true;
 
-    // Change to visit() instead of get() for better handling
-    router.visit(route('home', { search: searchQuery.value }), {
-        preserveState: true,
-        preserveScroll: true,
-        onSuccess: () => {
-            isLoading.value = false;
-            showResults.value = true;
+    router.get(
+        "/",
+        {
+            search: searchQuery.value,
         },
-        onError: (errors) => {
-            console.error("Search failed:", errors);
-            isLoading.value = false;
-        }
-    });
+        {
+            preserveState: false, // Changed this to false
+            preserveScroll: true,
+            onSuccess: () => {
+                isLoading.value = false;
+                showResults.value = true;
+            },
+            onError: (errors) => {
+                console.error("Search failed:", errors);
+                isLoading.value = false;
+            },
+        },
+    );
 };
 </script>
 
 <template>
-    <div class="flex items-center px-6 py-4 md:mx-auto md:max-w-3xl lg:mx-0 lg:max-w-none xl:px-0">
+    <div
+        class="flex items-center px-6 py-4 md:mx-auto md:max-w-3xl lg:mx-0 lg:max-w-none xl:px-0"
+    >
         <div class="w-full">
             <form @submit.prevent="handleSearch">
                 <label for="search" class="sr-only">Search</label>
                 <div class="relative">
-                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                        <MagnifyingGlassIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
+                    <div
+                        class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
+                    >
+                        <MagnifyingGlassIcon
+                            class="h-5 w-5 text-gray-400"
+                            aria-hidden="true"
+                        />
                     </div>
                     <input
                         id="search"
