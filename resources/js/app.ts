@@ -11,11 +11,31 @@ const appName = import.meta.env.VITE_APP_NAME || "Laravel";
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
-    resolve: (name) => {
-        const pages = import.meta.glob<DefineComponent>("./Pages/**/*.vue", { eager: true });
-        const page = pages[`./Pages/${name}.vue`];
-        page.default.layout = name.startsWith('Auth/') ? undefined : Layout
-        return page;
+    resolve: async (name) => {
+        try {
+            const pages = import.meta.glob<DefineComponent>(
+                "./Pages/**/*.vue",
+                { eager: true },
+            );
+            const pagePath = `./Pages/${name}.vue`;
+
+            if (!pages[pagePath]) {
+                console.error(`Page not found: ${pagePath}`);
+                throw new Error(`Page not found: ${pagePath}`);
+            }
+
+            const page = pages[pagePath];
+
+            if (!page) {
+                throw new Error(`Failed to load page: ${name}`);
+            }
+
+            page.default.layout = name.startsWith("Auth/") ? undefined : Layout;
+            return page;
+        } catch (error) {
+            console.error("Page resolution error:", error);
+            throw error;
+        }
     },
     setup({ el, App, props, plugin }) {
         createApp({ render: () => h(App, props) })

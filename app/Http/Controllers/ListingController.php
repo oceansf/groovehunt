@@ -12,6 +12,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 
 class ListingController extends Controller
 {
@@ -25,27 +26,43 @@ class ListingController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        return Inertia::render('Index', [
-            'listings' => Listing::query()
-                ->select('id', 'title', 'artist', 'price', 'images', 'media_condition')
-                ->latest()
-                ->simplePaginate(24)
-                ->through(fn($listing) => [
-                    'id' => $listing->id,
-                    'title' => $listing->title,
-                    'artist' => $listing->artist,
-                    'price' => $listing->price,
-                    'images' => $listing->images,
-                    'media_condition' => $listing->media_condition,
-                ]),
-            'canRegister' => Route::has('register'),
-            'canLogin' => Route::has('login'),
-            'phpVersion' => PHP_VERSION,
-            'laravelVersion' => Application::VERSION,
-        ]);
+    public function index(Request $request)
+{
+    $searchQuery = $request->input('search');
+
+    if ($searchQuery) {
+        $listings = Listing::search($searchQuery)
+            ->get()
+            ->map(fn($listing) => [
+                'id' => $listing->id,
+                'title' => $listing->title,
+                'artist' => $listing->artist,
+                'price' => $listing->price,
+                'images' => $listing->images,
+                'media_condition' => $listing->media_condition,
+            ]);
+    } else {
+        $listings = Listing::query()
+            ->select('id', 'title', 'artist', 'price', 'images', 'media_condition')
+            ->latest()
+            ->simplePaginate(24)
+            ->through(fn($listing) => [
+                'id' => $listing->id,
+                'title' => $listing->title,
+                'artist' => $listing->artist,
+                'price' => $listing->price,
+                'images' => $listing->images,
+                'media_condition' => $listing->media_condition,
+            ]);
     }
+
+    return Inertia::render('Index', [
+        'listings' => $listings,
+        'filters' => [
+            'search' => $searchQuery ?? ''
+        ]
+    ]);
+}
 
     /**
      * Show the form for creating a new resource.
@@ -79,7 +96,6 @@ class ListingController extends Controller
             return redirect()
                 ->route('listings.show', ['listing' => $listing->id])
                 ->with('success', 'Listing created successfully!');
-
         } catch (\Exception $e) {
             report($e); // Uses Laravel's error reporting system
 
@@ -123,7 +139,7 @@ class ListingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-   public function update(UpdateListingRequest $request, Listing $listing)
+    public function update(UpdateListingRequest $request, Listing $listing)
     {
         try {
             $listing->update($request->validated());
@@ -131,7 +147,6 @@ class ListingController extends Controller
             return redirect()
                 ->route('listings.show', ['listing' => $listing->id])
                 ->with('success', 'Listing updated successfully!');
-
         } catch (\Exception $e) {
             report($e); // This is preferred over Log::error() as it includes stack trace
 
@@ -161,10 +176,9 @@ class ListingController extends Controller
             return redirect()
                 ->route('home')
                 ->with('success', 'Listing deleted successfully!');
-
         } catch (\Exception $e) {
-//            \Log::error('Error in ListingController@destroy: ' . $e->getMessage());
-//            \Log::error('Stack trace: ' . $e->getTraceAsString());
+            //            \Log::error('Error in ListingController@destroy: ' . $e->getMessage());
+            //            \Log::error('Stack trace: ' . $e->getTraceAsString());
 
             return back()->withErrors(['error' => 'There was an error deleting your listing: ' . $e->getMessage()]);
         }

@@ -17,12 +17,8 @@ const props = defineProps({
     canRegister: Boolean,
     laravelVersion: String,
     phpVersion: String,
-
-    searchResults: Array,
     filters: Object,
 });
-
-console.log(props.searchResults);
 
 const sortOptions = [
     { name: "Most Popular", href: "#", current: true },

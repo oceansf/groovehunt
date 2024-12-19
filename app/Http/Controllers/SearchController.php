@@ -12,15 +12,9 @@ class SearchController extends Controller
     {
         $query = $request->input('query');
 
-        $results = Listing::search($query)->get();
+        return redirect()->route('home', [
+            'search' => $query,
 
-        dd($results->toArray());
-
-        return Inertia::render('Listings/Index', [
-            'searchResults' => $results,
-            'filters' => [
-                'search' => $query
-            ]
         ]);
     }
 }
