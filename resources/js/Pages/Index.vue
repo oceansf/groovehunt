@@ -9,7 +9,6 @@ import {
 import ListingsGrid from "@/Components/ListingsGrid.vue";
 import MobileFilterDialog from "@/Components/MobileFilterDialog.vue";
 import FiltersSidebar from "@/Components/FiltersSidebar.vue";
-import filters from "../Shared/filters";
 
 const props = defineProps({
     listings: Object,
@@ -122,7 +121,7 @@ const mobileFiltersOpen = ref(false);
 
                     <div class="grid grid-cols-1 gap-y-10 lg:grid-cols-5">
                         <!-- Filters side menu -->
-                        <FiltersSidebar :filters="filters" />
+                        <FiltersSidebar />
 
                         <!-- Product grid -->
                         <div class="lg:col-span-4">

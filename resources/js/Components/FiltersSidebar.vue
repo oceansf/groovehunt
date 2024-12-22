@@ -2,10 +2,11 @@
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 import { PlusIcon, MinusIcon } from "@heroicons/vue/24/outline";
 import FilterIcon from "./FilterIcon.vue";
+import filtersArr from "../Shared/filtersArr";
 
-defineProps({
-    filters: Array,
-});
+const handleFilterChange = (sectionId, optionValue) => {
+    console.log(sectionId, optionValue);
+};
 </script>
 
 <template>
@@ -16,7 +17,7 @@ defineProps({
         <form>
             <Disclosure
                 as="div"
-                v-for="section in filters"
+                v-for="section in filtersArr"
                 :key="section.id"
                 class="border-b border-gray-200 py-6"
                 v-slot="{ open }"
@@ -57,6 +58,9 @@ defineProps({
                             class="flex items-center"
                         >
                             <input
+                                @change="
+                                    handleFilterChange(section.id, option.value)
+                                "
                                 :id="`filter-${section.id}-${optionIdx}`"
                                 :name="`${section.id}[]`"
                                 :value="option.value"
