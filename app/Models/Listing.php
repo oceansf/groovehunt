@@ -10,7 +10,6 @@ class Listing extends Model
 {
     /** @use HasFactory<\Database\Factories\ListingFactory> */
     use HasFactory;
-    use Searchable;
 
     protected $fillable = [
         'title',
@@ -74,18 +73,4 @@ class Listing extends Model
         return $this->belongsTo(User::class, 'buyer_id');
     }
 
-    /**
-     * Get the indexable data array for the model.
-     *
-     * @return array<string, mixed>
-     */
-    public function toSearchableArray()
-    {
-        return array_merge($this->toArray(), [
-            'id' => (string) $this->id,
-            'title' => $this->title,
-            'artist' => $this->artist,
-            'created_at' => $this->created_at->timestamp
-        ]);
-    }
 }

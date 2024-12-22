@@ -30,7 +30,6 @@ class ListingController extends Controller
 
         return Inertia::render('Index', [
             'listings' => $listings,
-            'filters' => ['search' => $query]
         ]);
     }
 
