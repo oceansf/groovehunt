@@ -10,19 +10,59 @@ import {
 } from "@headlessui/vue";
 import { XMarkIcon, PlusIcon, MinusIcon } from "@heroicons/vue/24/outline";
 import FilterIcon from "./FilterIcon.vue";
+import filtersArr from "../Shared/filtersArr";
+import { router } from "@inertiajs/vue3";
+import { ref, reactive, computed } from "vue";
 
 const props = defineProps({
     mobileFiltersOpen: Boolean,
-    filters: Array,
 });
 
 const emit = defineEmits(["update:mobileFiltersOpen"]);
+
+const selectedFilters = reactive({});
+
+const hasSelectedFilters = computed(() => {
+    return Object.values(selectedFilters).some(
+        (filters) => Array.isArray(filters) && filters.length > 0,
+    );
+});
+
+const isOptionSelected = (sectionId, optionValue) => {
+    return selectedFilters[sectionId]?.includes(optionValue) || false;
+};
+
+const handleSubmit = () => {
+    router.get("/", {
+        preserveState: true,
+        preserveScroll: true,
+        data: {
+            filters: selectedFilters,
+        },
+    });
+    closeDialog();
+};
+
+const handleFilterChange = (sectionId, optionValue, optionChecked) => {
+    if (!selectedFilters[sectionId]) {
+        selectedFilters[sectionId] = [];
+    }
+
+    if (optionChecked) {
+        selectedFilters[sectionId].push(optionValue);
+    } else {
+        const index = selectedFilters[sectionId].indexOf(optionValue);
+        if (index > -1) {
+            selectedFilters[sectionId].splice(index, 1);
+        }
+    }
+};
 
 const closeDialog = () => {
     emit("update:mobileFiltersOpen", false);
 };
 </script>
-
+<!-- TODO: Link the filters and sort state with the non-mobile version -->
 <template>
     <TransitionRoot as="template" :show="mobileFiltersOpen">
         <Dialog
@@ -72,76 +112,107 @@ const closeDialog = () => {
 
                         <!-- Filters -->
                         <form
-                            class="mt-4 overflow-y-auto border-t border-gray-200"
+                            @submit.prevent="handleSubmit"
+                            class="mt-4 flex flex-col"
                         >
-                            <h3 class="sr-only">Filters</h3>
+                            <div class="px-4" v-if="hasSelectedFilters">
+                                <button
+                                    type="submit"
+                                    class="w-full rounded bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"
+                                >
+                                    Apply Filters
+                                </button>
+                            </div>
 
-                            <Disclosure
-                                as="div"
-                                v-for="section in filters"
-                                :key="section.id"
-                                class="border-t border-gray-200 px-4 py-6"
-                                v-slot="{ open }"
+                            <div
+                                class="mt-4 flex-1 overflow-y-auto border-t border-gray-200"
                             >
-                                <h3 class="-mx-2 -my-3 flow-root">
-                                    <DisclosureButton
-                                        class="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500"
-                                    >
-                                        <div class="flex items-center gap-2">
-                                            <FilterIcon
-                                                :icon="
-                                                    section.name.toLocaleLowerCase()
-                                                "
-                                                class="h-5 w-5"
-                                                aria-hidden="true"
-                                            />
-                                            <span
-                                                class="font-medium text-gray-900"
-                                            >
-                                                {{ section.name }}
-                                            </span>
-                                        </div>
-                                        <span class="ml-6 flex items-center">
-                                            <PlusIcon
-                                                v-if="!open"
-                                                class="h-5 w-5"
-                                                aria-hidden="true"
-                                            />
-                                            <MinusIcon
-                                                v-else
-                                                class="h-5 w-5"
-                                                aria-hidden="true"
-                                            />
-                                        </span>
-                                    </DisclosureButton>
-                                </h3>
-                                <DisclosurePanel class="pt-6">
-                                    <div class="space-y-6">
-                                        <div
-                                            v-for="(
-                                                option, optionIdx
-                                            ) in section.options"
-                                            :key="option.value"
-                                            class="flex items-center"
+                                <h3 class="sr-only">Filters</h3>
+
+                                <Disclosure
+                                    as="div"
+                                    v-for="section in filtersArr"
+                                    :key="section.id"
+                                    class="border-t border-gray-200 px-4 py-6"
+                                    v-slot="{ open }"
+                                >
+                                    <h3 class="-mx-2 -my-3 flow-root">
+                                        <DisclosureButton
+                                            class="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500"
                                         >
-                                            <input
-                                                :id="`filter-mobile-${section.id}-${optionIdx}`"
-                                                :name="`${section.id}[]`"
-                                                :value="option.value"
-                                                type="checkbox"
-                                                :checked="option.checked"
-                                                class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                                            />
-                                            <label
-                                                :for="`filter-mobile-${section.id}-${optionIdx}`"
-                                                class="ml-3 min-w-0 flex-1 text-gray-500"
+                                            <div
+                                                class="flex items-center gap-2"
                                             >
-                                                {{ option.label }}
-                                            </label>
+                                                <FilterIcon
+                                                    :icon="
+                                                        section.name.toLowerCase()
+                                                    "
+                                                    class="h-5 w-5"
+                                                    aria-hidden="true"
+                                                />
+                                                <span
+                                                    class="font-medium text-gray-900"
+                                                >
+                                                    {{ section.name }}
+                                                </span>
+                                            </div>
+                                            <span
+                                                class="ml-6 flex items-center"
+                                            >
+                                                <PlusIcon
+                                                    v-if="!open"
+                                                    class="h-5 w-5"
+                                                    aria-hidden="true"
+                                                />
+                                                <MinusIcon
+                                                    v-else
+                                                    class="h-5 w-5"
+                                                    aria-hidden="true"
+                                                />
+                                            </span>
+                                        </DisclosureButton>
+                                    </h3>
+                                    <DisclosurePanel class="pt-6">
+                                        <div class="space-y-6">
+                                            <div
+                                                v-for="(
+                                                    option, optionIdx
+                                                ) in section.options"
+                                                :key="option.value"
+                                                class="flex items-center"
+                                            >
+                                                <input
+                                                    @change="
+                                                        handleFilterChange(
+                                                            section.id,
+                                                            option.value,
+                                                            $event.target
+                                                                .checked,
+                                                        )
+                                                    "
+                                                    :id="`filter-mobile-${section.id}-${optionIdx}`"
+                                                    :name="`${section.id}[]`"
+                                                    :value="option.value"
+                                                    type="checkbox"
+                                                    :checked="
+                                                        isOptionSelected(
+                                                            section.id,
+                                                            option.value,
+                                                        )
+                                                    "
+                                                    class="h-4 w-4 rounded border-gray-300 text-blue-500 focus:ring-blue-500"
+                                                />
+                                                <label
+                                                    :for="`filter-mobile-${section.id}-${optionIdx}`"
+                                                    class="ml-3 min-w-0 flex-1 text-gray-600"
+                                                >
+                                                    {{ option.label }}
+                                                </label>
+                                            </div>
                                         </div>
-                                    </div>
-                                </DisclosurePanel>
-                            </Disclosure>
+                                    </DisclosurePanel>
+                                </Disclosure>
+                            </div>
                         </form>
                     </DialogPanel>
                 </TransitionChild>
