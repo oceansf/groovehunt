@@ -25,13 +25,23 @@ class ListingController extends Controller
      */
     public function index(Request $request)
     {
+        \Log::info('Controller received request:', [
+            'all_params' => $request->all(),
+            'query_string' => $request->getQueryString(),
+            'genre' => $request->input('genre')
+        ]);
+
         $query = trim($request->input('search', ''));
         $listings = $this->listingService->getListings($query, $request);
 
-        // Pass all request parameters back to the frontend
         return Inertia::render('Index', [
             'listings' => $listings,
-            'filters' => $request->all(),
+            'filters' => [
+                'search' => $query,
+                'genre' => $request->input('genre'),
+                'sort' => $request->input('sort', 'date'),
+                'direction' => $request->input('direction', 'desc'),
+            ],
         ]);
     }
 

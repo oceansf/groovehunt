@@ -4,14 +4,39 @@ import { PlusIcon, MinusIcon } from "@heroicons/vue/24/outline";
 import FilterIcon from "./FilterIcon.vue";
 import filtersArr from "../Shared/filtersArr";
 import { router } from "@inertiajs/vue3";
-import { ref, reactive, computed } from "vue";
+import { ref, reactive, computed, onMounted } from "vue";
 
+const emit = defineEmits(["filtersApplied"]);
 const selectedFilters = reactive({});
+const hasActiveUrlFilters = ref(false);
+
+const initializeFilters = () => {
+    const params = new URLSearchParams(window.location.search);
+    let hasFilters = false;
+
+    filtersArr.forEach((section) => {
+        const filterValue = params.getAll(section.id);
+        if (filterValue.length > 0) {
+            selectedFilters[section.id] = filterValue;
+            hasFilters = true;
+        }
+    });
+
+    hasActiveUrlFilters.value = hasFilters;
+};
+
+onMounted(() => {
+    initializeFilters();
+});
 
 const hasSelectedFilters = computed(() => {
-    return Object.values(selectedFilters).some(
+    // Check if there are any selected filters in the current state
+    const hasNewSelections = Object.values(selectedFilters).some(
         (filters) => Array.isArray(filters) && filters.length > 0,
     );
+
+    // Show button if there are either new selections or active URL filters
+    return hasNewSelections || hasActiveUrlFilters.value;
 });
 
 const isOptionSelected = (sectionId, optionValue) => {
@@ -20,12 +45,24 @@ const isOptionSelected = (sectionId, optionValue) => {
 
 const handleSubmit = () => {
     console.log("Sending filters:", selectedFilters);
-    // Remove the data nesting, send filters directly
-    router.get("/", {
-        ...selectedFilters,
-        preserveState: true,
-        preserveScroll: true,
-    });
+    router.get(
+        "/",
+        {
+            ...selectedFilters,
+            preserveState: true,
+            preserveScroll: true,
+        },
+        {
+            preserveState: true,
+            preserveScroll: true,
+            onSuccess: () => {
+                hasActiveUrlFilters.value = Object.values(selectedFilters).some(
+                    (filters) => Array.isArray(filters) && filters.length > 0,
+                );
+                emit("filtersApplied");
+            },
+        },
+    );
 };
 
 const handleFilterChange = (sectionId, optionValue, optionChecked) => {
@@ -56,7 +93,11 @@ const handleFilterChange = (sectionId, optionValue, optionChecked) => {
                     type="submit"
                     class="rounded bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"
                 >
-                    Apply Filters
+                    {{
+                        Object.keys(selectedFilters).length === 0
+                            ? "Clear Filters"
+                            : "Apply Filters"
+                    }}
                 </button>
             </div>
             <Disclosure
@@ -65,6 +106,7 @@ const handleFilterChange = (sectionId, optionValue, optionChecked) => {
                 :key="section.id"
                 class="border-b border-gray-200 py-6"
                 v-slot="{ open }"
+                :default-open="selectedFilters[section.id]?.length > 0"
             >
                 <h3 class="-my-3 flow-root">
                     <DisclosureButton

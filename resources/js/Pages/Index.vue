@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import {
     ChevronDownIcon,
@@ -19,6 +19,14 @@ const props = defineProps({
     filters: Object,
 });
 
+// Key for forcing ListingsGrid reload
+const gridKey = ref(0);
+
+const handleFiltersApplied = () => {
+    // Increment key to force grid reload
+    gridKey.value++;
+};
+
 const sortOptions = [
     { name: "Most Popular", href: "#", current: true },
     { name: "Newest", href: "#", current: false },
@@ -33,9 +41,7 @@ const mobileFiltersOpen = ref(false);
 <template>
     <div class="bg-white">
         <div>
-            <MobileFilterDialog
-                v-model:mobileFiltersOpen="mobileFiltersOpen"
-            />
+            <MobileFilterDialog v-model:mobileFiltersOpen="mobileFiltersOpen" />
 
             <main class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div
@@ -120,11 +126,13 @@ const mobileFiltersOpen = ref(false);
 
                     <div class="grid grid-cols-1 gap-y-10 lg:grid-cols-5">
                         <!-- Filters side menu -->
-                        <FiltersSidebar />
+                        <FiltersSidebar
+                            @filters-applied="handleFiltersApplied"
+                        />
 
                         <!-- Product grid -->
                         <div class="lg:col-span-4">
-                            <ListingsGrid :listings="listings" />
+                            <ListingsGrid :key="gridKey" :listings="listings" />
                         </div>
                     </div>
                 </section>
