@@ -19,12 +19,12 @@ const isOptionSelected = (sectionId, optionValue) => {
 };
 
 const handleSubmit = () => {
+    console.log("Sending filters:", selectedFilters);
+    // Remove the data nesting, send filters directly
     router.get("/", {
+        ...selectedFilters,
         preserveState: true,
         preserveScroll: true,
-        data: {
-            filters: selectedFilters,
-        },
     });
 };
 

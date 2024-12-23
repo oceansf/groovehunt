@@ -1,7 +1,5 @@
 <?php
 
-// app/Services/ListingService.php
-
 namespace App\Services;
 
 use App\Models\Listing;
@@ -14,19 +12,12 @@ class ListingService
         'price' => 'price',
         'date' => 'created_at',
         'title' => 'title',
-        // Add other sortable fields
-    ];
-
-    protected $allowedFilters = [
-        'genre',
-        'min_price',
-        'max_price',
-        'location',
-        // Add other filterable fields
     ];
 
     public function getListings(?string $query, Request $request)
     {
+        \Log::info('Raw request data:', $request->all());
+
         $queryBuilder = Listing::query()->where('is_active', true);
 
         if ($query) {
@@ -36,6 +27,12 @@ class ListingService
         $queryBuilder = $this->applyFilters($queryBuilder, $request);
         $queryBuilder = $this->applySorting($queryBuilder, $request);
 
+        // Log the final query
+        \Log::info('Final query:', [
+            'sql' => $queryBuilder->toSql(),
+            'bindings' => $queryBuilder->getBindings()
+        ]);
+
         return $queryBuilder->paginate(24);
     }
 
@@ -43,36 +40,31 @@ class ListingService
     {
         return $query->where(function (Builder $builder) use ($searchQuery) {
             $builder->where('title', 'like', "%{$searchQuery}%")
-                ->orWhere('artist', 'like', "%{$searchQuery}%");
+                   ->orWhere('artist', 'like', "%{$searchQuery}%");
         });
     }
 
     private function applyFilters(Builder $query, Request $request): Builder
     {
-        if ($request->filled('genre')) {
-            $query->where('genre', $request->input('genre'));
+        // Genre filter
+        if ($request->has('genre') && is_array($request->genre)) {
+            \Log::info('Applying genre filter:', ['genres' => $request->genre]);
+            $query->whereIn('genre', $request->genre);
         }
 
-        // if ($request->filled('min_price')) {
-        //     $query->where('price', '>=', $request->input('min_price'));
-        // }
-
-        // if ($request->filled('max_price')) {
-        //     $query->where('price', '<=', $request->input('max_price'));
-        // }
-
-        if ($request->filled('location')) {
-            $query->where('location', $request->input('location'));
+        // Location filter
+        if ($request->has('location') && is_array($request->location)) {
+            \Log::info('Applying location filter:', ['locations' => $request->location]);
+            $query->whereIn('location', $request->location);
         }
 
-        // Add date range filter if needed
-        if ($request->filled('date_from')) {
-            $query->where('created_at', '>=', $request->input('date_from'));
-        }
-
-        if ($request->filled('date_to')) {
-            $query->where('created_at', '<=', $request->input('date_to'));
-        }
+        // Let's see what the query looks like at this point
+        \Log::info('Query after filters:', [
+            'sql' => $query->toSql(),
+            'bindings' => $query->getBindings(),
+            'genre_values' => $request->input('genre'),
+            'location_values' => $request->input('location')
+        ]);
 
         return $query;
     }
@@ -82,15 +74,12 @@ class ListingService
         $sortField = $request->input('sort', 'created_at');
         $sortDirection = $request->input('direction', 'desc');
 
-        // Validate sort direction
         $sortDirection = in_array($sortDirection, ['asc', 'desc']) ? $sortDirection : 'desc';
 
-        // Check if the requested sort field is allowed
         if (isset($this->allowedSortFields[$sortField])) {
             $field = $this->allowedSortFields[$sortField];
             $query->orderBy($field, $sortDirection);
         } else {
-            // Default sorting
             $query->orderBy('created_at', 'desc');
         }
 

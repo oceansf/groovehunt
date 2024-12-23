@@ -28,17 +28,10 @@ class ListingController extends Controller
         $query = trim($request->input('search', ''));
         $listings = $this->listingService->getListings($query, $request);
 
+        // Pass all request parameters back to the frontend
         return Inertia::render('Index', [
             'listings' => $listings,
-            'filters' => [
-                'search' => $query,
-                'genre' => $request->input('genre'),
-                // 'min_price' => $request->input('min_price'),
-                // 'max_price' => $request->input('max_price'),
-                // 'location' => $request->input('location'),
-                'sort' => $request->input('sort', 'date'),
-                'direction' => $request->input('direction', 'desc'),
-            ],
+            'filters' => $request->all(),
         ]);
     }
 
