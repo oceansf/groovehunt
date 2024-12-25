@@ -25,24 +25,46 @@ class ListingController extends Controller
      */
     public function index(Request $request)
     {
-        \Log::info('Controller received request:', [
-            'all_params' => $request->all(),
-            'query_string' => $request->getQueryString(),
-            'genre' => $request->input('genre')
-        ]);
+        $listings = Listing::query();
 
-        $query = trim($request->input('search', ''));
-        $listings = $this->listingService->getListings($query, $request);
+        $searchQuery = trim($request->input('search', ''));
+        $filters = $request->input('filters', []);
+        $sortField = $request->input('sort_by', 'title'); // Default sort by title
+        $sortDirection = $request->input('sort_direction', 'desc'); // Default direction ascending
+
+        // Search
+        if ($searchQuery) {
+            $listings->where('title', 'like', '%' . $searchQuery . '%');
+        }
+
+        // Filter just genres for now
+        if ($filters) {
+            $listings->whereIn('genre', $filters);
+        }
 
         return Inertia::render('Index', [
-            'listings' => $listings,
-            'filters' => [
-                'search' => $query,
-                'genre' => $request->input('genre'),
-                'sort' => $request->input('sort', 'date'),
-                'direction' => $request->input('direction', 'desc'),
-            ],
+            'listings' => $listings->paginate(24)->withQueryString(),
+            'search' => $searchQuery,
+            'filters' => $filters,
+            'sort' => [
+                'field' => $sortField,
+                'direction' => $sortDirection
+            ]
         ]);
+
+        // $listings = $this->listingService->getListings($query, $request);
+
+        // return Inertia::render('Index', [
+        //     'listings' => $listings,
+        //     'filters' => [
+        //         'search' => $query,
+        //         'genre' => $request->input('genre'),
+        //         'format' => $request->input('format'),
+        //         'sort' => $request->input('sort', 'date'),
+        //         'direction' => $request->input('direction', 'desc'),
+        //     ],
+        // ]);
+
     }
 
     /**

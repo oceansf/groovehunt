@@ -16,16 +16,13 @@ const props = defineProps({
     canRegister: Boolean,
     laravelVersion: String,
     phpVersion: String,
-    filters: Object,
+
+    search: String,
+    filters: Array,
+    sort: Object,
 });
 
-// Key for forcing ListingsGrid reload
-const gridKey = ref(0);
 
-const handleFiltersApplied = () => {
-    // Increment key to force grid reload
-    gridKey.value++;
-};
 
 const sortOptions = [
     { name: "Most Popular", href: "#", current: true },
@@ -36,12 +33,13 @@ const sortOptions = [
 ];
 
 const mobileFiltersOpen = ref(false);
+
 </script>
 
 <template>
     <div class="bg-white">
         <div>
-            <MobileFilterDialog v-model:mobileFiltersOpen="mobileFiltersOpen" />
+            <!-- <MobileFilterDialog v-model:mobileFiltersOpen="mobileFiltersOpen" /> -->
 
             <main class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div
@@ -126,13 +124,11 @@ const mobileFiltersOpen = ref(false);
 
                     <div class="grid grid-cols-1 gap-y-10 lg:grid-cols-5">
                         <!-- Filters side menu -->
-                        <FiltersSidebar
-                            @filters-applied="handleFiltersApplied"
-                        />
+                        <FiltersSidebar :filters="filters" />
 
                         <!-- Product grid -->
                         <div class="lg:col-span-4">
-                            <ListingsGrid :key="gridKey" :listings="listings" />
+                            <ListingsGrid :listings="listings" />
                         </div>
                     </div>
                 </section>

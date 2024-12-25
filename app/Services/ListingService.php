@@ -16,8 +16,6 @@ class ListingService
 
     public function getListings(?string $query, Request $request)
     {
-        \Log::info('Raw request data:', $request->all());
-
         $queryBuilder = Listing::query()->where('is_active', true);
 
         if ($query) {
@@ -27,47 +25,34 @@ class ListingService
         $queryBuilder = $this->applyFilters($queryBuilder, $request);
         $queryBuilder = $this->applySorting($queryBuilder, $request);
 
-        // Log the final query
-        \Log::info('Final query:', [
-            'sql' => $queryBuilder->toSql(),
-            'bindings' => $queryBuilder->getBindings()
-        ]);
-
         return $queryBuilder->paginate(24);
     }
+
 
     private function applySearch(Builder $query, string $searchQuery): Builder
     {
         return $query->where(function (Builder $builder) use ($searchQuery) {
             $builder->where('title', 'like', "%{$searchQuery}%")
-                   ->orWhere('artist', 'like', "%{$searchQuery}%");
+                ->orWhere('artist', 'like', "%{$searchQuery}%");
         });
     }
+
 
     private function applyFilters(Builder $query, Request $request): Builder
     {
         // Genre filter
         if ($request->has('genre') && is_array($request->genre)) {
-            \Log::info('Applying genre filter:', ['genres' => $request->genre]);
             $query->whereIn('genre', $request->genre);
         }
 
-        // Location filter
-        if ($request->has('location') && is_array($request->location)) {
-            \Log::info('Applying location filter:', ['locations' => $request->location]);
-            $query->whereIn('location', $request->location);
+        // Format filter
+        if ($request->has('format') && is_array($request->format)) {
+            $query->whereIn('format', $request->format);
         }
-
-        // Let's see what the query looks like at this point
-        \Log::info('Query after filters:', [
-            'sql' => $query->toSql(),
-            'bindings' => $query->getBindings(),
-            'genre_values' => $request->input('genre'),
-            'location_values' => $request->input('location')
-        ]);
 
         return $query;
     }
+
 
     private function applySorting(Builder $query, Request $request): Builder
     {
