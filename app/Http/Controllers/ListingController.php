@@ -34,7 +34,8 @@ class ListingController extends Controller
 
         // Search
         if ($searchQuery) {
-            $listings->where('title', 'like', '%' . $searchQuery . '%');
+            $listings->where('title', 'like', '%' . $searchQuery . '%')
+            ->orWhere('artist', 'like', "%{$searchQuery}%");;
         }
 
         // Filter just genres for now
