@@ -11,64 +11,32 @@ import {
 import { XMarkIcon, PlusIcon, MinusIcon } from "@heroicons/vue/24/outline";
 import FilterIcon from "./FilterIcon.vue";
 import filtersArr from "../Shared/filtersArr";
-import { router } from "@inertiajs/vue3";
-import { ref, reactive, computed } from "vue";
+import { ref} from "vue";
 
 const props = defineProps({
     mobileFiltersOpen: Boolean,
+    filters: Array,
 });
 
-const emit = defineEmits(["update:mobileFiltersOpen"]);
+const emit = defineEmits(["update:mobileFiltersOpen", "handleSubmit"]);
 
-const selectedFilters = reactive({});
-
-const hasSelectedFilters = computed(() => {
-    return Object.values(selectedFilters).some(
-        (filters) => Array.isArray(filters) && filters.length > 0,
-    );
-});
-
-const isOptionSelected = (sectionId, optionValue) => {
-    return selectedFilters[sectionId]?.includes(optionValue) || false;
-};
+const selectedFilters = ref(props.filters);
 
 const handleSubmit = () => {
-    router.get("/", {
-        preserveState: true,
-        preserveScroll: true,
-        data: {
-            filters: selectedFilters,
-        },
-    });
+    emit("handleSubmit", selectedFilters.value);
     closeDialog();
-};
-
-const handleFilterChange = (sectionId, optionValue, optionChecked) => {
-    if (!selectedFilters[sectionId]) {
-        selectedFilters[sectionId] = [];
-    }
-
-    if (optionChecked) {
-        selectedFilters[sectionId].push(optionValue);
-    } else {
-        const index = selectedFilters[sectionId].indexOf(optionValue);
-        if (index > -1) {
-            selectedFilters[sectionId].splice(index, 1);
-        }
-    }
 };
 
 const closeDialog = () => {
     emit("update:mobileFiltersOpen", false);
 };
 </script>
-<!-- TODO: Link the filters and sort state with the non-mobile version -->
+
 <template>
     <TransitionRoot as="template" :show="mobileFiltersOpen">
         <Dialog
             as="div"
             class="relative z-40 lg:hidden"
-            :open="mobileFiltersOpen"
             @close="closeDialog"
         >
             <TransitionChild
@@ -115,7 +83,7 @@ const closeDialog = () => {
                             @submit.prevent="handleSubmit"
                             class="mt-4 flex flex-col"
                         >
-                            <div class="px-4" v-if="hasSelectedFilters">
+                            <div class="px-4" v-if="selectedFilters.length > 0">
                                 <button
                                     type="submit"
                                     class="w-full rounded bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"
@@ -182,24 +150,11 @@ const closeDialog = () => {
                                                 class="flex items-center"
                                             >
                                                 <input
-                                                    @change="
-                                                        handleFilterChange(
-                                                            section.id,
-                                                            option.value,
-                                                            $event.target
-                                                                .checked,
-                                                        )
-                                                    "
+                                                    v-model="selectedFilters"
                                                     :id="`filter-mobile-${section.id}-${optionIdx}`"
                                                     :name="`${section.id}[]`"
                                                     :value="option.value"
                                                     type="checkbox"
-                                                    :checked="
-                                                        isOptionSelected(
-                                                            section.id,
-                                                            option.value,
-                                                        )
-                                                    "
                                                     class="h-4 w-4 rounded border-gray-300 text-blue-500 focus:ring-blue-500"
                                                 />
                                                 <label

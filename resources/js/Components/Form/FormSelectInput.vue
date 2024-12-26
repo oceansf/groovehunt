@@ -24,7 +24,7 @@ const emit = defineEmits(["update:modelValue"]);
 
 const handleInput = (event) => {
     const value = event.target.value;
-    emit('update:modelValue', value);
+    emit("update:modelValue", value);
 };
 </script>
 
@@ -42,10 +42,10 @@ const handleInput = (event) => {
             </option>
             <option
                 v-for="option in options"
-                :key="option.value"
-                :value="option.value"
+                :key="option.value || option.name"
+                :value="option.value || option.name"
             >
-                {{ option.label }}
+                {{ option.label || option.name }}
             </option>
         </select>
         <FormError :message="form?.errors?.[id]" />

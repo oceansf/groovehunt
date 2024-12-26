@@ -1,5 +1,7 @@
 <script setup>
-import { ref, watch } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
+import { router } from "@inertiajs/vue3";
+import { emitter } from "../Shared/event-bus";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import {
     ChevronDownIcon,
@@ -9,6 +11,18 @@ import {
 import ListingsGrid from "@/Components/ListingsGrid.vue";
 import MobileFilterDialog from "@/Components/MobileFilterDialog.vue";
 import FiltersSidebar from "@/Components/FiltersSidebar.vue";
+
+// Set up event listeners
+onMounted(() => {
+    emitter.on("search", (q) => {
+        updateListings(q);
+    });
+});
+
+// Clean up event listeners
+onUnmounted(() => {
+    emitter.off("search", (q) => (search.value = q));
+});
 
 const props = defineProps({
     listings: Object,
@@ -22,7 +36,57 @@ const props = defineProps({
     sort: Object,
 });
 
+// State management
+const mobileFiltersOpen = ref(false);
+const currentSearch = ref(props.search || '');
+const currentFilters = ref(props.filters || []);
+const currentSort = ref(props.sort || {});
 
+// Unified update method
+const updateListings = (params = {}) => {
+    router.get(
+        "/",
+        {
+            search: params.search ?? currentSearch.value,
+            filters: params.filters ?? currentFilters.value,
+            sort: params.sort ?? currentSort.value,
+        },
+        {
+            preserveState: false,
+            preserveScroll: true,
+        }
+    );
+};
+
+// Event handlers
+const handleSearch = (query) => {
+    currentSearch.value = query;
+    updateListings({ search: query });
+};
+
+const handleFilterChange = (newFilters) => {
+    currentFilters.value = newFilters;
+    updateListings({ filters: newFilters });
+};
+
+const handleSortChange = (newSort) => {
+    currentSort.value = newSort;
+    updateListings({ sort: newSort });
+};
+
+
+// Event listeners setup
+onMounted(() => {
+    emitter.on("search", handleSearch);
+    emitter.on("filter", handleFilterChange);
+    emitter.on("sort", handleSortChange);
+});
+
+onUnmounted(() => {
+    emitter.off("search", handleSearch);
+    emitter.off("filter", handleFilterChange);
+    emitter.off("sort", handleSortChange);
+});
 
 const sortOptions = [
     { name: "Most Popular", href: "#", current: true },
@@ -32,14 +96,17 @@ const sortOptions = [
     { name: "Price: High to Low", href: "#", current: false },
 ];
 
-const mobileFiltersOpen = ref(false);
-
+const handleSortOptionClick = (option) => {
+    // Update current option
+    sortOptions.forEach(opt => opt.current = opt.name === option.name);
+    handleSortChange({ by: option.value });
+};
 </script>
 
 <template>
     <div class="bg-white">
         <div>
-            <!-- <MobileFilterDialog v-model:mobileFiltersOpen="mobileFiltersOpen" /> -->
+            <MobileFilterDialog v-model:mobileFiltersOpen="mobileFiltersOpen" @handle-submit="handleFilterChange" :filters="filters" />
 
             <main class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div
@@ -124,7 +191,7 @@ const mobileFiltersOpen = ref(false);
 
                     <div class="grid grid-cols-1 gap-y-10 lg:grid-cols-5">
                         <!-- Filters side menu -->
-                        <FiltersSidebar :filters="filters" />
+                        <FiltersSidebar @handle-change="handleFilterChange" :filters="filters" />
 
                         <!-- Product grid -->
                         <div class="lg:col-span-4">

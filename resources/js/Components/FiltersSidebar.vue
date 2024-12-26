@@ -12,42 +12,15 @@ const props = defineProps({
 
 const checkedFilters = ref(props.filters);
 
-const handleSubmit = () => {
-    router.get(
-        "/",
-        {
-            filters: checkedFilters.value,
-        },
-        {
-            preserveState: false,
-            preserveScroll: true,
-        },
-    );
-};
-
-// const handleChecked = () => {
-//     console.log(checkedFilters);
-// };
 </script>
 
 <template>
     <div
-        class="sticky top-[96px] hidden h-screen overflow-y-auto pb-36 pr-4 lg:block"
+        class="sticky top-[92px] hidden h-screen overflow-y-auto pb-36 pr-4 lg:block"
     >
-        <form @submit.prevent="handleSubmit">
+        <form @submit.prevent="">
             <div class="mb-2 flex flex-col gap-2">
                 <h2 class="text-xl font-medium">Filters</h2>
-                <!-- <button
-                    v-if="checkedFilters.length > 0"
-                    type="submit"
-                    class="rounded bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"
-                >
-                    {{
-                        checkedFilters.length === 0
-                            ? "Clear Filters"
-                            : "Apply Filters"
-                    }}
-                </button> -->
             </div>
             <Disclosure
                 as="div"
@@ -93,7 +66,7 @@ const handleSubmit = () => {
                             class="flex items-center"
                         >
                             <input
-                                @change="handleSubmit"
+                                @change="$emit('handleChange', checkedFilters)"
                                 v-model="checkedFilters"
                                 :id="`filter-${section.id}-${optionIdx}`"
                                 :name="`${section.id}[]`"

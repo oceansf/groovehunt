@@ -83,14 +83,13 @@ const handleOutsideClick = (event) => {
 };
 </script>
 
-TODO - Format images so they are square and have a max height of 400px
 <template>
     <div class="container mx-auto h-full max-w-5xl px-2 py-8">
         <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
             <!-- Image Gallery -->
             <div class="space-y-4">
                 <div
-                    class="h-[400px] md:h-[488px] overflow-hidden rounded-lg bg-gray-100"
+                    class="h-[400px] overflow-hidden rounded-lg bg-gray-100 md:h-[488px]"
                 >
                     <img
                         :src="listingData.images[currentImageIndex].url"
@@ -98,7 +97,7 @@ TODO - Format images so they are square and have a max height of 400px
                         class="h-full w-full object-cover"
                     />
                 </div>
-                <div class="grid md:w-[400px] grid-cols-4 gap-4">
+                <div class="grid grid-cols-4 gap-4 md:w-[400px]">
                     <button
                         v-for="(image, index) in listingData.images"
                         :key="index"
@@ -186,11 +185,11 @@ TODO - Format images so they are square and have a max height of 400px
                             Message Seller
                         </button>
                     </div>
-
+                    <!-- TODO - Add ships from location -->
                     <div class="space-y-4">
                         <div class="flex items-center space-x-2">
                             <TruckIcon class="h-5 w-5 text-gray-500" />
-                            <span>Ships from: United States</span>
+                            <span>Ships from: {{}}</span>
                         </div>
                     </div>
 
@@ -203,7 +202,7 @@ TODO - Format images so they are square and have a max height of 400px
                         >
                     </div>
                 </div>
-                <!-- TODO: Fix description not submitting -->
+
                 <div v-if="listingData.description" class="border-t pt-4">
                     <h2 class="mb-2 text-xl font-semibold">Description</h2>
                     <p class="text-gray-600">{{ listingData.description }}</p>

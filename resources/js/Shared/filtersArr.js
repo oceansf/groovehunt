@@ -9,7 +9,7 @@ export default [
             { value: "Jazz", label: "Jazz", checked: false },
             { value: "Funk / Soul", label: "Funk / Soul", checked: false },
             { value: "Classical", label: "Classical", checked: false },
-            { value: "Hip Hop", label: "Hip Hop", checked: false },
+            { value: "Hip-Hop", label: "Hip-Hop", checked: false },
             { value: "Latin", label: "Latin", checked: false },
             {
                 value: "Stage & Screen",
@@ -31,9 +31,9 @@ export default [
         id: "format",
         name: "Format",
         options: [
-            { value: "vinyl", label: "Vinyl", checked: false },
+            { value: "Vinyl", label: "Vinyl", checked: false },
             { value: "CD", label: "CD", checked: false },
-            { value: "cassette", label: "Cassette", checked: false },
+            { value: "Cassette", label: "Cassette", checked: false },
             { value: '7"" vinyl', label: '7" Vinyl', checked: false },
         ],
     },

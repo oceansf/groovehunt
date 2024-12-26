@@ -23,21 +23,21 @@ defineProps({
 const isOpen = ref(false);
 
 const genres = [
-    { value: "blues", label: "Blues" },
-    { value: "brass-military", label: "Brass & Military" },
-    { value: "children", label: "Children's" },
-    { value: "classical", label: "Classical" },
-    { value: "electronic", label: "Electronic" },
-    { value: "folk-world-country", label: "Folk, World, & Country" },
-    { value: "funk-soul", label: "Funk / Soul" },
-    { value: "hip-hop", label: "Hip-Hop" },
-    { value: "jazz", label: "Jazz" },
-    { value: "latin", label: "Latin" },
-    { value: "non-music", label: "Non-Music" },
-    { value: "pop", label: "Pop" },
-    { value: "reggae", label: "Reggae" },
-    { value: "rock", label: "Rock" },
-    { value: "stage-screen", label: "Stage & Screen" },
+    { value: "Blues", label: "Blues" },
+    { value: "Brass & Military", label: "Brass & Military" },
+    { value: "Children's", label: "Children's" },
+    { value: "Classical", label: "Classical" },
+    { value: "Electronic", label: "Electronic" },
+    { value: "Folk, World, & Country", label: "Folk, World, & Country" },
+    { value: "Funk / Soul", label: "Funk / Soul" },
+    { value: "Hip-Hop", label: "Hip-Hop" },
+    { value: "Jazz", label: "Jazz" },
+    { value: "Latin", label: "Latin" },
+    { value: "Non-Music", label: "Non-Music" },
+    { value: "Pop", label: "Pop" },
+    { value: "Reggae", label: "Reggae" },
+    { value: "Rock", label: "Rock" },
+    { value: "Stage & Screen", label: "Stage & Screen" },
 ];
 
 const speeds = [

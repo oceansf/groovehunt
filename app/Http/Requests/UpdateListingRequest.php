@@ -26,7 +26,7 @@ class UpdateListingRequest extends FormRequest
         $baseRules = [
             'title' => 'string|max:255',
             'artist' => 'string|max:255',
-            'format' => 'string|in:LP,45,78,EP,Single',
+            'format' => 'required|string|in:Vinyl,CD,Cassette,DVD,Box Set',
             'media_condition' => 'string|in:Mint,Near Mint,Very Good Plus,Very Good,Good Plus,Good,Fair,Poor',
             'sleeve_condition' => 'nullable|string|in:Mint,Near Mint,Very Good Plus,Very Good,Good Plus,Good,Fair,Poor',
             'description' => 'nullable|string|max:5000',

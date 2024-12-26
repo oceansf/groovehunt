@@ -1,34 +1,13 @@
 <script setup>
 import { ref } from "vue";
 import { router } from "@inertiajs/vue3";
+import { emitter } from "../Shared/event-bus";
 import { MagnifyingGlassIcon } from "@heroicons/vue/20/solid";
 
 const searchQuery = ref("");
-const isLoading = ref(false);
-const showResults = ref(false);
 
 const handleSearch = () => {
-    isLoading.value = true;
-    showResults.value = true;
-
-    router.get(
-        "/",
-        {
-            search: searchQuery.value,
-        },
-        {
-            preserveState: false, // Changed this to false
-            preserveScroll: true,
-            onSuccess: () => {
-                isLoading.value = false;
-                showResults.value = true;
-            },
-            onError: (errors) => {
-                console.error("Search failed:", errors);
-                isLoading.value = false;
-            },
-        },
-    );
+    emitter.emit('search', searchQuery.value)
 };
 </script>
 

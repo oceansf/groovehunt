@@ -16,6 +16,7 @@ import {
 import FormCurrencyInput from "@/Components/Form/FormCurrencyInput.vue";
 import formats from "../../Shared/formats";
 import conditions from "../../Shared/conditions";
+import countries from "../../Shared/countries";
 
 const allowOffers = ref(false);
 
@@ -36,6 +37,7 @@ const form = useForm({
     allow_offers: false,
     min_offer: "",
     shipping: "",
+    ships_from: "",
     genre: "",
     speed: "",
     color: "",
@@ -189,7 +191,7 @@ watch(
                             <h2
                                 class="text-xl font-semibold leading-7 text-gray-900"
                             >
-                                Pricing
+                                Pricing & Shipping
                             </h2>
                             <p class="mt-1 text-sm leading-6 text-gray-600">
                                 Enter how much the buyer will pay for your item
@@ -271,20 +273,130 @@ watch(
                             label="Shipping Cost"
                             :optional="true"
                         />
+
+                        <div>
+                            <div>
+                                <h2
+                                    class="text-xl font-semibold leading-7 text-gray-900"
+                                >
+                                    Shipping From
+                                </h2>
+                                <p class="mt-1 text-sm leading-6 text-gray-600">
+                                    Use a permanent address where you can
+                                    receive mail.
+                                </p>
+                            </div>
+
+                            <div
+                                class="mt-5 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6"
+                            >
+                                <div class="sm:col-span-3">
+                                    <label
+                                        for="country"
+                                        class="block text-sm/6 font-medium text-gray-900"
+                                        >Country</label
+                                    >
+                                    <div class="mt-2 grid grid-cols-1">
+                                        <select
+                                            id="country"
+                                            name="country"
+                                            autocomplete="country-name"
+                                            class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                        >
+                                            <option
+                                                selected
+                                                disabled
+                                                hidden
+                                                value=""
+                                            >
+                                                Select a country
+                                            </option>
+                                            <option
+                                                v-for="country in countries"
+                                                :key="country.name"
+                                                :value="country.name"
+                                            >
+                                                {{ country.name }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-span-full">
+                                    <label
+                                        for="street-address"
+                                        class="block text-sm/6 font-medium text-gray-900"
+                                        >Street address</label
+                                    >
+                                    <div class="mt-2">
+                                        <input
+                                            type="text"
+                                            name="street-address"
+                                            id="street-address"
+                                            autocomplete="street-address"
+                                            class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div class="sm:col-span-2 sm:col-start-1">
+                                    <label
+                                        for="city"
+                                        class="block text-sm/6 font-medium text-gray-900"
+                                        >City</label
+                                    >
+                                    <div class="mt-2">
+                                        <input
+                                            type="text"
+                                            name="city"
+                                            id="city"
+                                            autocomplete="address-level2"
+                                            class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div class="sm:col-span-2">
+                                    <label
+                                        for="region"
+                                        class="block text-sm/6 font-medium text-gray-900"
+                                        >State / Province</label
+                                    >
+                                    <div class="mt-2">
+                                        <input
+                                            type="text"
+                                            name="region"
+                                            id="region"
+                                            autocomplete="address-level1"
+                                            class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div class="sm:col-span-2">
+                                    <label
+                                        for="postal-code"
+                                        class="block text-sm/6 font-medium text-gray-900"
+                                        >ZIP / Postal code</label
+                                    >
+                                    <div class="mt-2">
+                                        <input
+                                            type="text"
+                                            name="postal-code"
+                                            id="postal-code"
+                                            autocomplete="postal-code"
+                                            class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- Action buttons -->
             <div class="mt-6 flex items-center justify-end gap-x-6">
-                <!-- <button
-                    type="button"
-                    class="text-sm font-semibold leading-6 text-gray-900"
-                    :disabled="form.processing"
-                    @click="route('home')"
-                >
-                    Cancel
-                </button> -->
                 <Link
                     as="button"
                     :href="route('home')"
@@ -299,7 +411,7 @@ watch(
                     :disabled="form.processing"
                 >
                     <span v-if="form.processing">Listing...</span>
-                    <span v-else>List item for sale</span>
+                    <span v-else>Post listing</span>
                 </button>
             </div>
         </form>

@@ -35,6 +35,7 @@
         "dayjs": "^1.11.13",
         "lodash": "^4.17.21",
         "lucide-vue-next": "^0.452.0",
+        "mitt": "^3.0.1",
         "vue3-apexcharts": "^1.7.0"
     }
 }

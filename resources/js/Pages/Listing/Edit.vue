@@ -17,6 +17,7 @@ import FormCurrencyInput from "@/Components/Form/FormCurrencyInput.vue";
 import DeleteConfirmModal from "@/Components/DeleteConfirmModal.vue";
 import formats from "../../Shared/formats";
 import conditions from "../../Shared/conditions";
+import countries from "../../Shared/countries";
 
 const props = defineProps({
     listing: {
@@ -56,37 +57,42 @@ const form = useForm({
     release_upc: props.listing.data.release_upc || "",
 });
 
-// Rest of the component logic remains the same
 const handleSubmit = () => {
-    // Get the original values from props
-    const original = props.listing;
+    const original = props.listing.data; // Access the data property
+    const changes = new FormData();
 
-    // Create an object to store only changed values
-    const changes = {};
+    // Handle file uploads separately
+    if (form.images && form.images.length) {
+        form.images.forEach((image, index) => {
+            if (image instanceof File) {
+                changes.append(`images[${index}]`, image);
+            }
+        });
+    }
 
-    // Compare each field and only include changed ones
+    // Handle other form fields
     Object.keys(form).forEach((key) => {
-        if (form[key] !== original[key]) {
-            changes[key] = form[key];
+        if (key !== "images" && form[key] !== original[key]) {
+            changes.append(key, form[key]);
         }
     });
 
-    // Only submit if there are actually changes
-    if (Object.keys(changes).length > 0) {
-        form.put(
-            route("listings.update", { listing: props.listing.data.id }),
-            changes,
-            {
-                preserveScroll: true,
-                onSuccess: () => {
-                    console.log("Listing updated successfully");
-                },
-                onError: (errors) => {
-                    console.error("Form submission errors:", errors);
-                },
+    form.put(
+        route("listings.update", { listing: props.listing.data.id }),
+        changes,
+        {
+            preserveScroll: true,
+            headers: {
+                "Content-Type": "multipart/form-data", // Add this header
             },
-        );
-    }
+            onSuccess: () => {
+                console.log("Listing updated successfully");
+            },
+            onError: (errors) => {
+                console.error("Form submission errors:", errors);
+            },
+        },
+    );
 };
 
 const confirmDelete = () => {
@@ -335,7 +341,11 @@ watch(
                 <div class="flex gap-6">
                     <Link
                         as="button"
-                        :href="route('listings.show', { listing: props.listing.data.id })"
+                        :href="
+                            route('listings.show', {
+                                listing: props.listing.data.id,
+                            })
+                        "
                         class="text-sm font-semibold leading-6 text-gray-900"
                         :disabled="form.processing"
                     >
@@ -352,7 +362,6 @@ watch(
                 </div>
             </div>
         </form>
-
         <!-- Delete Modal -->
         <DeleteConfirmModal
             :is-open="showDeleteModal"
