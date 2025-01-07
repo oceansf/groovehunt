@@ -15,6 +15,7 @@ import {
     EditIcon,
     MailIcon,
     BarcodeIcon,
+    ArrowLeft,
 } from "lucide-vue-next";
 import { UserCircleIcon, StarIcon } from "@heroicons/vue/20/solid";
 import Tracklist from "@/Components/Tracklist.vue";
@@ -85,6 +86,16 @@ const handleOutsideClick = (event) => {
 
 <template>
     <div class="container mx-auto h-full max-w-5xl px-2 py-8">
+        <Link
+            onclick="history.back();return false;"
+            href="#"
+            method="get"
+            as="button"
+            class="relative z-50 mb-2 flex items-center gap-1 text-slate-600 hover:underline"
+        >
+            <ArrowLeft size="20px" />
+            Back</Link
+        >
         <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
             <!-- Image Gallery -->
             <div class="space-y-4">

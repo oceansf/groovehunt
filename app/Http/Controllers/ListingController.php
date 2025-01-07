@@ -35,12 +35,20 @@ class ListingController extends Controller
         // Search
         if ($searchQuery) {
             $listings->where('title', 'like', '%' . $searchQuery . '%')
-            ->orWhere('artist', 'like', "%{$searchQuery}%");;
+                ->orWhere('artist', 'like', "%{$searchQuery}%");;
         }
 
         // Filter just genres for now
         if ($filters) {
             $listings->whereIn('genre', $filters);
+        }
+        // Only apply sorting if both field and direction are provided
+        if ($sortField && $sortDirection) {
+            if ($sortField === 'price') {
+                $listings->orderByRaw("CAST(price as DECIMAL(10,2)) {$sortDirection}");
+            } else {
+                $listings->orderBy($sortField, $sortDirection);
+            }
         }
 
         return Inertia::render('Index', [

@@ -17,6 +17,7 @@ const { items } = useInifiniteScroll("listings", landmark);
 <template>
     <div class="bg-white">
         <div class="mx-auto max-w-2xl lg:max-w-6xl">
+            <div v-if="listings.data.length === 0" class="text-center mt-12">No listings found.</div>
             <div class="mt-2 grid grid-cols-2 gap-x-1 gap-y-8 lg:grid-cols-4">
                 <div
                     v-for="listing in items"

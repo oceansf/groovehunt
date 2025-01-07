@@ -52,8 +52,8 @@ const toggleBodyScroll = (isOpen) => {
 
 <template>
     <Popover as="template" v-slot="{ open, close }">
-        <header class="sticky top-0 z-40">
-        <nav class="backdrop ">
+        <header class="sticky top-0 z-20">
+        <nav class="backdrop">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div
                     class="relative flex justify-between lg:gap-8 xl:grid xl:grid-cols-12"

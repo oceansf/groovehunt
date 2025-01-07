@@ -38,7 +38,7 @@ const props = defineProps({
 
 // State management
 const mobileFiltersOpen = ref(false);
-const currentSearch = ref(props.search || '');
+const currentSearch = ref(props.search || "");
 const currentFilters = ref(props.filters || []);
 const currentSort = ref(props.sort || {});
 
@@ -49,12 +49,14 @@ const updateListings = (params = {}) => {
         {
             search: params.search ?? currentSearch.value,
             filters: params.filters ?? currentFilters.value,
-            sort: params.sort ?? currentSort.value,
+            sort_by: params.sort_by ?? currentSort.value.field,
+            sort_direction:
+                params.sort_direction ?? currentSort.value.direction,
         },
         {
             preserveState: false,
             preserveScroll: true,
-        }
+        },
     );
 };
 
@@ -69,44 +71,54 @@ const handleFilterChange = (newFilters) => {
     updateListings({ filters: newFilters });
 };
 
+// Update the handleSortChange function to handle toggling
 const handleSortChange = (newSort) => {
-    currentSort.value = newSort;
-    updateListings({ sort: newSort });
+    // If clicking the same sort option that's currently active, clear the sort
+    if (
+        currentSort.value.field === newSort.field &&
+        currentSort.value.direction === newSort.direction
+    ) {
+        currentSort.value = { field: null, direction: null };
+        updateListings({
+            sort_by: null,
+            sort_direction: null,
+        });
+    } else {
+        // Otherwise apply the new sort
+        currentSort.value = newSort;
+        updateListings({
+            sort_by: newSort.field,
+            sort_direction: newSort.direction,
+        });
+    }
 };
-
 
 // Event listeners setup
 onMounted(() => {
     emitter.on("search", handleSearch);
-    emitter.on("filter", handleFilterChange);
-    emitter.on("sort", handleSortChange);
 });
 
 onUnmounted(() => {
     emitter.off("search", handleSearch);
-    emitter.off("filter", handleFilterChange);
-    emitter.off("sort", handleSortChange);
 });
 
 const sortOptions = [
-    { name: "Most Popular", href: "#", current: true },
-    { name: "Newest", href: "#", current: false },
-    { name: "Seller Rating", href: "#", current: false },
-    { name: "Price: Low to High", href: "#", current: false },
-    { name: "Price: High to Low", href: "#", current: false },
+    { name: "Most Popular", field: "popularity", direction: "desc" },
+    { name: "Newest", field: "created_at", direction: "desc" },
+    { name: "Seller Rating", field: "seller_rating", direction: "desc" },
+    { name: "Price: Low to High", field: "price", direction: "asc" },
+    { name: "Price: High to Low", field: "price", direction: "desc" },
 ];
-
-const handleSortOptionClick = (option) => {
-    // Update current option
-    sortOptions.forEach(opt => opt.current = opt.name === option.name);
-    handleSortChange({ by: option.value });
-};
 </script>
 
 <template>
     <div class="bg-white">
         <div>
-            <MobileFilterDialog v-model:mobileFiltersOpen="mobileFiltersOpen" @handle-submit="handleFilterChange" :filters="filters" />
+            <MobileFilterDialog
+                v-model:mobileFiltersOpen="mobileFiltersOpen"
+                @handle-submit="handleFilterChange"
+                :filters="filters"
+            />
 
             <main class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div
@@ -148,16 +160,27 @@ const handleSortOptionClick = (option) => {
                                             v-slot="{ active }"
                                         >
                                             <a
-                                                :href="option.href"
+                                                href="#"
+                                                @click.prevent="
+                                                    handleSortChange({
+                                                        field: option.field,
+                                                        direction:
+                                                            option.direction,
+                                                    })
+                                                "
                                                 :class="[
-                                                    option.current
+                                                    currentSort.field ===
+                                                        option.field &&
+                                                    currentSort.direction ===
+                                                        option.direction
                                                         ? 'font-medium text-gray-900'
                                                         : 'text-gray-500',
                                                     active ? 'bg-gray-100' : '',
                                                     'block px-4 py-2 text-sm',
                                                 ]"
-                                                >{{ option.name }}</a
                                             >
+                                                {{ option.name }}
+                                            </a>
                                         </MenuItem>
                                     </div>
                                 </MenuItems>
@@ -191,7 +214,10 @@ const handleSortOptionClick = (option) => {
 
                     <div class="grid grid-cols-1 gap-y-10 lg:grid-cols-5">
                         <!-- Filters side menu -->
-                        <FiltersSidebar @handle-change="handleFilterChange" :filters="filters" />
+                        <FiltersSidebar
+                            @handle-change="handleFilterChange"
+                            :filters="filters"
+                        />
 
                         <!-- Product grid -->
                         <div class="lg:col-span-4">

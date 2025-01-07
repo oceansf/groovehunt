@@ -16,7 +16,7 @@ const checkedFilters = ref(props.filters);
 
 <template>
     <div
-        class="sticky top-[92px] hidden h-screen overflow-y-auto pb-36 pr-4 lg:block"
+        class="sticky top-[92px] hidden h-screen overflow-y-scroll no-scrollbar pb-36 pr-4 lg:block"
     >
         <form @submit.prevent="">
             <div class="mb-2 flex flex-col gap-2">
@@ -28,7 +28,7 @@ const checkedFilters = ref(props.filters);
                 :key="section.id"
                 class="border-b border-gray-200 py-6"
                 v-slot="{ open }"
-                :default-open="checkedFilters.length > 0"
+                default-open
             >
                 <h3 class="-my-3 flow-root">
                     <DisclosureButton
