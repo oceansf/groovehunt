@@ -52,7 +52,7 @@ const toggleBodyScroll = (isOpen) => {
 
 <template>
     <Popover as="template" v-slot="{ open, close }">
-        <header class="sticky top-0 z-20">
+        <header class="navHeader top-0 z-20">
         <nav class="backdrop">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div
@@ -294,12 +294,12 @@ const toggleBodyScroll = (isOpen) => {
 </template>
 
 <style>
-header {
-    position: relative;
+.navHeader {
+    position: sticky;
     width: 100%;
     padding: 2rem;
     z-index: 2;
-    outline: 1px solid hsl(0deg 0% 0% / 0.25);
+    outline: 1px solid hsl(0deg 0% 0% / 0.10);
 }
 .backdrop {
     position: absolute;
