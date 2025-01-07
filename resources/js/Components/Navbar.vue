@@ -33,28 +33,27 @@ const userNavigation = [
 ];
 
 // Watch for changes in the menu state and toggle body scroll
-const toggleBodyScroll = (isOpen) => {
-    if (isOpen) {
-        document.body.style.overflow = "hidden";
-        document.body.style.position = "fixed";
-        document.body.style.width = "100%";
-        document.body.style.top = `-${window.scrollY}px`;
-    } else {
-        const scrollY = document.body.style.top;
-        document.body.style.overflow = "";
-        document.body.style.position = "";
-        document.body.style.width = "";
-        document.body.style.top = "";
-        window.scrollTo(0, parseInt(scrollY || "0") * -1);
-    }
-};
+// const toggleBodyScroll = (isOpen) => {
+//     if (isOpen) {
+//         document.body.style.overflow = "hidden";
+//         document.body.style.position = "fixed";
+//         document.body.style.width = "100%";
+//         document.body.style.top = `-${window.scrollY}px`;
+//     } else {
+//         const scrollY = document.body.style.top;
+//         document.body.style.overflow = "";
+//         document.body.style.position = "";
+//         document.body.style.width = "";
+//         document.body.style.top = "";
+//         window.scrollTo(0, parseInt(scrollY || "0") * -1);
+//     }
+// };
 </script>
 
 <template>
     <Popover as="template" v-slot="{ open, close }">
-        <header class="navHeader top-0 z-20">
-        <nav class="backdrop">
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <nav>
+            <div class="backdrop mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div
                     class="relative flex justify-between lg:gap-8 xl:grid xl:grid-cols-12"
                 >
@@ -183,7 +182,8 @@ const toggleBodyScroll = (isOpen) => {
                     </div>
                 </div>
             </div>
-
+            
+            <!-- Mobile nav menu -->
             <transition
                 enter-active-class="duration-200 ease-out"
                 enter-from-class="opacity-0 scale-95"
@@ -191,20 +191,16 @@ const toggleBodyScroll = (isOpen) => {
                 leave-active-class="duration-100 ease-in"
                 leave-from-class="opacity-100 scale-100"
                 leave-to-class="opacity-0 scale-95"
-                @enter="toggleBodyScroll(true)"
-                @leave="toggleBodyScroll(false)"
+                
             >
                 <div v-if="open" class="absolute left-0 right-0 top-full z-50">
-                    <div
-                        class="fixed inset-0 top-[57px] z-0 bg-white/80 backdrop-blur-sm"
-                    ></div>
                     <PopoverPanel
-                        class="relative z-10 h-[calc(100vh-57px)] overflow-y-auto bg-white/80 backdrop-blur-sm lg:hidden"
+                        class="mobile-nav-panel relative z-10 h-[calc(100vh-57px)] overflow-y-auto lg:hidden"
                         aria-label="Global"
                         static
                     >
                         <div
-                            class="mx-auto max-w-3xl space-y-1 px-2 pb-3 pt-2 sm:px-4"
+                            class="nav-content mx-auto max-w-3xl space-y-1 px-2 pb-3 pt-2 sm:px-4"
                         >
                             <Link
                                 v-for="link in navLinks"
@@ -289,14 +285,14 @@ const toggleBodyScroll = (isOpen) => {
                 </div>
             </transition>
         </nav>
-        </header>
     </Popover>
 </template>
 
 <style>
-.navHeader {
+nav {
     position: sticky;
     width: 100%;
+    top: 0;
     padding: 2rem;
     z-index: 2;
     outline: 1px solid hsl(0deg 0% 0% / 0.10);
@@ -307,16 +303,25 @@ const toggleBodyScroll = (isOpen) => {
     height: 200%;
     backdrop-filter: blur(16px);
     mask-image: linear-gradient(to bottom, black 0% 50%, transparent 50% 100%);
-    /*
-    Prefix required for wider
-    browser support. See below
-    for more info.
-  */
     -webkit-backdrop-filter: blur(16px);
     -webkit-mask-image: linear-gradient(
         to bottom,
         black 0% 50%,
         transparent 50% 100%
     );
+}
+
+.mobile-nav-panel {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    mask-image: linear-gradient(to bottom, black 0%, black 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, black 100%);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.nav-content {
+    position: relative;
+    z-index: 2;
 }
 </style>

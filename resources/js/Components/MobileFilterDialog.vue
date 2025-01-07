@@ -86,7 +86,7 @@ const closeDialog = () => {
                             <div class="px-4" v-if="selectedFilters.length > 0">
                                 <button
                                     type="submit"
-                                    class="w-full rounded bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"
+                                    class="w-full rounded bg-slate-900 px-4 py-2 text-white transition hover:bg-slate-700"
                                 >
                                     Apply Filters
                                 </button>
