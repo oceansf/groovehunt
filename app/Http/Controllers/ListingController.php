@@ -29,7 +29,7 @@ class ListingController extends Controller
 
         $searchQuery = trim($request->input('search', ''));
         $filters = $request->input('filters', []);
-        $sortField = $request->input('sort_by', 'title'); // Default sort by title
+        $sortField = $request->input('sort_by', 'created_at'); // Default sort by newest
         $sortDirection = $request->input('sort_direction', 'desc'); // Default direction ascending
 
         // Search

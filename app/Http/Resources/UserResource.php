@@ -17,7 +17,7 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'avatar_url' => $this->avatar_url,
+            'avatar_url' => $this->avatar,
             // TODO: Add rating and review count
             // 'rating' => round($this->average_rating, 1),
             // 'review_count' => $this->reviews()->count(),

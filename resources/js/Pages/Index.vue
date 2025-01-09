@@ -132,9 +132,20 @@ const sortOptions = [
                         <Menu as="div" class="relative inline-block text-left">
                             <div>
                                 <MenuButton
-                                    class="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900"
+                                    class="group inline-flex justify-center text-sm font-semibold text-gray-700 hover:text-gray-900"
                                 >
-                                    Sort
+                                    Sort:
+                                    {{
+                                        props.sort?.field
+                                            ? (sortOptions.find(
+                                                  (option) =>
+                                                      option.field ===
+                                                          props.sort.field &&
+                                                      option.direction ===
+                                                          props.sort.direction,
+                                              )?.name ?? "Sort")
+                                            : "Sort"
+                                    }}
                                     <ChevronDownIcon
                                         class="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                                         aria-hidden="true"

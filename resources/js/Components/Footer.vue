@@ -7,7 +7,7 @@
         >
             <span
                 class="text-sm text-gray-500 sm:text-center dark:text-gray-400"
-            >© 2024 <a href="/" class="hover:underline">Groove Hunt™</a>.
+            >© 2024 <a href="/" class="hover:underline">Groovehunt™</a>.
                 All Rights Reserved.
             </span>
             <ul

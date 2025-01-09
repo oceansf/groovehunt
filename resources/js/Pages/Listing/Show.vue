@@ -46,6 +46,7 @@ const props = defineProps({
 
 const listingData = props.listing.data;
 const sellerData = props.seller.data;
+const sellerListingsData = props.sellerListings.data;
 const currentImageIndex = ref(0);
 
 const showMessageModal = ref(false);
@@ -85,15 +86,15 @@ const handleOutsideClick = (event) => {
 </script>
 
 <template>
-    <div class="container mx-auto h-full max-w-5xl px-2 py-8">
+    <div class="container mx-auto h-full max-w-5xl px-2 py-6">
         <Link
             onclick="history.back();return false;"
             href="#"
             method="get"
             as="button"
-            class="relative z-50 mb-2 flex items-center gap-1 text-slate-600 hover:underline"
+            class="mb-2 px-2 py-1 rounded-lg flex font-sm items-center gap-1 text-gray-900 hover:bg-gray-100"
         >
-            <ArrowLeft size="20px" />
+            <ArrowLeft size="16px" />
             Back</Link
         >
         <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
@@ -346,34 +347,36 @@ const handleOutsideClick = (event) => {
                         Seller Information
                     </h2>
                     <div class="flex items-center space-x-1">
-                        <img
-                            v-if="seller.avatar_url"
-                            :src="seller.avatar_url"
-                            :alt="seller.name"
-                            class="h-12 w-12 rounded-full object-cover"
-                        />
-                        <UserCircleIcon
-                            v-else
-                            class="h-12 w-12 rounded-full text-gray-300"
-                        />
-                        <div>
-                            <p class="font-medium">{{ sellerData.name }}</p>
-                            <div class="flex items-center">
-                                <StarIcon class="h-4 w-4 text-yellow-400" />
-                                <span class="pl-1">4.9 (382 reviews)</span>
+                        <Link :href="route('profile.show', sellerData.id)">
+                            <img
+                                v-if="seller.avatar_url"
+                                :src="seller.avatar_url"
+                                :alt="seller.name"
+                                class="h-12 w-12 rounded-full object-cover"
+                            />
+                            <UserCircleIcon
+                                v-else
+                                class="h-12 w-12 rounded-full text-gray-300"
+                            />
+                        </Link>
+                            <div>
+                                <p class="font-medium">{{ sellerData.name }}</p>
+                                <div class="flex items-center">
+                                    <StarIcon class="h-4 w-4 text-yellow-400" />
+                                    <span class="pl-1">4.9 (382 reviews)</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
                 </div>
 
-                <template v-if="sellerListings.length > 0">
+                <template v-if="sellerListingsData.length > 0">
                     <h2 class="text-xl font-semibold">More from this seller</h2>
-                    <div class="grid grid-cols-4 gap-4">
+                    <div class="grid grid-cols-4 gap-4 md:w-[400px]">
                         <Link
-                            v-for="listingData in sellerListings"
+                            v-for="listingData in sellerListingsData"
                             :key="listingData.id"
                             :href="route('listings.show', listingData.id)"
-                            class="aspect-square overflow-hidden rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            class="h-[90px] w-[90px] overflow-hidden rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         >
                             <img
                                 :src="listingData.images[0].url"

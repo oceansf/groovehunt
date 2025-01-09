@@ -19,10 +19,12 @@ Route::get('/listings/{listing}', [ListingController::class, 'show'])->name('lis
 //Search
 Route::get('/search', [SearchController::class, 'search']);
 
+Route::get('/profile/{user}', [ProfileController::class, 'show'])->name('profile.show');
+
 // Protected routes
 Route::middleware('auth')->group(function () {
     // Profile management routes
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 

@@ -13,24 +13,26 @@ defineProps<{
 
 <template>
     <Head title="Profile" />
-    <div class="py-12 bg-slate-100">
+    <div class="bg-white py-12">
         <div class="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8">
             <header class="text-3xl font-semibold tracking-tight">
-                Profile settings
+                Account settings
             </header>
-            <div class="bg-white p-4 shadow sm:rounded-lg sm:p-8">
+            <hr />
+            <div class="bg-white p-4 sm:rounded-lg sm:p-8">
                 <UpdateProfileInformationForm
                     :must-verify-email="mustVerifyEmail"
                     :status="status"
                     class="max-w-xl"
                 />
             </div>
+            <hr />
 
-            <div class="bg-white p-4 shadow sm:rounded-lg sm:p-8">
+            <div class="bg-white p-4 sm:rounded-lg sm:p-8">
                 <UpdatePasswordForm class="max-w-xl" />
             </div>
-
-            <div class="bg-white p-4 shadow sm:rounded-lg sm:p-8">
+            <hr />
+            <div class="bg-white p-4 sm:rounded-lg sm:p-8">
                 <DeleteUserForm class="max-w-xl" />
             </div>
         </div>
