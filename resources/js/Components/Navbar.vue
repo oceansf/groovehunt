@@ -19,7 +19,7 @@ const auth = computed(() => page.props.auth);
 const currentPath = computed(() => usePage().url);
 
 const navLinks = [
-    { name: "MARKET", method: "get", href: "/" },
+    { name: "BUY", method: "get", href: "/" },
     { name: "SELL", method: "get", href: "/sell" },
     { name: "ABOUT", method: "get", href: "/about" },
 ];
@@ -71,7 +71,7 @@ const userNavigation = [
                                               link.href + '/',
                                           ) || currentPath === link.href
                                 )
-                                    ? 'border-gray-600 text-gray-900'
+                                    ? 'border-blue-500 text-gray-900'
                                     : 'border-transparent text-gray-500 transition hover:border-gray-300 hover:text-gray-700',
                             ]"
                         >

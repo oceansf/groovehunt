@@ -19,23 +19,53 @@ function truncateText(length, text) {
             <img
                 :src="listing.images[0].url"
                 :alt="listing.images[0].url"
-                class="h-full w-full object-cover object-center transition-all duration-300 ease-in-out md:group-hover:scale-105 md:group-hover:opacity-75"
+                :class="[
+                    'h-full w-full object-cover object-center transition-all duration-300 ease-in-out',
+                    listing.disabled
+                        ? 'opacity-75'
+                        : 'md:group-hover:scale-105 md:group-hover:opacity-75',
+                ]"
             />
         </div>
         <div class="mt-2 flex justify-between">
-            <div class="pl-1">
-                <h3 class="text-sm font-semibold text-gray-700">
-                    <Link
-                        :href="route('listings.show', listing.id)"
+            <div class="flex justify-between">
+                <div class="pl-1">
+                    <h3 class="text-sm font-semibold text-gray-700">
+                        <Link
+                            v-if="!listing.disabled"
+                            :href="route('listings.show', listing.id)"
+                        >
+                            <span aria-hidden="true" class="absolute inset-0" />
+                            {{
+                                truncateText(
+                                    width < 768 ? 23 : 30,
+                                    listing.title,
+                                )
+                            }}
+                        </Link>
+                        <span v-else class="text-gray-400">
+                            <!-- Grayed out when disabled -->
+                            {{
+                                truncateText(
+                                    width < 768 ? 23 : 30,
+                                    listing.title,
+                                )
+                            }}
+                            <span class="ml-2 text-xs text-red-500">Sold</span>
+                        </span>
+                    </h3>
+                    <p class="mt-1 text-sm text-gray-500">
+                        {{ listing.artist }}
+                    </p>
+                    <p
+                        class="text-sm mt-1 font-semibold"
+                        :class="
+                            listing.disabled ? 'text-gray-400' : 'text-gray-900'
+                        "
                     >
-                        <span aria-hidden="true" class="absolute inset-0" />
-                        {{ truncateText(width < 768 ? 23 : 30, listing.title) }}
-                    </Link>
-                </h3>
-                <p class="mt-1 text-sm text-gray-500">{{ listing.artist }}</p>
-                <p class="mt-1 text-sm font-semibold text-gray-900">
-                    ${{ Math.round(listing.price).toString() }}
-                </p>
+                        ${{ listing.price.toString() }}
+                    </p>
+                </div>
             </div>
         </div>
     </div>

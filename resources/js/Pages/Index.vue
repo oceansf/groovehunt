@@ -122,11 +122,18 @@ const sortOptions = [
 
             <main class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div
-                    class="flex items-baseline justify-between border-b border-gray-200 px-3 pb-6 pt-12 md:px-0"
+                    class="flex items-end justify-between border-b border-gray-200 px-3 pb-4 pt-12 md:px-0"
                 >
-                    <h1 class="text-4xl font-bold tracking-tight text-gray-900">
-                        Market
-                    </h1>
+                    <div>
+                        <h1
+                            class="text-4xl font-bold tracking-tight text-gray-900 sm:mb-2"
+                        >
+                            Market
+                        </h1>
+                        <p class="hidden text-gray-500">
+                            Buy and sell music from collectors around the world
+                        </p>
+                    </div>
                     <!-- Sort & Filter controls -->
                     <div class="flex items-center">
                         <Menu as="div" class="relative inline-block text-left">
@@ -134,18 +141,22 @@ const sortOptions = [
                                 <MenuButton
                                     class="group inline-flex justify-center text-sm font-semibold text-gray-700 hover:text-gray-900"
                                 >
-                                    Sort:
-                                    {{
-                                        props.sort?.field
-                                            ? (sortOptions.find(
-                                                  (option) =>
-                                                      option.field ===
-                                                          props.sort.field &&
-                                                      option.direction ===
-                                                          props.sort.direction,
-                                              )?.name ?? "Sort")
-                                            : "Sort"
-                                    }}
+                                    <span class=" sm:inline-block"
+                                        >
+                                        {{
+                                            props.sort?.field
+                                                ? (sortOptions.find(
+                                                      (option) =>
+                                                          option.field ===
+                                                              props.sort
+                                                                  .field &&
+                                                          option.direction ===
+                                                              props.sort
+                                                                  .direction,
+                                                  )?.name ?? "Sort")
+                                                : "Sort"
+                                        }}
+                                    </span>
                                     <ChevronDownIcon
                                         class="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                                         aria-hidden="true"

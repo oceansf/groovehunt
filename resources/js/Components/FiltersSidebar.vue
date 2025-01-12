@@ -3,7 +3,6 @@ import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 import { PlusIcon, MinusIcon } from "@heroicons/vue/24/outline";
 import FilterIcon from "./FilterIcon.vue";
 import filtersArr from "../Shared/filtersArr";
-import { router } from "@inertiajs/vue3";
 import { ref } from "vue";
 
 const props = defineProps({
