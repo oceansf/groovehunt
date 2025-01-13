@@ -16,6 +16,7 @@ const { items } = useInifiniteScroll("listings", landmark);
 
 <template>
     <div class="bg-slate-50">
+        <h2 class="text-slate-500">Showing {{ props.listings.to }} results</h2>
         <div class="mx-auto max-w-2xl lg:max-w-6xl">
             <div v-if="listings.data.length === 0" class="mt-12 text-center">
                 No listings found.

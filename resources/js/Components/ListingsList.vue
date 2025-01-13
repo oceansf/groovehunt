@@ -12,12 +12,13 @@ const props = defineProps({
 
 <template>
     <div>
-        <header class="hidden sm:inline">
-            <div class="mb-2">
-                <h1 class="pr-4 text-end">Sold by</h1>
+        <header>
+            <div class="mb-2 hidden sm:flex justify-between">
+                <h2 class="text-slate-500">Showing {{ props.listings.data.length }} results</h2>
+                <h1 class="pr-4 text-slate-900 text-end">Sold by</h1>
             </div>
         </header>
-        <ul role="list" class="">
+        <ul role="list">
             <li
                 v-for="listing in listings.data"
                 :key="listing.id"
@@ -29,7 +30,7 @@ const props = defineProps({
                                 :src="listing.images[0].url"
                                 :alt="listing.images[0].url"
                                 :class="[
-                                    'h-[120px] w-[120px] rounded-lg object-cover object-center transition-all duration-300 ease-in-out sm:h-[200px] sm:w-[200px]',
+                                    'h-[120px] w-[120px] rounded-lg object-cover object-center transition-all duration-300 ease-in-out sm:h-[260px] sm:w-[260px]',
                                     listing.disabled
                                         ? 'opacity-75'
                                         : 'md:group-hover:scale-105 md:group-hover:opacity-75',

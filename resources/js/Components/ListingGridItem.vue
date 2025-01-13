@@ -1,7 +1,8 @@
 <script setup>
+import { computed } from "vue";
 import { useWindowSize } from "@vueuse/core";
 
-defineProps({
+const props = defineProps({
     listing: Object,
 });
 
@@ -9,6 +10,11 @@ const { width } = useWindowSize();
 function truncateText(length, text) {
     return text.length <= length ? text : `${text.slice(0, length)}...`;
 }
+
+const formattedPrice = computed(() => {
+    const numPrice = parseFloat(props.listing.price);
+    return numPrice % 1 === 0 ? numPrice.toFixed(0) : numPrice.toFixed(2);
+});
 </script>
 
 <template>
@@ -63,7 +69,7 @@ function truncateText(length, text) {
                             listing.disabled ? 'text-gray-400' : 'text-gray-900'
                         "
                     >
-                        ${{ listing.price.toString() }}
+                        ${{ formattedPrice }}
                     </p>
                 </div>
             </div>

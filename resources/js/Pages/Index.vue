@@ -235,9 +235,9 @@ const sortOptions = [
                     </div>
                 </div>
 
-                <section aria-labelledby="filters-heading" class="pb-24 pt-6">
+                <section aria-labelledby="filters-heading" class="pb-24 pt-3">
+                    
                     <h2 id="filters-heading" class="sr-only">Filters</h2>
-
                     <div class="grid grid-cols-1 gap-y-10 lg:grid-cols-5">
                         <!-- Filters side menu -->
                         <FiltersSidebar
