@@ -31,7 +31,7 @@ const handleSearch = () => {
                         id="search"
                         v-model="searchQuery"
                         name="search"
-                        class="block w-1/2 rounded-md border-0 bg-white py-1.5 pl-10 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 transition-all duration-300 ease-in-out placeholder:text-gray-400 focus:w-3/4 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                        class="block sm:w-1/2 rounded-md border-0 bg-white py-1.5 pl-10 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 transition-all duration-300 ease-in-out placeholder:text-gray-400 sm:focus:w-3/4 focus:ring-2 focus:ring-inset outline-none focus:ring-blue-400 sm:text-sm sm:leading-6"
                         placeholder="Search by title or artist..."
                         type="search"
                     />

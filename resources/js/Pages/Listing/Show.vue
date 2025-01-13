@@ -92,10 +92,10 @@ const handleOutsideClick = (event) => {
             href="#"
             method="get"
             as="button"
-            class="mb-2 px-2 py-1 rounded-lg flex font-sm items-center gap-1 text-gray-900 hover:bg-gray-100"
+            class="mb-2 flex font-sm items-center gap-1 text-gray-900 hover:underline"
         >
             <ArrowLeft size="16px" />
-            Back</Link
+            Back to listings</Link
         >
         <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
             <!-- Image Gallery -->

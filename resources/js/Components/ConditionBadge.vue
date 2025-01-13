@@ -6,6 +6,11 @@ const props = defineProps({
         type: String,
         required: true,
     },
+    size: {
+        type: String,
+        default: "md",
+        validator: (value) => ["sm", "md", "lg"].includes(value),
+    },
 });
 
 const formattedCondition = computed(() => {
@@ -35,7 +40,12 @@ const conditionColorClass = computed(() => {
 <template>
     <span
         :class="[
-            'rounded-full px-3 py-1 text-sm font-semibold',
+            'rounded-full font-semibold',
+            {
+                'px-2 py-0.5 text-xs': size === 'sm',
+                'px-3 py-1 text-sm': size === 'md',
+                'px-4 py-1.5 text-base': size === 'lg',
+            },
             conditionColorClass,
         ]"
     >

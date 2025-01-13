@@ -36,7 +36,7 @@ const userNavigation = [
 <template>
     <Popover as="template" v-slot="{ open, close }">
         <nav
-            class="sticky top-0 z-40 border-b bg-white bg-opacity-85 backdrop-blur backdrop-filter lg:overflow-y-visible"
+            class="sticky top-0 z-40 border-b bg-slate-50 bg-opacity-85 backdrop-blur backdrop-filter lg:overflow-y-visible"
         >
             <div class="backdrop mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div
@@ -71,8 +71,8 @@ const userNavigation = [
                                               link.href + '/',
                                           ) || currentPath === link.href
                                 )
-                                    ? 'border-blue-500 text-gray-900'
-                                    : 'border-transparent text-gray-500 transition hover:border-gray-300 hover:text-gray-700',
+                                    ? 'border-blue-400 text-gray-900'
+                                    : 'border-transparent text-gray-500 transition hover:border-blue-200 hover:text-gray-700',
                             ]"
                         >
                             {{ link.name }}

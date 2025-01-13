@@ -52,4 +52,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Listing::class, 'buyer_id');
     }
+
+    public function scopePublicInfo($query)
+    {
+        return $query->select('id', 'name', 'avatar');
+    }
 }

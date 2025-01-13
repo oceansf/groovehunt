@@ -31,7 +31,7 @@ const checkedFilters = ref(props.filters);
             >
                 <h3 class="-my-3 flow-root">
                     <DisclosureButton
-                        class="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500"
+                        class="flex w-full items-center justify-between bg-slate-50 py-3 text-sm text-gray-400 hover:text-gray-500"
                     >
                         <div class="flex items-center gap-2">
                             <FilterIcon

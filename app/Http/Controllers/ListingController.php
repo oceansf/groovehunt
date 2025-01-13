@@ -25,7 +25,9 @@ class ListingController extends Controller
      */
     public function index(Request $request)
     {
-        $listings = Listing::query();
+        $listings = Listing::with(['seller' => function($query) {
+            $query->publicInfo();
+        }]);
 
         $searchQuery = trim($request->input('search', ''));
         $filters = $request->input('filters', []);
@@ -60,20 +62,6 @@ class ListingController extends Controller
                 'direction' => $sortDirection
             ]
         ]);
-
-        // $listings = $this->listingService->getListings($query, $request);
-
-        // return Inertia::render('Index', [
-        //     'listings' => $listings,
-        //     'filters' => [
-        //         'search' => $query,
-        //         'genre' => $request->input('genre'),
-        //         'format' => $request->input('format'),
-        //         'sort' => $request->input('sort', 'date'),
-        //         'direction' => $request->input('direction', 'desc'),
-        //     ],
-        // ]);
-
     }
 
     /**

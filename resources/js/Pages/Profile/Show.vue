@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import { EnvelopeIcon, StarIcon, FlagIcon } from "@heroicons/vue/20/solid";
 import { usePage } from "@inertiajs/vue3";
-import ListingItem from "@/Components/ListingItem.vue";
+import ListingItem from "@/Components/ListingGridItem.vue";
 
 const props = defineProps({
     user: Object,
@@ -188,9 +188,15 @@ const dummyListing = {
                 <h1 class="mt-12 truncate text-2xl font-semibold text-gray-900">
                     About
                 </h1>
-                <div class="mt-2 mb-8">
+                <div class="mb-8 mt-2">
                     <p class="text-gray-500">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat nobis dolores officia qui? Quibusdam ipsum iste quas ipsam maxime labore autem commodi et, corrupti ducimus ullam iure maiores nulla harum voluptas tempore provident nemo quis? Dolorem doloribus laborum commodi quasi. Debitis odio aliquam placeat? Maxime saepe aperiam quos cupiditate neque.
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Placeat nobis dolores officia qui? Quibusdam ipsum iste
+                        quas ipsam maxime labore autem commodi et, corrupti
+                        ducimus ullam iure maiores nulla harum voluptas tempore
+                        provident nemo quis? Dolorem doloribus laborum commodi
+                        quasi. Debitis odio aliquam placeat? Maxime saepe
+                        aperiam quos cupiditate neque.
                     </p>
                 </div>
             </div>
@@ -203,7 +209,7 @@ const dummyListing = {
                     Active Listings
                 </h1>
                 <div
-                    class="mt-2 grid grid-cols-2 gap-x-2 gap-y-8 lg:grid-cols-5"
+                    class="mt-6 grid grid-cols-2 gap-x-2 gap-y-8 lg:grid-cols-5"
                 >
                     <div
                         v-for="listing in userListings.data"
@@ -221,7 +227,7 @@ const dummyListing = {
                     Recently Sold
                 </h1>
                 <div
-                    class="mt-2 grid grid-cols-2 gap-x-2 gap-y-8 lg:grid-cols-5"
+                    class="mt-6 grid grid-cols-2 gap-x-2 gap-y-8 lg:grid-cols-5"
                 >
                     <div
                         v-for="listing in 4"
@@ -236,7 +242,7 @@ const dummyListing = {
             <!-- Seller Reviews -->
             <div class="mb-16 px-2">
                 <h1
-                    class="mb-4 mt-12 truncate text-2xl font-semibold text-gray-900"
+                    class="mb-6 mt-12 truncate text-2xl font-semibold text-gray-900"
                 >
                     Seller Reviews
                     <span v-if="reviews.length">({{ reviews.length }})</span>

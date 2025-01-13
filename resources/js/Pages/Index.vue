@@ -7,21 +7,20 @@ import {
     ChevronDownIcon,
     FunnelIcon,
     ListBulletIcon,
+    Squares2X2Icon,
 } from "@heroicons/vue/20/solid";
 import ListingsGrid from "@/Components/ListingsGrid.vue";
+import ListingsList from "@/Components/ListingsList.vue";
 import MobileFilterDialog from "@/Components/MobileFilterDialog.vue";
 import FiltersSidebar from "@/Components/FiltersSidebar.vue";
 
-// Set up event listeners
+// Event listeners setup
 onMounted(() => {
-    emitter.on("search", (q) => {
-        updateListings(q);
-    });
+    emitter.on("search", handleSearch);
 });
 
-// Clean up event listeners
 onUnmounted(() => {
-    emitter.off("search", (q) => (search.value = q));
+    emitter.off("search", handleSearch);
 });
 
 const props = defineProps({
@@ -41,6 +40,7 @@ const mobileFiltersOpen = ref(false);
 const currentSearch = ref(props.search || "");
 const currentFilters = ref(props.filters || []);
 const currentSort = ref(props.sort || {});
+const view = ref("grid");
 
 // Unified update method
 const updateListings = (params = {}) => {
@@ -93,14 +93,10 @@ const handleSortChange = (newSort) => {
     }
 };
 
-// Event listeners setup
-onMounted(() => {
-    emitter.on("search", handleSearch);
-});
-
-onUnmounted(() => {
-    emitter.off("search", handleSearch);
-});
+const handleViewChange = () => {
+    view.value = view.value === "grid" ? "list" : "grid";
+    console.log(view.value);
+};
 
 const sortOptions = [
     { name: "Most Popular", field: "popularity", direction: "desc" },
@@ -112,7 +108,7 @@ const sortOptions = [
 </script>
 
 <template>
-    <div class="bg-white">
+    <div class="bg-slate-50">
         <div>
             <MobileFilterDialog
                 v-model:mobileFiltersOpen="mobileFiltersOpen"
@@ -130,8 +126,8 @@ const sortOptions = [
                         >
                             Market
                         </h1>
-                        <p class="hidden text-gray-500">
-                            Buy and sell music from collectors around the world
+                        <p class="hidden sm:inline text-gray-600">
+                            Buy and sell from music collectors around the world
                         </p>
                     </div>
                     <!-- Sort & Filter controls -->
@@ -141,8 +137,7 @@ const sortOptions = [
                                 <MenuButton
                                     class="group inline-flex justify-center text-sm font-semibold text-gray-700 hover:text-gray-900"
                                 >
-                                    <span class=" sm:inline-block"
-                                        >
+                                    <span class="sm:inline-block">
                                         {{
                                             props.sort?.field
                                                 ? (sortOptions.find(
@@ -210,14 +205,23 @@ const sortOptions = [
                         </Menu>
 
                         <button
+                            @click="handleViewChange"
                             type="button"
                             class="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7"
                         >
                             <span class="sr-only">View list</span>
-                            <ListBulletIcon
-                                class="h-5 w-5"
-                                aria-hidden="true"
-                            />
+                            <div v-if="view === 'grid'">
+                                <ListBulletIcon
+                                    class="h-5 w-5"
+                                    aria-hidden="true"
+                                />
+                            </div>
+                            <div v-else>
+                                <Squares2X2Icon
+                                    class="h-5 w-5"
+                                    aria-hidden="true"
+                                />
+                            </div>
                         </button>
 
                         <button
@@ -242,8 +246,13 @@ const sortOptions = [
                         />
 
                         <!-- Product grid -->
-                        <div class="lg:col-span-4">
+                        <div v-if="view === 'grid'" class="lg:col-span-4">
                             <ListingsGrid :listings="listings" />
+                        </div>
+
+                        <!-- Product list -->
+                        <div v-else class="lg:col-span-4">
+                            <ListingsList :listings="listings" />
                         </div>
                     </div>
                 </section>
