@@ -1,6 +1,6 @@
 <script setup>
-import { computed } from "vue";
 import { useWindowSize } from "@vueuse/core";
+import formatPrice from "@/Composables/formatPrice";
 
 const props = defineProps({
     listing: Object,
@@ -10,11 +10,6 @@ const { width } = useWindowSize();
 function truncateText(length, text) {
     return text.length <= length ? text : `${text.slice(0, length)}...`;
 }
-
-const formattedPrice = computed(() => {
-    const numPrice = parseFloat(props.listing.price);
-    return numPrice % 1 === 0 ? numPrice.toFixed(0) : numPrice.toFixed(2);
-});
 </script>
 
 <template>
@@ -64,12 +59,12 @@ const formattedPrice = computed(() => {
                         {{ listing.artist }}
                     </p>
                     <p
-                        class="text-sm mt-1 font-semibold"
+                        class="mt-1 text-sm font-semibold"
                         :class="
                             listing.disabled ? 'text-gray-400' : 'text-gray-900'
                         "
                     >
-                        ${{ formattedPrice }}
+                        ${{ formatPrice(props.listing.price) }}
                     </p>
                 </div>
             </div>

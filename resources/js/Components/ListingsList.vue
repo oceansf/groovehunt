@@ -1,6 +1,7 @@
 <script setup>
 import { UserCircleIcon, StarIcon } from "@heroicons/vue/20/solid";
 import ConditionBadge from "./ConditionBadge.vue";
+import formatPrice from "@/Composables/formatPrice";
 
 const props = defineProps({
     listings: {
@@ -13,18 +14,19 @@ const props = defineProps({
 <template>
     <div>
         <header>
-            <div class="mb-2 hidden sm:flex justify-between">
-                <h2 class="text-slate-500">Showing {{ props.listings.data.length }} results</h2>
-                <h1 class="pr-4 text-slate-900 text-end">Sold by</h1>
+            <div class="mb-2 hidden justify-between sm:flex">
+                <h2 class="text-slate-500">
+                    Showing {{ props.listings.data.length }} results
+                </h2>
+                <h1 class="pr-4 text-end text-slate-900">Sold by</h1>
             </div>
         </header>
         <ul role="list">
-            <li
-                v-for="listing in listings.data"
-                :key="listing.id"
-            >
+            <li v-for="listing in listings.data" :key="listing.id">
                 <Link :href="route('listings.show', listing.id)">
-                    <div class="flex justify-between p-2 sm:p-4 transition hover:bg-black/5 rounded-xl">
+                    <div
+                        class="flex justify-between rounded-xl p-2 transition hover:bg-black/5 sm:p-4"
+                    >
                         <div class="flex gap-2 sm:gap-4">
                             <img
                                 :src="listing.images[0].url"
@@ -47,9 +49,26 @@ const props = defineProps({
                                     >
                                         {{ listing.artist }}
                                     </h2>
-                                    <h2 class="font-semibold sm:text-xl">
-                                        ${{ listing.price }}
-                                    </h2>
+                                    <div class="sm:mt-2">
+                                        <h2 class="font-semibold sm:text-xl">
+                                            ${{ listing.price }}
+                                        </h2>
+                                        <h3 class="text-gray-600">
+                                            <span v-if="listing.shipping > 0">
+                                                <em
+                                                    >+${{
+                                                        formatPrice(
+                                                            listing.shipping,
+                                                        )
+                                                    }}
+                                                    shipping</em
+                                                >
+                                            </span>
+                                            <span v-else>
+                                                <em>FREE shipping</em>
+                                            </span>
+                                        </h3>
+                                    </div>
                                 </div>
                                 <div
                                     class="mb-4 hidden flex-col gap-2 text-sm sm:flex"
@@ -108,8 +127,8 @@ const props = defineProps({
                         </div>
                     </div>
                 </Link>
-                <div class="h-[1px] w-[97.5%] mx-auto bg-black/5"></div>
-              </li>
+                <div class="mx-auto h-[1px] w-[97.5%] bg-black/5"></div>
+            </li>
         </ul>
     </div>
 </template>

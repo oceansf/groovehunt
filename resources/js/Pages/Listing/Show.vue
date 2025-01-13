@@ -24,6 +24,7 @@ import ConditionBadge from "@/Components/ConditionBadge.vue";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { usePage, Head } from "@inertiajs/vue3";
+import formatPrice from "@/Composables/formatPrice";
 
 dayjs.extend(relativeTime);
 
@@ -162,9 +163,17 @@ const handleOutsideClick = (event) => {
                                 >${{ listingData.price }}</span
                             >
                             <div
-                                class="flex items-center space-x-2 text-gray-700"
+                                class="flex items-center space-x-2 text-gray-600"
                             >
-                                <em>Shipping: ${{ listingData.shipping }}</em>
+                                <span v-if="listingData.shipping > 0"
+                                    ><em
+                                        >+${{
+                                            formatPrice(listingData.shipping)
+                                        }}
+                                        shipping</em
+                                    ></span
+                                >
+                                <span v-else><em>*FREE shipping</em></span>
                             </div>
                         </div>
                         <ConditionBadge
