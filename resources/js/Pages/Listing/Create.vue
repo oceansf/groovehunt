@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch } from "vue";
-import { useForm } from "@inertiajs/vue3";
+import { useForm, Head } from "@inertiajs/vue3";
 import { DiscAlbum } from "lucide-vue-next";
 import DetailsMenu from "@/Components/Form/DetailsMenu.vue";
 import FormTextInput from "@/Components/Form/FormTextInput.vue";
@@ -73,6 +73,10 @@ watch(
 </script>
 
 <template>
+    <Head>
+        <title>Create a listing</title>
+        <meta name="description" content="Create listing page" />
+    </Head>
     <div class="mx-auto mb-32 mt-12 max-w-3xl px-3">
         <form @submit.prevent="handleSubmit" enctype="multipart/form-data">
             <div class="space-y-12">

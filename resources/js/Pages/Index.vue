@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
-import { router } from "@inertiajs/vue3";
+import { router, Head } from "@inertiajs/vue3";
 import { emitter } from "../Shared/event-bus";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import {
@@ -108,6 +108,10 @@ const sortOptions = [
 </script>
 
 <template>
+    <Head>
+        <title>Market</title>
+        <meta name="description" content="Buy and sell music formats" />
+    </Head>
     <div class="bg-slate-50">
         <div>
             <MobileFilterDialog
@@ -126,7 +130,7 @@ const sortOptions = [
                         >
                             Market
                         </h1>
-                        <p class="hidden sm:inline text-gray-600">
+                        <p class="hidden text-gray-600 sm:inline">
                             Buy and sell from music collectors around the world
                         </p>
                     </div>
@@ -236,7 +240,6 @@ const sortOptions = [
                 </div>
 
                 <section aria-labelledby="filters-heading" class="pb-24 pt-3">
-                    
                     <h2 id="filters-heading" class="sr-only">Filters</h2>
                     <div class="grid grid-cols-1 gap-y-10 lg:grid-cols-5">
                         <!-- Filters side menu -->

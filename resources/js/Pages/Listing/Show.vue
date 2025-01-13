@@ -23,7 +23,7 @@ import Modal from "@/Components/MessageModal.vue";
 import ConditionBadge from "@/Components/ConditionBadge.vue";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { usePage } from "@inertiajs/vue3";
+import { usePage, Head } from "@inertiajs/vue3";
 
 dayjs.extend(relativeTime);
 
@@ -86,13 +86,17 @@ const handleOutsideClick = (event) => {
 </script>
 
 <template>
+    <Head>
+        <title>{{ listingData.title }}</title>
+        <meta name="description" content="Listing information" />
+    </Head>
     <div class="container mx-auto h-full max-w-5xl px-2 py-6">
         <Link
             onclick="history.back();return false;"
             href="#"
             method="get"
             as="button"
-            class="mb-2 flex font-sm items-center gap-1 text-gray-900 hover:underline"
+            class="font-sm mb-2 flex items-center gap-1 text-gray-900 hover:underline"
         >
             <ArrowLeft size="16px" />
             Back to listings</Link
@@ -359,14 +363,14 @@ const handleOutsideClick = (event) => {
                                 class="h-12 w-12 rounded-full text-gray-300"
                             />
                         </Link>
-                            <div>
-                                <p class="font-medium">{{ sellerData.name }}</p>
-                                <div class="flex items-center">
-                                    <StarIcon class="h-4 w-4 text-yellow-400" />
-                                    <span class="pl-1">4.9 (382 reviews)</span>
-                                </div>
+                        <div>
+                            <p class="font-medium">{{ sellerData.name }}</p>
+                            <div class="flex items-center">
+                                <StarIcon class="h-4 w-4 text-yellow-400" />
+                                <span class="pl-1">4.9 (382 reviews)</span>
                             </div>
                         </div>
+                    </div>
                 </div>
 
                 <template v-if="sellerListingsData.length > 0">
