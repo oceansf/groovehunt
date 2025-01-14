@@ -283,7 +283,7 @@ watch(
                                 <h2
                                     class="text-xl font-semibold leading-7 text-gray-900"
                                 >
-                                    Shipping From
+                                    Return Address
                                 </h2>
                                 <p class="mt-1 text-sm leading-6 text-gray-600">
                                     Use a permanent address where you can
@@ -294,6 +294,39 @@ watch(
                             <div
                                 class="mt-5 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6"
                             >
+                                <div class="sm:col-span-3">
+                                    <label
+                                        for="first-name"
+                                        class="block text-sm/6 font-medium text-gray-900"
+                                        >First name</label
+                                    >
+                                    <div class="mt-2">
+                                        <input
+                                            type="text"
+                                            name="first-name"
+                                            id="first-name"
+                                            autocomplete="given-name"
+                                            class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div class="sm:col-span-3">
+                                    <label
+                                        for="last-name"
+                                        class="block text-sm/6 font-medium text-gray-900"
+                                        >Last name</label
+                                    >
+                                    <div class="mt-2">
+                                        <input
+                                            type="text"
+                                            name="last-name"
+                                            id="last-name"
+                                            autocomplete="family-name"
+                                            class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                                        />
+                                    </div>
+                                </div>
                                 <div class="sm:col-span-3">
                                     <label
                                         for="country"

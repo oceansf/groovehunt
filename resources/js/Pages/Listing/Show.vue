@@ -85,14 +85,6 @@ const handleOutsideClick = (event) => {
         closeMessageModal();
     }
 };
-
-const goBack = () => {
-    // Preserve any existing query parameters when navigating
-    const queryParams = route().params;
-
-    // Navigate to listings index while preserving query parameters
-    router.get(route("home", queryParams));
-};
 </script>
 
 <template>
@@ -101,21 +93,6 @@ const goBack = () => {
         <meta name="description" content="Listing information" />
     </Head>
     <div class="container mx-auto h-full max-w-5xl px-2 py-6">
-        <!-- <Link
-            :href="route('home')"
-            method="get"
-            class="font-sm mb-2 flex items-center gap-1 text-gray-900 hover:underline"
-        >
-            <ArrowLeft size="16px" />
-            Back to listings</Link
-        > -->
-        <button
-            @click="goBack()"
-            class="font-sm mb-2 flex items-center gap-1 text-gray-900 hover:underline"
-        >
-            <ArrowLeft size="16px" />
-            Back to listings
-        </button>
         <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
             <!-- Image Gallery -->
             <div class="space-y-4">
@@ -204,7 +181,8 @@ const goBack = () => {
                             </button>
                             <button
                                 type="button"
-                                class="flex-1 rounded-md px-6 py-3 text-sm font-semibold shadow-sm ring-1 ring-inset"
+                                class="tooltip flex-1 rounded-md px-6 py-3 text-sm font-semibold shadow-sm ring-1 ring-inset"
+                                data-tip="Seller is not taking offers"
                                 :class="[
                                     listingData.allow_offers
                                         ? 'bg-white text-gray-900 ring-slate-300 hover:bg-slate-50'

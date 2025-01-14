@@ -22,5 +22,10 @@ export default {
         forms,
         require("@tailwindcss/typography"),
         require("@tailwindcss/aspect-ratio"),
+        require("daisyui"),
     ],
+
+    daisyui: {
+        themes: ["light"], // Disables all themes, including dark mode [1, 2, 4]
+    },
 };

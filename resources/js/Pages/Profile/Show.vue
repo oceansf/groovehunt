@@ -206,7 +206,7 @@ const dummyListing = {
             <!-- Profile listings -->
             <div class="px-2">
                 <h1 class="mt-12 truncate text-2xl font-semibold text-gray-900">
-                    Active Listings
+                    Active Listings <span v-if="userListings.data.length > 0">({{ userListings.data.length }})</span>
                 </h1>
                 <div
                     class="mt-6 grid grid-cols-2 gap-x-2 gap-y-8 lg:grid-cols-5"
@@ -287,7 +287,7 @@ const dummyListing = {
                                             :key="rating"
                                             :class="[
                                                 review.rating > rating
-                                                    ? 'text-yellow-400'
+                                                    ? 'text-slate-900'
                                                     : 'text-gray-300',
                                                 'size-5 shrink-0',
                                             ]"

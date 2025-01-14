@@ -77,13 +77,13 @@ const props = defineProps({
                                 <div
                                     class="hidden flex-col gap-2 text-sm sm:flex"
                                 >
-                                    <span
+                                    <span v-if="listing.media_condition"
                                         >Media condition:
                                         <ConditionBadge
                                             :condition="listing.media_condition"
                                             size="sm"
                                     /></span>
-                                    <span
+                                    <span v-if="listing.sleeve_condition"
                                         >Sleeve condition:
                                         <ConditionBadge
                                             :condition="
