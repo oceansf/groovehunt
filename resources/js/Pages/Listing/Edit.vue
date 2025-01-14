@@ -1,7 +1,7 @@
 <script setup>
-import { ref, watch, onMounted } from "vue";
+import { ref, watch } from "vue";
 import { useForm } from "@inertiajs/vue3";
-import { DiscAlbum, Trash2, EditIcon } from "lucide-vue-next";
+import { Trash2, EditIcon } from "lucide-vue-next";
 import DetailsMenu from "@/Components/Form/DetailsMenu.vue";
 import FormTextInput from "@/Components/Form/FormTextInput.vue";
 import FormSelectInput from "@/Components/Form/FormSelectInput.vue";
@@ -17,7 +17,6 @@ import FormCurrencyInput from "@/Components/Form/FormCurrencyInput.vue";
 import DeleteConfirmModal from "@/Components/DeleteConfirmModal.vue";
 import formats from "../../Shared/formats";
 import conditions from "../../Shared/conditions";
-import countries from "../../Shared/countries";
 
 const props = defineProps({
     listing: {
@@ -27,12 +26,6 @@ const props = defineProps({
 });
 
 const showDeleteModal = ref(false);
-const allowOffers = ref(props.listing.allow_offers);
-
-// Sync allowOffers with form state
-watch(allowOffers, (newValue) => {
-    form.allow_offers = newValue;
-});
 
 const form = useForm({
     title: props.listing.data.title || "",
@@ -284,9 +277,9 @@ watch(
                                     </SwitchDescription>
                                 </span>
                                 <Switch
-                                    v-model="allowOffers"
+                                    v-model="form.allow_offers"
                                     :class="[
-                                        allowOffers
+                                        form.allow_offers
                                             ? 'bg-blue-500'
                                             : 'bg-gray-200',
                                         'relative ml-2 inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none',
@@ -295,7 +288,7 @@ watch(
                                     <span
                                         aria-hidden="true"
                                         :class="[
-                                            allowOffers
+                                            form.allow_offers
                                                 ? 'translate-x-5'
                                                 : 'translate-x-0',
                                             'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
@@ -303,7 +296,7 @@ watch(
                                     />
                                 </Switch>
                             </SwitchGroup>
-                            <div v-if="allowOffers">
+                            <div v-if="form.allow_offers">
                                 <FormCurrencyInput
                                     :form="form"
                                     v-model="form.min_offer"

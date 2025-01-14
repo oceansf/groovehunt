@@ -33,6 +33,7 @@ const props = defineProps({
     search: String,
     filters: Array,
     sort: Object,
+    view: String,
 });
 
 // State management
@@ -40,7 +41,7 @@ const mobileFiltersOpen = ref(false);
 const currentSearch = ref(props.search || "");
 const currentFilters = ref(props.filters || []);
 const currentSort = ref(props.sort || {});
-const view = ref("grid");
+const view = ref(props.view || "grid");
 
 // Unified update method
 const updateListings = (params = {}) => {
@@ -52,9 +53,10 @@ const updateListings = (params = {}) => {
             sort_by: params.sort_by ?? currentSort.value.field,
             sort_direction:
                 params.sort_direction ?? currentSort.value.direction,
+            view: params.view ?? view.value,
         },
         {
-            preserveState: false,
+            preserveState: true,
             preserveScroll: true,
         },
     );
@@ -94,8 +96,9 @@ const handleSortChange = (newSort) => {
 };
 
 const handleViewChange = () => {
-    view.value = view.value === "grid" ? "list" : "grid";
-    console.log(view.value);
+    const newView = view.value === "grid" ? "list" : "grid";
+    view.value = newView;
+    updateListings({ view: newView });
 };
 
 const sortOptions = [

@@ -25,7 +25,7 @@ class ListingController extends Controller
      */
     public function index(Request $request)
     {
-        $listings = Listing::with(['seller' => function($query) {
+        $listings = Listing::with(['seller' => function ($query) {
             $query->publicInfo();
         }]);
 
@@ -33,6 +33,7 @@ class ListingController extends Controller
         $filters = $request->input('filters', []);
         $sortField = $request->input('sort_by', 'created_at'); // Default sort by newest
         $sortDirection = $request->input('sort_direction', 'desc'); // Default direction ascending
+        $view = $request->input('view', 'grid');
 
         // Search
         if ($searchQuery) {
@@ -60,7 +61,8 @@ class ListingController extends Controller
             'sort' => [
                 'field' => $sortField,
                 'direction' => $sortDirection
-            ]
+            ],
+            'view' => $view
         ]);
     }
 

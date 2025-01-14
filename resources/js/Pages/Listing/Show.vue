@@ -1,5 +1,6 @@
 <script setup>
 import { computed, ref } from "vue";
+import { router } from "@inertiajs/vue3";
 import {
     CalendarIcon,
     Disc3Icon,
@@ -84,6 +85,14 @@ const handleOutsideClick = (event) => {
         closeMessageModal();
     }
 };
+
+const goBack = () => {
+    // Preserve any existing query parameters when navigating
+    const queryParams = route().params;
+
+    // Navigate to listings index while preserving query parameters
+    router.get(route("home", queryParams));
+};
 </script>
 
 <template>
@@ -92,16 +101,21 @@ const handleOutsideClick = (event) => {
         <meta name="description" content="Listing information" />
     </Head>
     <div class="container mx-auto h-full max-w-5xl px-2 py-6">
-        <Link
-            onclick="history.back();return false;"
-            href="#"
+        <!-- <Link
+            :href="route('home')"
             method="get"
-            as="button"
             class="font-sm mb-2 flex items-center gap-1 text-gray-900 hover:underline"
         >
             <ArrowLeft size="16px" />
             Back to listings</Link
+        > -->
+        <button
+            @click="goBack()"
+            class="font-sm mb-2 flex items-center gap-1 text-gray-900 hover:underline"
         >
+            <ArrowLeft size="16px" />
+            Back to listings
+        </button>
         <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
             <!-- Image Gallery -->
             <div class="space-y-4">

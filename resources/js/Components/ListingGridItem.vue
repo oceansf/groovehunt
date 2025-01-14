@@ -1,6 +1,7 @@
 <script setup>
 import { useWindowSize } from "@vueuse/core";
 import formatPrice from "@/Composables/formatPrice";
+import { PlayIcon } from "@heroicons/vue/16/solid";
 
 const props = defineProps({
     listing: Object,
