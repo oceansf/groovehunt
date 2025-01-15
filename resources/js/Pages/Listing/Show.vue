@@ -181,12 +181,12 @@ const handleOutsideClick = (event) => {
                             </button>
                             <button
                                 type="button"
-                                class="tooltip flex-1 rounded-md px-6 py-3 text-sm font-semibold shadow-sm ring-1 ring-inset"
+                                class="flex-1 rounded-md px-6 py-3 text-sm font-semibold shadow-sm ring-1 ring-inset"
                                 data-tip="Seller is not taking offers"
                                 :class="[
                                     listingData.allow_offers
                                         ? 'bg-white text-gray-900 ring-slate-300 hover:bg-slate-50'
-                                        : 'cursor-not-allowed bg-gray-200 text-gray-500 ring-gray-300',
+                                        : 'tooltip cursor-not-allowed bg-gray-200 text-gray-500 ring-gray-300',
                                 ]"
                                 :disabled="!listingData.allow_offers"
                             >
@@ -354,9 +354,9 @@ const handleOutsideClick = (event) => {
                     <div class="flex items-center space-x-1">
                         <Link :href="route('profile.show', sellerData.id)">
                             <img
-                                v-if="seller.avatar_url"
-                                :src="seller.avatar_url"
-                                :alt="seller.name"
+                                v-if="sellerData.avatar_url"
+                                :src="sellerData.avatar_url"
+                                :alt="sellerData.name"
                                 class="h-12 w-12 rounded-full object-cover"
                             />
                             <UserCircleIcon

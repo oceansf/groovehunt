@@ -62,14 +62,6 @@ const handleSubmit = () => {
         },
     });
 };
-
-watch(
-    () => form.data,
-    (newVal) => {
-        console.log("Form state updated:", newVal);
-    },
-    { deep: true },
-);
 </script>
 
 <template>

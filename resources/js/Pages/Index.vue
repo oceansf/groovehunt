@@ -2,6 +2,7 @@
 import { ref, onMounted, onUnmounted } from "vue";
 import { router, Head } from "@inertiajs/vue3";
 import { emitter } from "../Shared/event-bus";
+import { useIntersectionObserver } from "@vueuse/core";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import {
     ChevronDownIcon,
@@ -13,6 +14,7 @@ import ListingsGrid from "@/Components/ListingsGrid.vue";
 import ListingsList from "@/Components/ListingsList.vue";
 import MobileFilterDialog from "@/Components/MobileFilterDialog.vue";
 import FiltersSidebar from "@/Components/FiltersSidebar.vue";
+import ListingItem from "@/Components/ListingGridItem.vue";
 
 // Event listeners setup
 onMounted(() => {
@@ -43,6 +45,8 @@ const currentFilters = ref(props.filters || []);
 const currentSort = ref(props.sort || {});
 const view = ref(props.view || "grid");
 
+const bottom = ref(null);
+
 // Unified update method
 const updateListings = (params = {}) => {
     router.get(
@@ -61,6 +65,27 @@ const updateListings = (params = {}) => {
         },
     );
 };
+
+const { stop } = useIntersectionObserver(bottom, ([{ isIntersecting }]) => {
+    if (!isIntersecting || !props.listings?.meta?.next_cursor) {
+        return;
+    }
+
+    axios
+        .get(`${props.listings.meta.path}?cursor=${props.listings.meta.next_cursor}`)
+        .then((response) => {
+            props.listings.data = [
+                ...props.listings.data,
+                ...response.data.data,
+            ];
+
+            props.listings.meta = response.data.meta;
+
+            if (!props.listings.meta.next_cursor) {
+                stop();
+            }
+        });
+});
 
 // Event handlers
 const handleSearch = (query) => {
@@ -251,12 +276,40 @@ const sortOptions = [
                             :filters="filters"
                         />
 
-                        <!-- Product grid -->
+                        <!-- Listings grid -->
                         <div v-if="view === 'grid'" class="lg:col-span-4">
-                            <ListingsGrid :listings="listings" />
+                            <!-- <ListingsGrid :listings="listings" /> -->
+                            <div class="bg-slate-50">
+                                <h2 class="text-slate-500">
+                                    Showing {{ props.listings.total }}
+                                    <span v-if="listings.total === 1"
+                                        >result</span
+                                    ><span v-else>results</span>
+                                </h2>
+                                <div class="mx-auto max-w-2xl lg:max-w-6xl">
+                                    <div
+                                        v-if="listings.data.length === 0"
+                                        class="mt-12 text-center"
+                                    >
+                                        No listings found.
+                                    </div>
+                                    <div
+                                        class="mt-2 grid grid-cols-2 gap-x-1 gap-y-8 lg:grid-cols-4"
+                                    >
+                                        <div
+                                            v-for="listing in listings.data"
+                                            :key="listing.id"
+                                            class="group relative"
+                                        >
+                                            <ListingItem :listing="listing" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ref="bottom" class="-translate-y-32"></div>
                         </div>
 
-                        <!-- Product list -->
+                        <!-- Listings list -->
                         <div v-else class="lg:col-span-4">
                             <ListingsList :listings="listings" />
                         </div>

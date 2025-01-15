@@ -25,37 +25,51 @@ class ListingController extends Controller
      */
     public function index(Request $request)
     {
-        $listings = Listing::with(['seller' => function ($query) {
+        // Start with a query builder
+        $query = Listing::with(['seller' => function ($query) {
             $query->publicInfo();
         }]);
 
         $searchQuery = trim($request->input('search', ''));
         $filters = $request->input('filters', []);
-        $sortField = $request->input('sort_by', 'created_at'); // Default sort by newest
-        $sortDirection = $request->input('sort_direction', 'desc'); // Default direction ascending
+        $sortField = $request->input('sort_by', 'created_at');
+        $sortDirection = $request->input('sort_direction', 'desc');
         $view = $request->input('view', 'grid');
 
         // Search
         if ($searchQuery) {
-            $listings->where('title', 'like', '%' . $searchQuery . '%')
-                ->orWhere('artist', 'like', "%{$searchQuery}%");;
+            $query->where('title', 'like', '%' . $searchQuery . '%')
+                ->orWhere('artist', 'like', "%{$searchQuery}%");
         }
 
-        // Filter just genres for now
+        // Filter
         if ($filters) {
-            $listings->whereIn('genre', $filters);
+            $query->whereIn('genre', $filters);
         }
-        // Only apply sorting if both field and direction are provided
+
+        // Sorting
         if ($sortField && $sortDirection) {
             if ($sortField === 'price') {
-                $listings->orderByRaw("CAST(price as DECIMAL(10,2)) {$sortDirection}");
+                $query->orderByRaw("CAST(price as DECIMAL(10,2)) {$sortDirection}");
             } else {
-                $listings->orderBy($sortField, $sortDirection);
+                $query->orderBy($sortField, $sortDirection);
             }
+        } else {
+            $query->latest(); // Default sorting
+        }
+
+        // Always include ID in the ordering to ensure cursor pagination works correctly
+        $query->orderBy('id', $sortDirection ?: 'desc');
+
+        // Paginate
+        $listings = $query->cursorPaginate(24);
+
+        if ($request->wantsJson()) {
+            return ListingResource::collection($listings);
         }
 
         return Inertia::render('Index', [
-            'listings' => $listings->paginate(24)->withQueryString(),
+            'listings' => ListingResource::collection($listings),
             'search' => $searchQuery,
             'filters' => $filters,
             'sort' => [
