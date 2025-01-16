@@ -48,6 +48,8 @@ class UpdateListingRequest extends FormRequest
             'shipping_restrictions' => 'nullable|array',
             'weight' => 'nullable|numeric|min:0',
             'notes' => 'nullable|string',
+            'images' => 'required|array|min:1',
+            'images.*' => 'image|max:10240', // 10MB max per image
         ];
 
         return array_intersect_key($baseRules, $this->all());

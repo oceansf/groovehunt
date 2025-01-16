@@ -11,16 +11,30 @@ const props = defineProps({
 
 const checkedFilters = ref(props.filters);
 
+const emit = defineEmits(["handleSubmit"]);
+const clearFilters = () => {
+    checkedFilters.value = [];
+    emit("handleSubmit", checkedFilters.value);
+    closeDialog();
+};
 </script>
 
 <template>
     <div
-        class="sticky top-[92px] hidden h-screen overflow-y-scroll no-scrollbar pb-36 pr-4 lg:block"
+        class="no-scrollbar sticky top-[92px] hidden h-screen overflow-y-scroll pb-36 pr-4 lg:block"
     >
         <form @submit.prevent="">
             <div class="mb-2 flex flex-col gap-2">
                 <h2 class="text-xl font-medium">Filters</h2>
             </div>
+            <button
+                v-if="checkedFilters.length > 0"
+                type="button"
+                @click="clearFilters"
+                class="w-full rounded-md border border-slate-300 bg-white px-4 py-2 text-slate-700 transition hover:bg-slate-50"
+            >
+                Clear Filters
+            </button>
             <Disclosure
                 as="div"
                 v-for="section in filtersArr"

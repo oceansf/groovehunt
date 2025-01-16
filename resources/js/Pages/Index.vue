@@ -98,6 +98,12 @@ const handleFilterChange = (newFilters) => {
     updateListings({ filters: newFilters });
 };
 
+const clearFilters = () => {
+    selectedFilters.value = [];
+    emit("handleSubmit", selectedFilters.value);
+    closeDialog();
+};
+
 // Update the handleSortChange function to handle toggling
 const handleSortChange = (newSort) => {
     // If clicking the same sort option that's currently active, clear the sort
@@ -273,6 +279,7 @@ const sortOptions = [
                         <!-- Filters side menu -->
                         <FiltersSidebar
                             @handle-change="handleFilterChange"
+                            @handle-submit="handleFilterChange"
                             :filters="filters"
                         />
 

@@ -128,7 +128,7 @@ const closeDialog = () => {
                                 <div class="space-y-2">
                                     <button
                                         type="submit"
-                                        class="w-full rounded bg-slate-900 px-4 py-2 text-white transition hover:bg-slate-700"
+                                        class="w-full rounded-md bg-slate-900 px-4 py-2 text-white transition hover:bg-slate-700"
                                     >
                                         Apply Filters
                                     </button>
@@ -136,7 +136,7 @@ const closeDialog = () => {
                                     v-if="selectedFilters.length > 0"
                                         type="button"
                                         @click="clearFilters"
-                                        class="w-full rounded border border-slate-300 bg-white px-4 py-2 text-slate-700 transition hover:bg-slate-50"
+                                        class="w-full rounded-md border border-slate-300 bg-white px-4 py-2 text-slate-700 transition hover:bg-slate-50"
                                     >
                                         Clear Filters
                                     </button>
