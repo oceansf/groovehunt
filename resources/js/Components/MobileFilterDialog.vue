@@ -8,10 +8,15 @@ import {
     TransitionChild,
     TransitionRoot,
 } from "@headlessui/vue";
-import { XMarkIcon, PlusIcon, MinusIcon } from "@heroicons/vue/24/outline";
+import {
+    XMarkIcon,
+    PlusIcon,
+    MinusIcon,
+    XCircleIcon,
+} from "@heroicons/vue/24/outline";
 import FilterIcon from "./FilterIcon.vue";
 import filtersArr from "../Shared/filtersArr";
-import { ref} from "vue";
+import { ref, computed } from "vue";
 
 const props = defineProps({
     mobileFiltersOpen: Boolean,
@@ -22,9 +27,49 @@ const emit = defineEmits(["update:mobileFiltersOpen", "handleSubmit"]);
 
 const selectedFilters = ref(props.filters);
 
+// Compute which sections have active filters
+const activeSections = computed(() => {
+    const active = {};
+    filtersArr.forEach((section) => {
+        active[section.id] = section.options.some((option) =>
+            selectedFilters.value.includes(option.value),
+        );
+    });
+    return active;
+});
+
+// Compute the active filter tags with their labels
+const activeFilterTags = computed(() => {
+    const tags = [];
+    filtersArr.forEach((section) => {
+        section.options.forEach((option) => {
+            if (selectedFilters.value.includes(option.value)) {
+                tags.push({
+                    // section: section.name,
+                    value: option.value,
+                    label: option.label,
+                });
+            }
+        });
+    });
+    return tags;
+});
+
 const handleSubmit = () => {
     emit("handleSubmit", selectedFilters.value);
     closeDialog();
+};
+
+const clearFilters = () => {
+    selectedFilters.value = [];
+    emit("handleSubmit", selectedFilters.value);
+    closeDialog();
+};
+
+const removeFilter = (filterValue) => {
+    selectedFilters.value = selectedFilters.value.filter(
+        (value) => value !== filterValue,
+    );
 };
 
 const closeDialog = () => {
@@ -34,11 +79,7 @@ const closeDialog = () => {
 
 <template>
     <TransitionRoot as="template" :show="mobileFiltersOpen">
-        <Dialog
-            as="div"
-            class="relative z-40 lg:hidden"
-            @close="closeDialog"
-        >
+        <Dialog as="div" class="relative z-40 lg:hidden" @close="closeDialog">
             <TransitionChild
                 as="template"
                 enter="transition-opacity ease-linear duration-300"
@@ -83,13 +124,51 @@ const closeDialog = () => {
                             @submit.prevent="handleSubmit"
                             class="mt-4 flex flex-col"
                         >
-                            <div class="px-4" v-if="selectedFilters.length > 0">
-                                <button
-                                    type="submit"
-                                    class="w-full rounded bg-slate-900 px-4 py-2 text-white transition hover:bg-slate-700"
+                            <div class="space-y-4 px-4">
+                                <div class="space-y-2">
+                                    <button
+                                        type="submit"
+                                        class="w-full rounded bg-slate-900 px-4 py-2 text-white transition hover:bg-slate-700"
+                                    >
+                                        Apply Filters
+                                    </button>
+                                    <button
+                                    v-if="selectedFilters.length > 0"
+                                        type="button"
+                                        @click="clearFilters"
+                                        class="w-full rounded border border-slate-300 bg-white px-4 py-2 text-slate-700 transition hover:bg-slate-50"
+                                    >
+                                        Clear Filters
+                                    </button>
+                                </div>
+
+                                <!-- Active Filter Tags -->
+                                <div
+                                    v-if="activeFilterTags.length > 0"
+                                    class="flex flex-wrap gap-2"
                                 >
-                                    Apply Filters
-                                </button>
+                                    <div
+                                        v-for="tag in activeFilterTags"
+                                        :key="tag.value"
+                                        class="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-1 text-sm text-blue-600"
+                                    >
+                                        <span>{{ tag.label }}</span>
+                                        <button
+                                            type="button"
+                                            @click="removeFilter(tag.value)"
+                                            class="inline-flex rounded-full hover:bg-blue-100"
+                                        >
+                                            <XCircleIcon
+                                                class="h-4 w-4"
+                                                aria-hidden="true"
+                                            />
+                                            <span class="sr-only"
+                                                >Remove filter for
+                                                {{ tag.label }}</span
+                                            >
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
 
                             <div
@@ -103,10 +182,15 @@ const closeDialog = () => {
                                     :key="section.id"
                                     class="border-t border-gray-200 px-4 py-6"
                                     v-slot="{ open }"
+                                    :defaultOpen="activeSections[section.id]"
                                 >
                                     <h3 class="-mx-2 -my-3 flow-root">
                                         <DisclosureButton
                                             class="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500"
+                                            :class="{
+                                                'text-blue-500':
+                                                    activeSections[section.id],
+                                            }"
                                         >
                                             <div
                                                 class="flex items-center gap-2"
@@ -116,10 +200,22 @@ const closeDialog = () => {
                                                         section.name.toLowerCase()
                                                     "
                                                     class="h-5 w-5"
+                                                    :class="{
+                                                        'text-blue-500':
+                                                            activeSections[
+                                                                section.id
+                                                            ],
+                                                    }"
                                                     aria-hidden="true"
                                                 />
                                                 <span
                                                     class="font-medium text-gray-900"
+                                                    :class="{
+                                                        'text-blue-500':
+                                                            activeSections[
+                                                                section.id
+                                                            ],
+                                                    }"
                                                 >
                                                     {{ section.name }}
                                                 </span>
@@ -140,7 +236,10 @@ const closeDialog = () => {
                                             </span>
                                         </DisclosureButton>
                                     </h3>
-                                    <DisclosurePanel class="pt-6">
+                                    <DisclosurePanel
+                                        class="pt-6"
+                                        :static="activeSections[section.id]"
+                                    >
                                         <div class="space-y-6">
                                             <div
                                                 v-for="(

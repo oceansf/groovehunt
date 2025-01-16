@@ -34,7 +34,7 @@ const props = defineProps({
                                 :src="listing.images[0].url"
                                 :alt="listing.images[0].url"
                                 :class="[
-                                    'h-[120px] w-[120px] rounded-lg object-cover object-center transition-all duration-300 ease-in-out sm:h-[200px] sm:w-[200px]',
+                                    'h-[120px] w-[120px] rounded-lg object-cover object-center transition-all duration-300 ease-in-out sm:h-[190px] sm:w-[190px]',
                                     listing.disabled
                                         ? 'opacity-75'
                                         : 'md:group-hover:scale-105 md:group-hover:opacity-75',
@@ -43,21 +43,21 @@ const props = defineProps({
 
                             <div class="flex flex-col justify-between">
                                 <div>
-                                    <h1 class="font-semibold sm:text-xl">
+                                    <h1 class="font-semibold sm:text-lg">
                                         {{ listing.title }}
                                     </h1>
                                     <h2
-                                        class="text-sm text-gray-600 sm:text-lg"
+                                        class="text-sm text-gray-600"
                                     >
                                         {{ listing.artist }}
                                     </h2>
                                     <div>
                                         <h2
-                                            class="mt-1 font-semibold sm:text-xl"
+                                            class="mt-1 font-semibold sm:text-lg"
                                         >
                                             ${{ listing.price }}
                                         </h2>
-                                        <h3 class="text-gray-600">
+                                        <h3 class="text-gray-600 text-xs sm:text-sm">
                                             <span v-if="listing.shipping > 0">
                                                 <em
                                                     >+${{
@@ -135,7 +135,7 @@ const props = defineProps({
                                 </div>
                             </div>
 
-                            <div class="mt-4">
+                            <div class="mt-4 text-xs sm:text-sm">
                                 <h1>Ships from Austin, TX</h1>
                             </div>
                         </div>
