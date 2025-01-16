@@ -70,12 +70,12 @@ const { stop } = useIntersectionObserver(bottom, ([{ isIntersecting }]) => {
     if (!isIntersecting || !props.listings?.meta?.next_cursor) {
         return;
     }
-
+    const serializableListings = JSON.parse(JSON.stringify(props.listings)); // added
     axios
         .get(`${props.listings.meta.path}?cursor=${props.listings.meta.next_cursor}`)
         .then((response) => {
             props.listings.data = [
-                ...props.listings.data,
+                ...serializableListings.data,
                 ...response.data.data,
             ];
 
