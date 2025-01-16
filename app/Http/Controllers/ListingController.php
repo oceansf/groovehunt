@@ -47,6 +47,10 @@ class ListingController extends Controller
             $query->whereIn('genre', $filters);
         }
 
+        // Clone the query to get total count before sorting and pagination
+        $totalQuery = clone $query;
+        $total = $totalQuery->count();
+
         // Sorting
         if ($sortField && $sortDirection) {
             if ($sortField === 'price') {
@@ -64,12 +68,17 @@ class ListingController extends Controller
         // Paginate
         $listings = $query->cursorPaginate(24);
 
+        // Create the resource collection with metadata
+        $listingsResource = ListingResource::collection($listings)->additional([
+            'total' => $total
+        ]);
+
         if ($request->wantsJson()) {
-            return ListingResource::collection($listings);
+            return $listingsResource;
         }
 
         return Inertia::render('Index', [
-            'listings' => ListingResource::collection($listings),
+            'listings' => $listingsResource,
             'search' => $searchQuery,
             'filters' => $filters,
             'sort' => [
