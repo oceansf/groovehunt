@@ -25,14 +25,14 @@ const props = defineProps({
 
 const emit = defineEmits(["update:mobileFiltersOpen", "handleSubmit"]);
 
-const selectedFilters = ref(props.filters);
+const filters = ref(props.filters);
 
 // Compute which sections have active filters
 const activeSections = computed(() => {
     const active = {};
     filtersArr.forEach((section) => {
         active[section.id] = section.options.some((option) =>
-            selectedFilters.value.includes(option.value),
+            filters.value.includes(option.value),
         );
     });
     return active;
@@ -43,7 +43,7 @@ const activeFilterTags = computed(() => {
     const tags = [];
     filtersArr.forEach((section) => {
         section.options.forEach((option) => {
-            if (selectedFilters.value.includes(option.value)) {
+            if (filters.value.includes(option.value)) {
                 tags.push({
                     // section: section.name,
                     value: option.value,
@@ -56,18 +56,18 @@ const activeFilterTags = computed(() => {
 });
 
 const handleSubmit = () => {
-    emit("handleSubmit", selectedFilters.value);
+    emit("handleSubmit", filters.value);
     closeDialog();
 };
 
 const clearFilters = () => {
-    selectedFilters.value = [];
-    emit("handleSubmit", selectedFilters.value);
+    filters.value = [];
+    emit("handleSubmit", filters.value);
     closeDialog();
 };
 
 const removeFilter = (filterValue) => {
-    selectedFilters.value = selectedFilters.value.filter(
+    filters.value = filters.value.filter(
         (value) => value !== filterValue,
     );
 };
@@ -133,7 +133,7 @@ const closeDialog = () => {
                                         Apply Filters
                                     </button>
                                     <button
-                                    v-if="selectedFilters.length > 0"
+                                    v-if="filters.length > 0"
                                         type="button"
                                         @click="clearFilters"
                                         class="w-full rounded-md border border-slate-300 bg-white px-4 py-2 text-slate-700 transition hover:bg-slate-50"
@@ -249,7 +249,7 @@ const closeDialog = () => {
                                                 class="flex items-center"
                                             >
                                                 <input
-                                                    v-model="selectedFilters"
+                                                    v-model="filters"
                                                     :id="`filter-mobile-${section.id}-${optionIdx}`"
                                                     :name="`${section.id}[]`"
                                                     :value="option.value"

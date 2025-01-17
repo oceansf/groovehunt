@@ -11,11 +11,10 @@ const props = defineProps({
 
 const checkedFilters = ref(props.filters);
 
-const emit = defineEmits(["handleSubmit"]);
+const emit = defineEmits(["handleChange"]);
 const clearFilters = () => {
     checkedFilters.value = [];
-    emit("handleSubmit", checkedFilters.value);
-    closeDialog();
+    emit("handleChange", checkedFilters.value);
 };
 </script>
 

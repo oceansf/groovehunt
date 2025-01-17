@@ -22,7 +22,7 @@ defineProps({
             >
                 <div
                     v-if="showMessageModal"
-                    class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 px-2"
+                    class="fixed inset-0 flex items-center justify-center z-40 bg-black bg-opacity-50 px-2"
                     @click="handleOutsideClick"
                 >
                     <Transition

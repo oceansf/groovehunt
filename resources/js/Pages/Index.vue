@@ -10,20 +10,10 @@ import {
     ListBulletIcon,
     Squares2X2Icon,
 } from "@heroicons/vue/20/solid";
-import ListingsGrid from "@/Components/ListingsGrid.vue";
-import ListingsList from "@/Components/ListingsList.vue";
+import ListingsGrid from "@/Components/Listing/ListingsGrid.vue";
+import ListingsList from "@/Components/Listing/ListingsList.vue";
 import MobileFilterDialog from "@/Components/MobileFilterDialog.vue";
 import FiltersSidebar from "@/Components/FiltersSidebar.vue";
-import ListingItem from "@/Components/ListingGridItem.vue";
-
-// Event listeners setup
-onMounted(() => {
-    emitter.on("search", handleSearch);
-});
-
-onUnmounted(() => {
-    emitter.off("search", handleSearch);
-});
 
 const props = defineProps({
     listings: Object,
@@ -36,6 +26,15 @@ const props = defineProps({
     filters: Array,
     sort: Object,
     view: String,
+});
+
+// Event listeners setup
+onMounted(() => {
+    emitter.on("search", handleSearch);
+});
+
+onUnmounted(() => {
+    emitter.off("search", handleSearch);
 });
 
 // State management
@@ -66,13 +65,16 @@ const updateListings = (params = {}) => {
     );
 };
 
+// Infinite scrolling
 const { stop } = useIntersectionObserver(bottom, ([{ isIntersecting }]) => {
     if (!isIntersecting || !props.listings?.meta?.next_cursor) {
         return;
     }
     const serializableListings = JSON.parse(JSON.stringify(props.listings)); // added
     axios
-        .get(`${props.listings.meta.path}?cursor=${props.listings.meta.next_cursor}`)
+        .get(
+            `${props.listings.meta.path}?cursor=${props.listings.meta.next_cursor}`,
+        )
         .then((response) => {
             props.listings.data = [
                 ...serializableListings.data,
@@ -99,31 +101,9 @@ const handleFilterChange = (newFilters) => {
 };
 
 const clearFilters = () => {
-    selectedFilters.value = [];
-    emit("handleSubmit", selectedFilters.value);
+    currentFilters.value = [];
+    emit("handleSubmit", currentFilters.value);
     closeDialog();
-};
-
-// Update the handleSortChange function to handle toggling
-const handleSortChange = (newSort) => {
-    // If clicking the same sort option that's currently active, clear the sort
-    if (
-        currentSort.value.field === newSort.field &&
-        currentSort.value.direction === newSort.direction
-    ) {
-        currentSort.value = { field: null, direction: null };
-        updateListings({
-            sort_by: null,
-            sort_direction: null,
-        });
-    } else {
-        // Otherwise apply the new sort
-        currentSort.value = newSort;
-        updateListings({
-            sort_by: newSort.field,
-            sort_direction: newSort.direction,
-        });
-    }
 };
 
 const handleViewChange = () => {
@@ -151,7 +131,7 @@ const sortOptions = [
             <MobileFilterDialog
                 v-model:mobileFiltersOpen="mobileFiltersOpen"
                 @handle-submit="handleFilterChange"
-                :filters="filters"
+                :filters="currentFilters"
             />
 
             <main class="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -279,41 +259,13 @@ const sortOptions = [
                         <!-- Filters side menu -->
                         <FiltersSidebar
                             @handle-change="handleFilterChange"
-                            @handle-submit="handleFilterChange"
-                            :filters="filters"
+                            @clear-filters="clearFilters"
+                            :filters="currentFilters"
                         />
 
                         <!-- Listings grid -->
                         <div v-if="view === 'grid'" class="lg:col-span-4">
-                            <!-- <ListingsGrid :listings="listings" /> -->
-                            <div class="bg-slate-50">
-                                <h2 class="text-slate-500">
-                                    Showing {{ props.listings.total }}
-                                    <span v-if="listings.total === 1"
-                                        >result</span
-                                    ><span v-else>results</span>
-                                </h2>
-                                <div class="mx-auto max-w-2xl lg:max-w-6xl">
-                                    <div
-                                        v-if="listings.data.length === 0"
-                                        class="mt-12 text-center"
-                                    >
-                                        No listings found.
-                                    </div>
-                                    <div
-                                        class="mt-2 grid grid-cols-2 gap-x-1 gap-y-8 lg:grid-cols-4"
-                                    >
-                                        <div
-                                            v-for="listing in listings.data"
-                                            :key="listing.id"
-                                            class="group relative"
-                                        >
-                                            <ListingItem :listing="listing" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div ref="bottom" class="-translate-y-32"></div>
+                            <ListingsGrid :listings="listings" />
                         </div>
 
                         <!-- Listings list -->

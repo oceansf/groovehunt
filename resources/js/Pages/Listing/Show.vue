@@ -26,6 +26,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { usePage, Head } from "@inertiajs/vue3";
 import formatPrice from "@/Composables/formatPrice";
+import { Link } from "@inertiajs/vue3";
 
 dayjs.extend(relativeTime);
 
@@ -85,6 +86,10 @@ const handleOutsideClick = (event) => {
         closeMessageModal();
     }
 };
+
+const goBack = () => {
+    return window.history.back();
+};
 </script>
 
 <template>
@@ -93,6 +98,9 @@ const handleOutsideClick = (event) => {
         <meta name="description" content="Listing information" />
     </Head>
     <div class="container mx-auto h-full max-w-5xl px-2 py-6">
+        <button @click="goBack" class="mb-2 flex items-center hover:underline">
+            <ArrowLeft class="mr-1 h-4 w-4" /> Back to listings
+        </button>
         <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
             <!-- Image Gallery -->
             <div class="space-y-4">

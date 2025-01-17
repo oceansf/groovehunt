@@ -1,7 +1,11 @@
 <script setup>
+import { ref } from "vue";
+import { useIntersectionObserver } from "@vueuse/core";
 import { UserCircleIcon, StarIcon } from "@heroicons/vue/20/solid";
-import ConditionBadge from "./ConditionBadge.vue";
+import ConditionBadge from "../ConditionBadge.vue";
 import formatPrice from "@/Composables/formatPrice";
+import axios from "axios";
+import ScrollToTop from "../ScrollToTop.vue";
 
 const props = defineProps({
     listings: {
@@ -9,18 +13,44 @@ const props = defineProps({
         required: true,
     },
 });
+
+const bottom = ref(null);
+
+// Infinite scrolling
+const { stop } = useIntersectionObserver(bottom, ([{ isIntersecting }]) => {
+    if (!isIntersecting || !props.listings?.meta?.next_cursor) {
+        return;
+    }
+    const serializableListings = JSON.parse(JSON.stringify(props.listings)); // added
+    axios
+        .get(
+            `${props.listings.meta.path}?cursor=${props.listings.meta.next_cursor}`,
+        )
+        .then((response) => {
+            props.listings.data = [
+                ...serializableListings.data,
+                ...response.data.data,
+            ];
+
+            props.listings.meta = response.data.meta;
+
+            if (!props.listings.meta.next_cursor) {
+                stop();
+            }
+        });
+});
 </script>
 
 <template>
     <div>
         <header>
-            <div class="mb-2 hidden justify-between sm:flex">
+            <div class="mb-2 px-4 justify-between flex">
                 <h2 class="text-slate-500">
                     Showing {{ props.listings.total }}
                     <span v-if="listings.total === 1">result</span
                     ><span v-else>results</span>
                 </h2>
-                <h1 class="pr-4 text-end text-slate-900">Sold by</h1>
+                <h2 class="text-end text-slate-900">Sold by</h2>
             </div>
         </header>
         <ul role="list">
@@ -109,8 +139,8 @@ const props = defineProps({
                                         "
                                     >
                                         <img
-                                            v-if="listing.seller.avatar"
-                                            :src="listing.seller.avatar"
+                                            v-if="listing.seller.avatar_url"
+                                            :src="listing.seller.avatar_url"
                                             :alt="listing.seller.name"
                                             class="h-6 w-6 rounded-full object-cover sm:h-8 sm:w-8"
                                         />
@@ -144,5 +174,7 @@ const props = defineProps({
                 <div class="mx-auto h-[1px] w-[97.5%] bg-black/5"></div>
             </li>
         </ul>
+        <ScrollToTop />
+        <div ref="bottom" class="-translate-y-32"></div>
     </div>
 </template>

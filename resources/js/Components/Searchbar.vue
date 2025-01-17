@@ -8,6 +8,7 @@ const searchQuery = ref("");
 
 const handleSearch = () => {
     emitter.emit("search", searchQuery.value);
+    router.get("/", { search: searchQuery.value });
 };
 </script>
 

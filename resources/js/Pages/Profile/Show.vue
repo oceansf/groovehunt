@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import { EnvelopeIcon, StarIcon, FlagIcon } from "@heroicons/vue/20/solid";
 import { usePage } from "@inertiajs/vue3";
-import ListingItem from "@/Components/ListingGridItem.vue";
+import ListingItem from "@/Components/Listing/ListingGridItem.vue";
 
 const props = defineProps({
     user: Object,
@@ -206,7 +206,10 @@ const dummyListing = {
             <!-- Profile listings -->
             <div class="px-2">
                 <h1 class="mt-12 truncate text-2xl font-semibold text-gray-900">
-                    Active Listings <span v-if="userListings.data.length > 0">({{ userListings.data.length }})</span>
+                    Active Listings
+                    <span v-if="userListings.data.length > 0"
+                        >({{ userListings.data.length }})</span
+                    >
                 </h1>
                 <div
                     class="mt-6 grid grid-cols-2 gap-x-2 gap-y-8 lg:grid-cols-5"
