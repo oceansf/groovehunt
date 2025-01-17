@@ -41,7 +41,7 @@ const { stop } = useIntersectionObserver(bottom, ([{ isIntersecting }]) => {
 
 <template>
     <div class="bg-slate-50">
-        <h2 class="pl-4 text-slate-500">
+        <h2 class="pl-4 sm:pl-2 text-slate-500">
             Showing {{ props.listings.total }}
             <span v-if="listings.total === 1">result</span
             ><span v-else>results</span>

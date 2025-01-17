@@ -1,9 +1,9 @@
 <script setup>
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
-import { PlusIcon, MinusIcon } from "@heroicons/vue/24/outline";
+import { PlusIcon, MinusIcon, XMarkIcon } from "@heroicons/vue/24/outline";
 import FilterIcon from "./FilterIcon.vue";
 import filtersArr from "../Shared/filtersArr";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 const props = defineProps({
     filters: Array,
@@ -14,6 +14,29 @@ const checkedFilters = ref(props.filters);
 const emit = defineEmits(["handleChange"]);
 const clearFilters = () => {
     checkedFilters.value = [];
+    emit("handleChange", checkedFilters.value);
+};
+
+// Compute the active filter tags with their labels
+const activeFilterTags = computed(() => {
+    const tags = [];
+    filtersArr.forEach((section) => {
+        section.options.forEach((option) => {
+            if (checkedFilters.value.includes(option.value)) {
+                tags.push({
+                    value: option.value,
+                    label: option.label,
+                });
+            }
+        });
+    });
+    return tags;
+});
+
+const removeFilter = (filterValue) => {
+    checkedFilters.value = checkedFilters.value.filter(
+        (value) => value !== filterValue,
+    );
     emit("handleChange", checkedFilters.value);
 };
 </script>
@@ -30,10 +53,33 @@ const clearFilters = () => {
                 v-if="checkedFilters.length > 0"
                 type="button"
                 @click="clearFilters"
-                class="w-full rounded-md border border-slate-300 bg-white px-4 py-2 text-slate-700 transition hover:bg-slate-50"
+                class="mb-2 w-full rounded-md border border-slate-300 bg-white px-2 py-1 text-slate-700 transition hover:bg-slate-50"
             >
                 Clear Filters
             </button>
+            <!-- Active Filter Tags -->
+            <div
+                v-if="activeFilterTags.length > 0"
+                class="flex flex-wrap gap-2"
+            >
+                <div
+                    v-for="tag in activeFilterTags"
+                    :key="tag.value"
+                    class="inline-flex items-center gap-1 rounded-full bg-slate-900 px-2 py-1 text-sm text-slate-50"
+                >
+                    <span>{{ tag.label }}</span>
+                    <button
+                        type="button"
+                        @click="removeFilter(tag.value)"
+                        class="inline-center rounded-full hover:bg-white/25"
+                    >
+                        <XMarkIcon class="h-4 w-4" aria-hidden="true" />
+                        <span class="sr-only"
+                            >Remove filter for {{ tag.label }}</span
+                        >
+                    </button>
+                </div>
+            </div>
             <Disclosure
                 as="div"
                 v-for="section in filtersArr"

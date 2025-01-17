@@ -87,8 +87,8 @@ const handleOutsideClick = (event) => {
     }
 };
 
-const goBack = () => {
-    return window.history.back();
+const goBackToListings = () => {
+    window.history.back();
 };
 </script>
 
@@ -98,7 +98,10 @@ const goBack = () => {
         <meta name="description" content="Listing information" />
     </Head>
     <div class="container mx-auto h-full max-w-5xl px-2 py-6">
-        <button @click="goBack" class="mb-2 flex items-center hover:underline">
+        <button
+            @click="goBackToListings"
+            class="mb-2 flex items-center hover:underline"
+        >
             <ArrowLeft class="mr-1 h-4 w-4" /> Back to listings
         </button>
         <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">

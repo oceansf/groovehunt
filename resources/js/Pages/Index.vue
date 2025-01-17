@@ -100,6 +100,14 @@ const handleFilterChange = (newFilters) => {
     updateListings({ filters: newFilters });
 };
 
+const handleSortChange = (newSort) => {
+    currentSort.value = newSort;
+    updateListings({
+        sort_by: newSort.field,
+        sort_direction: newSort.direction,
+    });
+};
+
 const clearFilters = () => {
     currentFilters.value = [];
     emit("handleSubmit", currentFilters.value);
