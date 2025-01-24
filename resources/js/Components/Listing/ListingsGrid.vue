@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref } from "vue";
 import axios from "axios";
 import { useIntersectionObserver } from "@vueuse/core";
 import ListingGridItem from "./ListingGridItem.vue";
@@ -40,7 +40,7 @@ const { stop } = useIntersectionObserver(bottom, ([{ isIntersecting }]) => {
 </script>
 
 <template>
-    <div class="bg-slate-50">
+    <div>
         <h2 class="pl-4 sm:pl-2 text-slate-500">
             Showing {{ props.listings.total }}
             <span v-if="listings.total === 1">result</span

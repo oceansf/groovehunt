@@ -134,7 +134,7 @@ const sortOptions = [
         <title>Market</title>
         <meta name="description" content="Buy and sell music formats" />
     </Head>
-    <div class="bg-slate-50">
+    <div>
         <div>
             <MobileFilterDialog
                 v-model:mobileFiltersOpen="mobileFiltersOpen"

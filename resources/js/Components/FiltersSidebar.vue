@@ -53,7 +53,7 @@ const removeFilter = (filterValue) => {
                 v-if="checkedFilters.length > 0"
                 type="button"
                 @click="clearFilters"
-                class="mb-2 w-full rounded-md border border-slate-300 bg-white px-2 py-1 text-slate-700 transition hover:bg-slate-50"
+                class="mb-2 w-full rounded-md border border-slate-300 bg-gray-50 px-2 py-1 text-slate-700 transition hover:bg-gray-100"
             >
                 Clear Filters
             </button>
@@ -65,13 +65,13 @@ const removeFilter = (filterValue) => {
                 <div
                     v-for="tag in activeFilterTags"
                     :key="tag.value"
-                    class="inline-flex items-center gap-1 rounded-full bg-slate-900 px-2 py-1 text-sm text-slate-50"
+                    class="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-1 text-sm text-blue-600"
                 >
                     <span>{{ tag.label }}</span>
                     <button
                         type="button"
                         @click="removeFilter(tag.value)"
-                        class="inline-center rounded-full hover:bg-white/25"
+                        class="inline-center rounded-full hover:bg-blue-100"
                     >
                         <XMarkIcon class="h-4 w-4" aria-hidden="true" />
                         <span class="sr-only"
@@ -90,7 +90,7 @@ const removeFilter = (filterValue) => {
             >
                 <h3 class="-my-3 flow-root">
                     <DisclosureButton
-                        class="flex w-full items-center justify-between bg-slate-50 py-3 text-sm text-gray-400 hover:text-gray-500"
+                        class="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500"
                     >
                         <div class="flex items-center gap-2">
                             <FilterIcon

@@ -16,18 +16,17 @@ import ContactForm from "@/Components/ContactForm.vue";
                         About Us
                     </h1>
                     <p class="mt-2 text-lg leading-8 text-gray-600">
-                        Groovehunt.com was born out of a passion for music and
-                        the unique experience of vinyl records. Founded in 2024,
-                        we've created a space where vinyl enthusiasts can
-                        connect, buy, and sell their favorite records.
+                        Groovehunt is a marketplace for buying and selling physical music formats like vinyl records, CDs, and cassettes. This site was born out of a need for <strong>low seller-fees</strong> and an <strong>easy-to-use</strong> platform for music collectors.
                     </p>
                     <br />
                     <p class="mt-2 text-lg leading-8 text-gray-600">
-                        Our platform offers an authentic, easy-to-use experience
-                        with a low <strong>5%</strong> selling fee (compared to the 8-11% on competing platforms). We also empower sellers with tools to grow your music business, all within a
-                        carefully vetted community that ensures peace of mind
-                        for every transaction.
+                        We offer a low <strong>5%</strong> seller's fee which is <em>only</em> applied to the total listed price. This is much lower compared to the 9-12% on competing platforms.
                     </p>
+                    <br>
+                    <p class="mt-2 text-lg leading-8 text-gray-600">
+                        In the near future, we aim to offer sellers tools that will allow them to increase their sales and gain exposure for their store. Thank you for checking out Groovehunt and happy shopping!
+                    </p>
+                    
                 </div>
                 <div class="w-full lg:w-6/12">
                     <img
