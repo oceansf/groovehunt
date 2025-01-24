@@ -33,10 +33,12 @@
         "@heroicons/vue": "^2.1.5",
         "@tailwindcss/typography": "^0.5.15",
         "@vueuse/core": "^11.3.0",
+        "clsx": "^2.1.1",
         "dayjs": "^1.11.13",
         "lodash": "^4.17.21",
         "lucide-vue-next": "^0.452.0",
         "mitt": "^3.0.1",
+        "tailwind-merge": "^2.6.0",
         "vue3-apexcharts": "^1.7.0"
     }
 }
