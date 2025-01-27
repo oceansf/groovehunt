@@ -439,9 +439,24 @@ const handleOutsideClick = (event) => {
                                 class="h-12 w-12 rounded-full text-gray-300"
                             />
                         </Link>
-                        <div>
-                            <p class="font-medium">{{ sellerData.name }}</p>
+                        <div class="pl-2">
+                            <p class="font-semibold">{{ sellerData.name }}</p>
+                            <p class=" text-gray-500">
+                                Member since
+                                {{
+                                    new Date(
+                                        sellerData.joined_date,
+                                    ).toLocaleDateString("en-US", {
+                                        month: "short",
+                                        year: "numeric",
+                                    })
+                                }}
+                            </p>
                             <div class="flex items-center">
+                                <StarIcon class="h-4 w-4 text-yellow-400" />
+                                <StarIcon class="h-4 w-4 text-yellow-400" />
+                                <StarIcon class="h-4 w-4 text-yellow-400" />
+                                <StarIcon class="h-4 w-4 text-yellow-400" />
                                 <StarIcon class="h-4 w-4 text-yellow-400" />
                                 <span class="pl-1">4.9 (382 reviews)</span>
                             </div>

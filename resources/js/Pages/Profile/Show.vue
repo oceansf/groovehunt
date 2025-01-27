@@ -140,13 +140,17 @@ const dummyListing = {
 
                             <div class="flex items-center">
                                 <StarIcon class="h-4 w-4 text-yellow-400" />
+                                <StarIcon class="h-4 w-4 text-yellow-400" />
+                                <StarIcon class="h-4 w-4 text-yellow-400" />
+                                <StarIcon class="h-4 w-4 text-yellow-400" />
+                                <StarIcon class="h-4 w-4 text-yellow-400" />
                                 <span class="pl-1 text-sm"
                                     >4.9 (382 reviews)</span
                                 >
                             </div>
                         </div>
                         <div
-                            v-if="auth.user.id !== userData.id"
+                            v-if="auth.user && auth.user.id !== userData.id"
                             class="mt-6 flex flex-col justify-between space-y-3 sm:flex-row sm:space-x-4 sm:space-y-0"
                         >
                             <button
