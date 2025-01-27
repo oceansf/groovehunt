@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { router } from "@inertiajs/vue3";
 import {
     CalendarIcon,
@@ -27,6 +27,26 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { usePage, Head } from "@inertiajs/vue3";
 import formatPrice from "@/Composables/formatPrice";
 import { Link } from "@inertiajs/vue3";
+import { useSwipe } from "@vueuse/core";
+
+const el = ref(null);
+
+const { isSwiping, direction } = useSwipe(el, {
+    threshold: 50, // Minimum swipe distance
+    onSwipeEnd(e) {
+        if (direction.value === "left") {
+            // Move to next image
+            if (currentImageIndex.value < listingData.images.length - 1) {
+                currentImageIndex.value++;
+            }
+        } else if (direction.value === "right") {
+            // Move to previous image
+            if (currentImageIndex.value > 0) {
+                currentImageIndex.value--;
+            }
+        }
+    },
+});
 
 dayjs.extend(relativeTime);
 
@@ -86,10 +106,6 @@ const handleOutsideClick = (event) => {
         closeMessageModal();
     }
 };
-
-const goBackToListings = () => {
-    window.history.back();
-};
 </script>
 
 <template>
@@ -97,16 +113,10 @@ const goBackToListings = () => {
         <title>{{ listingData.title }}</title>
         <meta name="description" content="Listing information" />
     </Head>
-    <div class="container mx-auto h-full max-w-5xl px-2 py-6">
-        <button
-            @click="goBackToListings"
-            class="mb-2 flex items-center hover:underline"
-        >
-            <ArrowLeft class="mr-1 h-4 w-4" /> Back to listings
-        </button>
-        <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
+    <div class="container mx-auto h-full max-w-5xl sm:py-6">
+        <div class="grid grid-cols-1 gap-4 sm:gap-8 lg:grid-cols-2">
             <!-- Image Gallery -->
-            <div class="space-y-4">
+            <div class="hidden space-y-4 sm:block">
                 <div
                     class="h-[400px] overflow-hidden rounded-lg bg-gray-100 md:h-[488px]"
                 >
@@ -135,8 +145,66 @@ const goBackToListings = () => {
                 </div>
             </div>
 
+            <!-- Image Carousel (Mobile) -->
+            <div ref="el" class="relative w-full overflow-hidden md:hidden">
+                <div
+                    class="flex transition-transform duration-300 ease-in-out"
+                    :style="{
+                        transform: `translateX(-${currentImageIndex * 100}%)`,
+                    }"
+                >
+                    <div
+                        v-for="(image, index) in listingData.images"
+                        :key="index"
+                        class="h-[400px] w-full flex-shrink-0"
+                    >
+                        <img
+                            :src="image.url"
+                            :alt="listingData.title"
+                            class="h-full w-full object-cover"
+                        />
+                    </div>
+                </div>
+
+                <!-- Navigation dots -->
+                <div
+                    class="absolute bottom-4 left-0 right-0 flex justify-center gap-2"
+                >
+                    <button
+                        v-for="(_, index) in listingData.images"
+                        :key="index"
+                        @click="currentImageIndex = index"
+                        class="h-2 w-2 rounded-full transition-colors"
+                        :class="[
+                            currentImageIndex === index
+                                ? 'bg-white'
+                                : 'bg-white/50 hover:bg-white/75',
+                        ]"
+                        aria-label="Go to image"
+                    />
+                </div>
+            </div>
+
+            <div class="sm:hidden flex gap-2 pb-3 pl-2 pt-1 overflow-x-scroll">
+                    <button
+                        v-for="(image, index) in listingData.images"
+                        :key="index"
+                        @click="currentImageIndex = index"
+                        class="h-[90px] w-[90px] flex-shrink-0 overflow-hidden rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        :class="{
+                            'ring-2 ring-blue-500': currentImageIndex === index,
+                        }"
+                    >
+                        <img
+                            :src="image.url"
+                            :alt="`${listingData.title} - Image ${index + 1}`"
+                            class="h-full w-full object-cover"
+                        />
+                    </button>
+                </div>
+
             <!-- Listing Details -->
-            <div class="space-y-6">
+            <div class="space-y-6 px-4">
                 <div>
                     <div class="flex items-start justify-between gap-2">
                         <h1 class="text-3xl font-bold">
@@ -147,7 +215,7 @@ const goBackToListings = () => {
                             :href="`/listings/${listingData.id}/edit`"
                             class="inline-flex shrink-0 items-center rounded-md border-gray-300 px-2 py-2 text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-50 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 md:border md:px-3"
                         >
-                            <EditIcon class="h-4 w-4" />
+                            <EditIcon class="h-6 w-6" />
                             <span class="ml-2 hidden md:inline"
                                 >Edit Listing</span
                             >
@@ -165,24 +233,20 @@ const goBackToListings = () => {
                                 >${{ listingData.price }}</span
                             >
                             <div
-                                class="flex items-center space-x-2 text-gray-600"
+                                class="flex items-center space-x-2 text-xl text-gray-600"
                             >
                                 <span v-if="listingData.shipping > 0"
-                                    ><em
-                                        >+${{
-                                            formatPrice(listingData.shipping)
-                                        }}
-                                        shipping</em
-                                    ></span
-                                >
-                                <span v-else><em>*FREE shipping</em></span>
+                                    >+${{ formatPrice(listingData.shipping) }}
+                                    shipping
+                                </span>
+                                <span v-else>*FREE shipping</span>
                             </div>
                         </div>
                         <ConditionBadge
                             :condition="listingData.media_condition"
                         />
                     </div>
-                    <div class="space-y-2">
+                    <div v-if="!canEdit" class="space-y-2">
                         <div class="flex items-center gap-2">
                             <button
                                 type="button"
