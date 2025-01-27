@@ -41,7 +41,7 @@ const userNavigation = [
 <template>
     <Popover as="template" v-slot="{ open, close }">
         <nav
-            class="sticky top-0 z-40 bg-white bg-opacity-70 backdrop-blur backdrop-filter lg:overflow-y-visible"
+            class="sticky top-0 z-40 bg-white border-b lg:overflow-y-visible"
         >
             <div class="backdrop mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div
@@ -192,7 +192,7 @@ const userNavigation = [
             >
                 <div
                     v-if="open"
-                    class="absolute left-0 right-0 top-full z-50 bg-white bg-opacity-70 backdrop-blur backdrop-filter"
+                    class="absolute left-0 right-0 top-full z-50 bg-white"
                 >
                     <PopoverPanel
                         class="mobile-nav-panel relative z-10 h-[calc(100vh-57px)] overflow-y-auto lg:hidden"
