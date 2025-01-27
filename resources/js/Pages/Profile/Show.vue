@@ -101,13 +101,9 @@ const dummyListing = {
     <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
         <!-- Profile header -->
         <div>
-            <div>
-                <img
-                    class="h-32 w-full object-cover lg:h-48"
-                    :src="profile.backgroundImage"
-                    alt=""
-                />
-            </div>
+            <div
+                class="h-32 w-full bg-[url(https://images.unsplash.com/photo-1631692994457-622f31a30997?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)] bg-contain bg-fixed bg-no-repeat lg:h-48"
+            ></div>
             <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
                 <div class="-mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5">
                     <div class="flex">
