@@ -51,6 +51,7 @@ const form = useForm({
 });
 
 const handleSubmit = () => {
+    console.log(urlPrev);
     const original = props.listing.data; // Access the data property
     const changes = new FormData();
 
@@ -74,7 +75,6 @@ const handleSubmit = () => {
         route("listings.update", { listing: props.listing.data.id }),
         changes,
         {
-            preserveScroll: true,
             headers: {
                 "Content-Type": "multipart/form-data", // Add this header
             },
@@ -334,6 +334,7 @@ watch(
                 <div class="flex gap-6">
                     <Link
                         as="button"
+                        replace
                         :href="
                             route('listings.show', {
                                 listing: props.listing.data.id,

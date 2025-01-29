@@ -34,6 +34,7 @@ const userNavigation = [
     { name: "Messages", href: "#", method: "get", current: false },
     { name: "Wishlist", href: "#", method: "get", current: false },
     { name: "Collection", href: "#", method: "get", current: false },
+    { name: "Settings", href: "/profile/edit", method: "get", current: false },
     { name: "Sign Out", href: "/logout", method: "post", current: false },
 ];
 </script>
