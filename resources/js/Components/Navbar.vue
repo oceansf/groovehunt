@@ -31,7 +31,7 @@ const userNavigation = [
         method: "get",
         current: false,
     },
-    { name: "Messages", href: "#", method: "get", current: false },
+    { name: "Messages", href: "/messages", method: "get", current: false },
     { name: "Wishlist", href: "#", method: "get", current: false },
     { name: "Collection", href: "#", method: "get", current: false },
     { name: "Settings", href: "/profile/edit", method: "get", current: false },
@@ -42,7 +42,7 @@ const userNavigation = [
 <template>
     <Popover as="template" v-slot="{ open, close }">
         <nav
-            class="sticky top-0 z-40 bg-white border-b lg:overflow-y-visible"
+            class="sticky top-0 z-40 bg-white/30 backdrop-blur-lg border-b border-black/15 lg:overflow-y-visible"
         >
             <div class="backdrop mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div
