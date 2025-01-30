@@ -29,7 +29,7 @@ function truncateText(length, text) {
 <template>
     <div class="group">
         <div
-            class="h-[225px] max-w-full overflow-hidden rounded-md lg:h-[260px] lg:w-[270px]"
+            class="h-[225px] max-w-full overflow-hidden sm:rounded-md lg:h-[260px] lg:w-[270px]"
         >
             <img
                 :src="listing.images[0].url"
