@@ -12,7 +12,7 @@ import {
 } from "@headlessui/vue";
 import { Bars3Icon, XMarkIcon } from "@heroicons/vue/24/outline";
 import LogoLink from "./LogoLink.vue";
-import Searchbar from "./Searchbar.vue";
+import SearchBar from "./SearchBar.vue";
 
 const page = usePage();
 const auth = computed(() => page.props.auth);
@@ -42,7 +42,7 @@ const userNavigation = [
 <template>
     <Popover as="template" v-slot="{ open, close }">
         <nav
-            class="sticky top-0 z-40 bg-white/30 backdrop-blur-lg border-b border-black/15 lg:overflow-y-visible"
+            class="sticky top-0 z-40 bg-white/50 backdrop-blur-lg border-b border-black/10 lg:overflow-y-visible"
         >
             <div class="backdrop mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div
@@ -57,7 +57,7 @@ const userNavigation = [
                     <div
                         class="align-cen min-w-0 flex-1 md:px-8 lg:px-0 xl:col-span-6"
                     >
-                        <Searchbar />
+                        <SearchBar />
                     </div>
 
                     <div

@@ -28,6 +28,7 @@ import { usePage, Head } from "@inertiajs/vue3";
 import formatPrice from "@/Composables/formatPrice";
 import { Link } from "@inertiajs/vue3";
 import { useSwipe } from "@vueuse/core";
+import HeartLikeButton from "@/Components/HeartLikeButton.vue";
 
 const el = ref(null);
 
@@ -206,7 +207,7 @@ const handleOutsideClick = (event) => {
             <!-- Listing Details -->
             <div class="space-y-6 px-4">
                 <div>
-                    <div class="flex items-start justify-between gap-2">
+                    <div class="flex items-start justify-between">
                         <h1 class="text-3xl font-bold">
                             {{ listingData.title }}
                         </h1>
@@ -220,6 +221,7 @@ const handleOutsideClick = (event) => {
                                 >Edit Listing</span
                             >
                         </Link>
+                        <HeartLikeButton v-else size="lg" class="sm:pr-4" />
                     </div>
                     <p class="text-xl text-gray-600">
                         {{ listingData.artist }}
@@ -227,7 +229,7 @@ const handleOutsideClick = (event) => {
                 </div>
 
                 <div class="space-y-6 md:w-9/12">
-                    <div class="flex items-center justify-between">
+                    <div class="flex items-start justify-between">
                         <div class="flex flex-col">
                             <span class="text-3xl font-bold"
                                 >${{ listingData.price }}</span
@@ -276,6 +278,7 @@ const handleOutsideClick = (event) => {
                             <MailIcon class="mr-2 h-4 w-4 text-gray-700" />
                             Message Seller
                         </button>
+                        <p class="text-sm text-gray-600">*You will be redirected to Stripe to complete checkout</p>
                     </div>
                     <!-- TODO - Add ships from location -->
                     <div class="space-y-4">

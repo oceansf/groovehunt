@@ -1,10 +1,23 @@
 <script setup>
+import { computed } from "vue";
+import { usePage } from "@inertiajs/vue3";
 import { useWindowSize } from "@vueuse/core";
 import formatPrice from "@/Composables/formatPrice";
-import { PlayIcon } from "@heroicons/vue/16/solid";
+import HeartLikeButton from "../HeartLikeButton.vue";
 
 const props = defineProps({
     listing: Object,
+});
+
+const page = usePage();
+const currentUser = computed(() => {
+    return page.props?.auth?.user;
+});
+
+const canEdit = computed(() => {
+    const hasUser = Boolean(currentUser.value?.id);
+    const isOwner = currentUser.value?.id === props.listing.seller?.id;
+    return hasUser && isOwner;
 });
 
 const { width } = useWindowSize();
@@ -29,46 +42,33 @@ function truncateText(length, text) {
                 ]"
             />
         </div>
-        <div class="mt-2 flex justify-between">
+        <div class="mt-2 px-2">
             <div class="flex justify-between">
-                <div class="pl-1">
-                    <h3 class="text-sm font-semibold text-gray-700">
-                        <Link
-                            v-if="!listing.disabled"
-                            :href="route('listings.show', listing.id)"
-                        >
-                            <span aria-hidden="true" class="absolute inset-0" />
-                            {{
-                                truncateText(
-                                    width < 768 ? 23 : 30,
-                                    listing.title,
-                                )
-                            }}
-                        </Link>
-                        <span v-else class="text-gray-400">
-                            <!-- Grayed out when disabled -->
-                            {{
-                                truncateText(
-                                    width < 768 ? 23 : 30,
-                                    listing.title,
-                                )
-                            }}
-                            <span class="ml-2 text-xs text-red-500">Sold</span>
-                        </span>
-                    </h3>
-                    <p class="mt-1 text-sm text-gray-500">
-                        {{ listing.artist }}
-                    </p>
-                    <p
-                        class="mt-1 text-sm font-semibold"
-                        :class="
-                            listing.disabled ? 'text-gray-400' : 'text-gray-900'
-                        "
+                <h3 class="text-sm font-semibold text-gray-700">
+                    <Link
+                        v-if="!listing.disabled"
+                        :href="route('listings.show', listing.id)"
                     >
-                        ${{ formatPrice(props.listing.price) }}
-                    </p>
-                </div>
+                        <span aria-hidden="true" class="absolute inset-0" />
+                        {{ truncateText(width < 768 ? 23 : 30, listing.title) }}
+                    </Link>
+                    <span v-else class="text-gray-400">
+                        <!-- Grayed out when disabled -->
+                        {{ truncateText(width < 768 ? 23 : 30, listing.title) }}
+                        <span class="ml-2 text-xs text-red-500">Sold</span>
+                    </span>
+                </h3>
+                <HeartLikeButton v-if="!canEdit"/>
             </div>
+            <p class="mt-1 text-sm text-gray-500">
+                {{ listing.artist }}
+            </p>
+            <p
+                class="mt-1 text-sm font-semibold"
+                :class="listing.disabled ? 'text-gray-400' : 'text-gray-900'"
+            >
+                ${{ formatPrice(props.listing.price) }}
+            </p>
         </div>
     </div>
 </template>

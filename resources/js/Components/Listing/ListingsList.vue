@@ -6,6 +6,7 @@ import ConditionBadge from "../ConditionBadge.vue";
 import formatPrice from "@/Composables/formatPrice";
 import axios from "axios";
 import ScrollToTop from "../ScrollToTop.vue";
+import HeartLikeButton from "../HeartLikeButton.vue";
 
 const props = defineProps({
     listings: {
@@ -44,7 +45,7 @@ const { stop } = useIntersectionObserver(bottom, ([{ isIntersecting }]) => {
 <template>
     <div>
         <header>
-            <div class="mb-2 px-4 justify-between flex">
+            <div class="mb-2 flex justify-between px-4">
                 <h2 class="text-slate-500">
                     Showing {{ props.listings.total }}
                     <span v-if="listings.total === 1">result</span
@@ -76,9 +77,7 @@ const { stop } = useIntersectionObserver(bottom, ([{ isIntersecting }]) => {
                                     <h1 class="font-semibold sm:text-lg">
                                         {{ listing.title }}
                                     </h1>
-                                    <h2
-                                        class="text-sm text-gray-600"
-                                    >
+                                    <h2 class="text-sm text-gray-600">
                                         {{ listing.artist }}
                                     </h2>
                                     <div>
@@ -87,7 +86,9 @@ const { stop } = useIntersectionObserver(bottom, ([{ isIntersecting }]) => {
                                         >
                                             ${{ listing.price }}
                                         </h2>
-                                        <h3 class="text-gray-600 text-xs sm:text-sm">
+                                        <h3
+                                            class="text-xs text-gray-600 sm:text-sm"
+                                        >
                                             <span v-if="listing.shipping > 0">
                                                 <em
                                                     >+${{
@@ -125,7 +126,7 @@ const { stop } = useIntersectionObserver(bottom, ([{ isIntersecting }]) => {
                             </div>
                         </div>
 
-                        <div class="flex flex-col">
+                        <div class="flex flex-col justify-between">
                             <div>
                                 <div
                                     class="flex items-center justify-end gap-1"
@@ -168,6 +169,15 @@ const { stop } = useIntersectionObserver(bottom, ([{ isIntersecting }]) => {
                             <div class="mt-4 text-xs sm:text-sm">
                                 <h1>Ships from Austin, TX</h1>
                             </div>
+
+                            <button
+                                class="mt-1 flex items-center gap-1 rounded-lg border px-2 py-1 hover:bg-black/5"
+                            >
+                                <HeartLikeButton />
+                                <span class="text-xs sm:text-sm"
+                                    >Add to wishlist</span
+                                >
+                            </button>
                         </div>
                     </div>
                 </Link>
