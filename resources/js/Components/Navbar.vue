@@ -12,7 +12,7 @@ import {
 } from "@headlessui/vue";
 import { Bars3Icon, XMarkIcon } from "@heroicons/vue/24/outline";
 import LogoLink from "./LogoLink.vue";
-import SearchBar from "./SearchBar.vue";
+import Searchbar from "./Searchbar.vue";
 
 const page = usePage();
 const auth = computed(() => page.props.auth);
@@ -57,7 +57,7 @@ const userNavigation = [
                     <div
                         class="align-cen min-w-0 flex-1 md:px-8 lg:px-0 xl:col-span-6"
                     >
-                        <SearchBar />
+                        <Searchbar />
                     </div>
 
                     <div

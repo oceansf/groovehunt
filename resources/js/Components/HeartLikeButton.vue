@@ -35,7 +35,7 @@ watch(
     <div>
         <button
             @click="toggleLike"
-            class="tooltip z-40 transform transition-transform duration-200 ease-in-out hover:scale-110 focus:outline-none active:scale-90"
+            class="tooltip z-10 transform transition-transform duration-200 ease-in-out hover:scale-110 focus:outline-none active:scale-90"
             :data-tip="isLiked ? 'Remove from wishlist' : 'Add to wishlist'"
             :class="{ 'is-active': isLiked }"
             aria-label="Wishlist"
