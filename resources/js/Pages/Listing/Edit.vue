@@ -51,7 +51,6 @@ const form = useForm({
 });
 
 const handleSubmit = () => {
-    console.log(urlPrev);
     const original = props.listing.data; // Access the data property
     const changes = new FormData();
 
