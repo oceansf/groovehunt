@@ -190,8 +190,8 @@ class ListingController extends Controller
             // Delete associated images from S3
             if (!empty($listing->images)) {
                 foreach ($listing->images as $image) {
-                    // Delete from S3 using the path
-                    Storage::disk('s3')->delete($image['path']);
+                    // Delete from S3 using the url
+                    Storage::disk('s3')->delete($image['url']);
                 }
             }
 

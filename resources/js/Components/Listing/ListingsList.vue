@@ -1,6 +1,7 @@
 <script setup>
-import { ref } from "vue";
-import { useIntersectionObserver } from "@vueuse/core";
+import { ref, computed } from "vue";
+import { useIntersectionObserver, useWindowSize } from "@vueuse/core";
+import { usePage } from "@inertiajs/vue3";
 import { UserCircleIcon, StarIcon } from "@heroicons/vue/20/solid";
 import ConditionBadge from "../ConditionBadge.vue";
 import formatPrice from "@/Composables/formatPrice";
@@ -13,6 +14,17 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+});
+
+const page = usePage();
+const currentUser = computed(() => {
+    return page.props?.auth?.user;
+});
+
+const canEdit = computed(() => {
+    const hasUser = Boolean(currentUser.value?.id);
+    const isOwner = currentUser.value?.id === props.listings.seller?.id;
+    return hasUser && isOwner;
 });
 
 const bottom = ref(null);
@@ -40,6 +52,11 @@ const { stop } = useIntersectionObserver(bottom, ([{ isIntersecting }]) => {
             }
         });
 });
+
+const { width } = useWindowSize();
+function truncateText(length, text) {
+    return text.length <= length ? text : `${text.slice(0, length)}...`;
+}
 </script>
 
 <template>
@@ -75,7 +92,12 @@ const { stop } = useIntersectionObserver(bottom, ([{ isIntersecting }]) => {
                             <div class="flex flex-col justify-between">
                                 <div>
                                     <h1 class="font-semibold sm:text-lg">
-                                        {{ listing.title }}
+                                        {{
+                                            truncateText(
+                                                width < 768 ? 23 : 30,
+                                                listing.title,
+                                            )
+                                        }}
                                     </h1>
                                     <h2 class="text-sm text-gray-600">
                                         {{ listing.artist }}
@@ -166,15 +188,15 @@ const { stop } = useIntersectionObserver(bottom, ([{ isIntersecting }]) => {
                                 </div>
                             </div>
 
-                            <div class="mt-4 text-xs sm:text-sm">
+                            <div class="text-xs sm:text-sm">
                                 <h1>Ships from Austin, TX</h1>
                             </div>
-
+                            <!-- Add to wishlist btn -->
                             <button
                                 class="mt-1 flex items-center gap-1 rounded-lg border px-2 py-1 hover:bg-black/5"
                             >
                                 <HeartLikeButton />
-                                <span class="text-xs sm:text-sm"
+                                <span class="text-nowrap text-xs sm:text-sm"
                                     >Add to wishlist</span
                                 >
                             </button>
